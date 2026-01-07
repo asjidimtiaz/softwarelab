@@ -1,0 +1,139 @@
+"use server";
+
+import connectDB from "@/lib/db";
+import { Lead } from "@/lib/models/lead";
+import { revalidatePath } from "next/cache";
+
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth-options";
+
+export async function getLeads(filters: { 
+  query?: string; 
+  status?: string; 
+  tier?: string;
+  page?: number;
+} = {}) {
+  const session = await getServerSession(authOptions);
+  if (!session) throw new Error("Unauthorized");
+
+  await connectDB();
+  
+  const { query, status, tier, page = 1 } = filters;
+  const limit = 20;
+  const skip = (page - 1) * limit;
+
+  const mongoQuery: any = {};
+  
+  if (query) {
+    mongoQuery.$or = [
+      { fullName: { $regex: query, $options: "i" } },
+      { email: { $regex: query, $options: "i" } },
+      { company: { $regex: query, $options: "i" } },
+    ];
+  }
+
+  if (status && status !== "ALL") {
+    mongoQuery.status = status;
+  }
+
+  if (tier && tier !== "ALL") {
+    mongoQuery.leadTier = tier;
+  }
+
+  const [leads, total] = await Promise.all([
+    Lead.find(mongoQuery)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .lean(),
+    Lead.countDocuments(mongoQuery),
+  ]);
+
+  return {
+    leads: JSON.parse(JSON.stringify(leads)),
+    total,
+    pages: Math.ceil(total / limit),
+  };
+}
+
+export async function getLeadById(id: string) {
+  const session = await getServerSession(authOptions);
+  if (!session) throw new Error("Unauthorized");
+
+  await connectDB();
+  const lead = await Lead.findById(id).lean();
+  return JSON.parse(JSON.stringify(lead));
+}
+
+export async function updateLeadStatus(id: string, status: string) {
+  const session = await getServerSession(authOptions);
+  if (!session) throw new Error("Unauthorized");
+
+  await connectDB();
+  const lead = await Lead.findByIdAndUpdate(
+    id, 
+    { 
+      status,
+      $push: { 
+        events: { 
+          type: "StatusUpdated", 
+          meta: { newStatus: status },
+          at: new Date()
+        } 
+      } 
+    },
+    { new: true }
+  );
+  revalidatePath("/admin/leads");
+  revalidatePath(`/admin/leads/${id}`);
+  return JSON.parse(JSON.stringify(lead));
+}
+
+export async function addLeadNote(id: string, note: string) {
+  const session = await getServerSession(authOptions);
+  if (!session) throw new Error("Unauthorized");
+
+  await connectDB();
+  const lead = await Lead.findByIdAndUpdate(
+    id,
+    {
+      $push: {
+        events: {
+          type: "NoteAdded",
+          meta: { note },
+          at: new Date()
+        }
+      }
+    },
+    { new: true }
+  );
+  revalidatePath(`/admin/leads/${id}`);
+  return JSON.parse(JSON.stringify(lead));
+}
+
+export async function createLead(data: any) {
+  const session = await getServerSession(authOptions);
+  if (!session) throw new Error("Unauthorized");
+
+  await connectDB();
+  
+  // Calculate score & tier
+  let score = 0;
+  if (data.budgetRange?.includes("25k") || data.budgetRange?.includes("50k")) score += 40;
+  else if (data.budgetRange?.includes("10k")) score += 20;
+  
+  const tier = score >= 60 ? "HOT" : score >= 30 ? "WARM" : "COLD";
+
+  const lead = await Lead.create({
+    ...data,
+    leadScore: score,
+    leadTier: tier,
+    events: [
+      { type: "LeadCreated", meta: { source: "Admin Dashboard", creator: session.user?.email } }
+    ]
+  });
+
+  revalidatePath("/admin/leads");
+  revalidatePath("/admin/analytics");
+  return JSON.parse(JSON.stringify(lead));
+}

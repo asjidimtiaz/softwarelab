@@ -1,0 +1,160 @@
+{
+  "nav": {
+    "services": "Services",
+    "process": "Process",
+    "pricing": "Pricing",
+    "caseStudies": "Case Studies",
+    "blog": "Blog",
+    "about": "About",
+    "getQuote": "Get a Quote"
+  },
+  "hero": {
+    "badge": "Redefining Software Development",
+    "title1": "We Build",
+    "title2": "Future-Proof",
+    "title3": "Systems",
+    "description": "High-performance web applications, automation engines, and conversion-optimized websites tailored for elite scale.",
+    "ctaPrimary": "Start Your Project",
+    "ctaSecondary": "View Services"
+  },
+  "servicesOverview": {
+    "title1": "World-Class Engineering",
+    "title2": "for Every Scale",
+    "description": "We don't just write code; we build business systems that scale, endure, and convert."
+  },
+  "footer": {
+    "brandDesc": "Industrial-grade digital engineering for startups and enterprise. We bridge the gap between complex code and beautiful interfaces.",
+    "status": "Accepting Sprints",
+    "rights": "All engineering rights reserved.",
+    "privacy": "Privacy Protocol",
+    "agreement": "Service Agreement"
+  },
+  "about": {
+    "badge": "Our Story",
+    "title": "Engineering The Remarkable",
+    "description": "Software Lab was founded on a single premise: Software should be as solid as industrial machinery and as beautiful as digital art. We aren't just an agency; we are a dedicated laboratory for your next big idea.",
+    "philosophy": "The Lab Philosophy",
+    "philosophyDesc": "Four foundational principles that guide every line of code we write.",
+    "values": {
+        "quality": { "title": "Quality First", "desc": "We never compromise on code integrity or UI polish." },
+        "partner": { "title": "Client Partner", "desc": "Your goals are our KPIs. We succeed when you do." },
+        "agile": { "title": "Agile Lean", "desc": "Fast shipping, constant iteration, zero bloat." },
+        "security": { "title": "Security Core", "desc": "Data protection is built-in, never bolted on." }
+    },
+    "stats": {
+        "launched": "Products Launched",
+        "uptime": "Uptime Guarantee",
+        "hours": "Development Hours"
+    }
+  },
+  "pricing": {
+    "title": "Investment & Plans",
+    "description": "Transparent tiering for every stage of your digital journey. No hidden fees, just pure engineering excellence.",
+    "startingAt": "starting at",
+    "customTitle": "Custom Requirements?",
+    "customDesc": "If your project doesn't fit into these tiers, our lab team can architect a bespoke solution tailored to your exact technical specifications.",
+    "customCta": "Talk to an Engineer",
+    "mostChosen": "Most Chosen"
+  },
+  "process": {
+    "title1": "Our Engineering",
+    "title2": "Lifecycle",
+    "description": "From raw idea to industrial-grade product. We follow a rigorous 5-step lab process to ensure every project is built to last.",
+    "ctaTitle": "Ready to enter the Lab?",
+    "ctaDesc": "Our process is battle-tested. Let's start with Step 1 today.",
+    "ctaButton": "Get Your Project Quote",
+    "steps": {
+        "step1": { "title": "Project Discovery", "desc": "We dive deep into your business goals, target audience, and technical constraints to define a clear product roadmap." },
+        "step2": { "title": "Strategic Design", "desc": "Our design lab creates conversion-optimized UI/UX that aligns with your brand identity and users' needs." },
+        "step3": { "title": "Engineering Lab", "desc": "The actual build phase where our engineers develop your system using clean, scalable, and modern code." },
+        "step4": { "title": "Launch & Scale", "desc": "Deployment to optimized cloud infrastructure followed by performance monitoring and live adjustments." },
+        "step5": { "title": "Growth Support", "desc": "Post-launch care to ensure your product continues to evolve and stay ahead of the technology curve." }
+    }
+  },
+  "services": {
+    "hubTitle": "Our Expertise",
+    "hubDesc": "From high-performance web apps to complex workflow automation. Explore the specialized labs within our agency.",
+    "customSolution": "Need a custom solution?",
+    "customSolutionDesc": "Tell us about your project and we'll architect the perfect stack.",
+    "getQuote": "Get a Quote Now",
+    "specializations": "Available Specializations",
+    "specializationsDesc": "Select a specific area of expertise to learn more about our process and outcomes.",
+    "keyFeatures": "Key Features",
+    "expectedOutcomes": "Expected Outcomes",
+    "commonQuestions": "Common Questions",
+    "fastQuote": "Get a Fast Quote",
+    "strategyCall": "Book a Strategy Call",
+    "breadcrumbs": {
+        "home": "Home",
+        "services": "Services"
+    }
+  },
+  "blog": {
+    "hubTitle": "Engineering Insights",
+    "hubDesc": "Deep dives into modern architecture, UI patterns, and automation strategies.",
+    "readMore": "Read Article",
+    "back": "Back to Blog"
+  },
+  "caseStudies": {
+    "hubTitle": "Industrial Proof",
+    "hubDesc": "Selected works where our engineering lab defined new standards for performance and scale.",
+    "viewProject": "View Project",
+    "techStack": "Tech Stack",
+    "outcomes": "Key Outcomes",
+    "back": "Back to Case Studies"
+  },
+  "common": {
+    "learnMore": "Learn More",
+    "back": "Back",
+    "backHome": "Back to Home",
+    "submit": "Submit",
+    "loading": "Loading...",
+    "readTime": "min read"
+  },
+  "quote": {
+    "title": "Start Your Project",
+    "desc": "Fill out the laboratory brief below. Our engineers will analyze your requirements and reach out with a detailed proposal.",
+    "features": [
+      "Zero-cost technical consultation",
+      "Detailed implementation roadmap",
+      "Tailored technology stack proposal"
+    ],
+    "privacyTitle": "Secure Data Protocol",
+    "privacyDesc": "Your project data is encrypted and handled under strict confidentiality. We do not share your laboratory brief with third parties.",
+    "wizard": {
+      "steps": {
+        "project": "Project Logistics",
+        "details": "Technical Scope",
+        "contact": "Secure Connection"
+      },
+      "questions": {
+        "service": "Which laboratory handles your challenge?",
+        "project": "Nature of development",
+        "scope": "Logistics & Scope",
+        "connect": "Final Authorization"
+      },
+      "fields": {
+        "budget": "Investment Allocation",
+        "timeline": "Chronology",
+        "brief": "Project Brief",
+        "briefPlaceholder": "Describe the technical requirements or business objectives...",
+        "name": "Operator Name",
+        "email": "Secure Channel (Email)",
+        "privacyNotice": "Data is processed in accordance with the Security Core protocol. Zero information is shared externally."
+      },
+      "back": "Previous Phase",
+      "next": "Proceed",
+      "submit": "Initiate Transmission",
+      "submitting": "Processing...",
+      "successTitle": "Transmission Received",
+      "successDesc": "Your laboratory brief has been queued for analysis. A senior engineer will confirm receipt within 12 standard hours.",
+      "backHome": "Return to Dashboard"
+    }
+  },
+  "meta": {
+    "title": "Software Lab | Premium Digital Engineering & Design Agency",
+    "description": "Enterprise-grade custom software, high-performance web applications, and automation systems. We build future-proof digital products that scale.",
+    "ogTitle": "Software Lab | Elite Software Laboratory",
+    "ogDesc": "Transforming complex business challenges into industry-leading digital products with modern engineering."
+  }
+}
