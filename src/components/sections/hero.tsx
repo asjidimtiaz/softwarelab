@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Sparkles, Code2, Rocket, Zap } from "lucide-react";
+import { ArrowRight, Sparkle, Code2, Rocket, Zap, Check, Star } from "lucide-react";
 import Link from "next/link";
 import { Container } from "../layout/layout-primitives";
 import { AnimatedSection } from "../AnimatedSection";
@@ -14,120 +14,177 @@ interface HeroProps {
 
 export function Hero({ dict, locale }: HeroProps) {
   return (
-    <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden min-h-[95vh] flex items-center">
-      {/* Dynamic Background Elements */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <motion.div 
-          animate={{ 
-            scale: [1, 1.2, 1],
-            rotate: [0, 45, 0],
-            opacity: [0.15, 0.25, 0.15]
-          }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-[15%] -left-[10%] w-[70%] h-[70%] bg-primary/20 blur-[140px] rounded-full" 
-        />
-        <motion.div 
-          animate={{ 
-            scale: [1, 1.15, 1],
-            x: [0, 30, 0],
-            opacity: [0.2, 0.4, 0.2]
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[15%] -right-[15%] w-[50%] h-[50%] bg-blue-400/20 blur-[120px] rounded-full" 
-        />
+    <section className="relative pt-24 pb-0 overflow-hidden bg-gradient-to-br from-[#7C3AED] via-[#6D28D9] to-[#4C1D95] z-10 w-full">
+      {/* Background Decorative Circles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-white/10 blur-[100px] rounded-full" />
+        <div className="absolute bottom-[20%] right-[-5%] w-[35%] h-[35%] bg-indigo-400/20 blur-[100px] rounded-full" />
       </div>
 
-      <Container className="relative">
-        <div className="max-w-5xl mx-auto text-center flex flex-col items-center">
-          
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="flex items-center gap-6 mb-10 text-sm font-medium text-gray-500"
-          >
-             <div className="flex items-center gap-2">
-               <span className="text-[#61DAFB]"><Rocket size={16} /></span>
-               <span>Built for <span className="text-gray-900 font-semibold">Scale</span></span>
-             </div>
-             <div className="w-1 h-1 rounded-full bg-gray-300" />
-             <div className="flex items-center gap-2">
-               <span className="text-[#38BDF8]"><Code2 size={16} /></span>
-               <span>Styled with <span className="text-gray-900 font-semibold">Precision</span></span>
-             </div>
-          </motion.div>
+      <Container className="relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[60vh] pb-20 pt-4">
 
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.2, ease: [0.21, 0.47, 0.32, 0.98] }}
-            className="text-7xl md:text-[8rem] font-black tracking-tighter mb-8 leading-[0.9] text-gray-900"
-          >
-             {dict.hero.title1} {dict.hero.title2}<br/>
-             <span className="text-gray-400">{dict.hero.title3}</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-xl md:text-2xl text-gray-500 mb-12 max-w-2xl mx-auto leading-relaxed"
-          >
-            {dict.hero.description}
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-          >
-            <Link
-              href={`/${locale}/quote`}
-              className="group flex items-center justify-center gap-3 h-14 pl-8 pr-6 rounded-full bg-gray-900 text-white transition-all hover:scale-105 hover:shadow-2xl hover:shadow-gray-900/20 active:scale-95"
+          {/* Left Side: Content */}
+          <div className="max-w-2xl">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="inline-flex items-center gap-4 px-10 py-4 rounded-full border border-white text-white mb-12 text-[11px] font-bold uppercase tracking-[0.4em]"
             >
-              <span className="font-bold text-base">{dict.hero.ctaPrimary}</span>
-              <span className="text-gray-400 text-sm font-normal border-l border-gray-700 pl-3 ml-1 group-hover:text-white transition-colors">Start for free</span>
-              <ArrowRight size={16} className="text-gray-400 group-hover:text-white group-hover:translate-x-1 transition-all" />
-            </Link>
+              <Sparkle size={16} strokeWidth={2.5} className="text-white" />
+              <span>{dict.hero.badge}</span>
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-4xl md:text-6xl font-black tracking-tight mb-6 leading-[1.05] text-white"
+            >
+              {dict.hero.title1} <br />
+              <span className="text-indigo-200">{dict.hero.title2} {dict.hero.title3}</span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-base md:text-lg text-indigo-50/70 mb-8 leading-relaxed font-medium max-w-lg"
+            >
+              {dict.hero.description}
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="flex flex-wrap items-center gap-8"
+            >
+              <Link
+                href={`/${locale}/quote`}
+                className="h-16 px-10 rounded-xl bg-gray-50 text-gray-900 font-extrabold text-[13px] shadow-[0_10px_30px_-5px_rgba(0,0,0,0.1)] hover:bg-white hover:scale-[1.02] transition-all active:scale-95 flex items-center justify-center gap-3 uppercase tracking-[0.15em] border border-white"
+              >
+                <span>{dict.hero.ctaPrimary}</span>
+                <ArrowRight size={18} strokeWidth={2.5} />
+              </Link>
+
+              <div className="flex items-center gap-6">
+                <div className="flex -space-x-3">
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <div key={i} className="w-11 h-11 rounded-full border-4 border-[#6366F1] bg-indigo-200 overflow-hidden shadow-xl">
+                      <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=system${i + 10}`} alt="Client" className="w-full h-full object-cover" />
+                    </div>
+                  ))}
+                </div>
+                <div className="flex flex-col">
+                  <div className="flex gap-1 text-amber-400">
+                    {[...Array(5)].map((_, i) => <Star key={i} size={12} fill="currentColor" />)}
+                  </div>
+                  <span className="text-[11px] font-black text-white/60 uppercase tracking-widest mt-1.5">100+ Systems Built</span>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Right Side: Visual Graphic */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, x: 20 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            transition={{ duration: 1, ease: "circOut" }}
+            className="relative hidden lg:block"
+          >
+            <div className="relative z-10 bg-white shadow-2xl rounded-[2.5rem] overflow-hidden border border-white/20 flex flex-col min-h-[440px]">
+              {/* Browser Header */}
+              <div className="flex items-center gap-2 px-6 py-4 bg-gray-50/50 border-b border-gray-100">
+                <div className="flex gap-1.5">
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#FEBC2E]" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#28C840]" />
+                </div>
+                <div className="mx-auto h-5 w-48 bg-white rounded-lg border border-gray-100/50 flex items-center px-3">
+                  <div className="h-1.5 w-full bg-gray-100 rounded-full" />
+                </div>
+              </div>
+
+              <div className="p-8 space-y-12 flex-1 flex flex-col justify-center">
+                {/* Data Bars */}
+                <div className="space-y-8">
+                  {[
+                    { label: dict.hero.stats.efficiency, val: 94, color: "from-indigo-500 to-blue-400" },
+                    { label: dict.hero.stats.scalability, val: 88, color: "from-purple-500 to-indigo-400" },
+                    { label: dict.hero.stats.uptime, val: 99, color: "from-emerald-400 to-teal-400" }
+                  ].map((bar, i) => (
+                    <div key={i} className="space-y-3">
+                      <div className="flex justify-between text-[11px] font-black text-gray-400 uppercase tracking-[0.2em]">
+                        <span>{bar.label}</span>
+                        <span className="text-[#6366F1]">{bar.val}%</span>
+                      </div>
+                      <div className="h-2.5 w-full bg-gray-50 rounded-full overflow-hidden border border-gray-100 p-[2px]">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          whileInView={{ width: `${bar.val}%` }}
+                          transition={{ duration: 1.5, delay: 0.5 + i * 0.2, ease: "anticipate" }}
+                          className={`h-full bg-gradient-to-r ${bar.color} rounded-full`}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Decorative summary footer */}
+                <div className="pt-8 border-t border-gray-100 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-[#6366F1]">
+                      <Rocket size={18} />
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1.5">Total Scale</p>
+                      <p className="text-xs font-bold text-gray-800 leading-none">Global Coverage</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-[16px] font-black text-[#6366F1]">99.9%</p>
+                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none">Industry Lead</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Floating Status Badge - Premium Pill Style */}
+            <motion.div
+              animate={{ y: [0, -8, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -top-4 -right-6 pl-5 pr-8 py-4 bg-white rounded-[2rem] shadow-[0_24px_48px_-8px_rgba(0,0,0,0.12)] z-20 flex items-center gap-4 border border-gray-100/80"
+            >
+              <div className="w-14 h-14 bg-emerald-50 rounded-[1.25rem] flex items-center justify-center text-emerald-500 shrink-0">
+                <Check size={28} strokeWidth={3} />
+              </div>
+              <div>
+                <p className="text-[9px] font-bold text-gray-400 uppercase tracking-[0.25em] leading-none mb-1.5">Status</p>
+                <p className="text-lg font-extrabold text-gray-900 leading-none tracking-tight">Accepting Sprints</p>
+              </div>
+            </motion.div>
           </motion.div>
-        </div>
 
-        {/* Floating Stat Cards */}
-        <div className="mt-32 max-w-7xl mx-auto">
-           {/* Decorative Line */}
-           <div className="relative h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent mb-16">
-              <div className="absolute left-0 top-0 h-px w-20 bg-gradient-to-r from-transparent to-red-500 animate-slide-right" />
-           </div>
-
-           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-              {[
-                { icon: <Code2 size={20} />, label: "Base Architecture", badge: "FREE", desc: "Solid foundation for scalable apps" },
-                { icon: <Zap size={20} />, label: "High Performance", badge: "PRO", desc: "Optimized for core web vitals" },
-                { icon: <Rocket size={20} />, label: "Rapid Deployment", badge: "PRO", desc: "CI/CD pipelines ready to go" },
-                { icon: <Sparkles size={20} />, label: "Premium Design", badge: "PRO", desc: "Pixel-perfect UI components" },
-              ].map((item, i) => (
-                 <div key={i} className="group flex flex-col items-center text-center p-4">
-                    <div className={cn(
-                      "w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3",
-                      i === 0 ? "bg-[#EA580C] text-white shadow-lg shadow-orange-500/20" : "bg-gray-100 text-gray-500 group-hover:bg-gray-200 group-hover:text-gray-900"
-                    )}>
-                      {item.icon}
-                    </div>
-                    <div className="flex items-center gap-2 mb-2">
-                       <span className="font-bold text-sm text-gray-900">{item.label}</span>
-                       <span className={cn(
-                         "text-[10px] font-bold px-1.5 py-0.5 rounded border uppercase tracking-wider",
-                         item.badge === "FREE" ? "bg-gray-100 border-gray-200 text-gray-500" : "bg-orange-50 border-orange-100 text-orange-600"
-                       )}>
-                         {item.badge}
-                       </span>
-                    </div>
-                    <p className="text-xs text-gray-500 font-medium">{item.desc}</p>
-                 </div>
-              ))}
-           </div>
         </div>
       </Container>
+
+      {/* Wavy Divider - Compressed */}
+      <div className="absolute bottom-0 left-0 w-full leading-[0] z-0 overflow-hidden pointer-events-none">
+        <svg
+          viewBox="0 0 1440 120"
+          className="w-full h-auto min-w-[1440px] translate-y-px"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="none"
+        >
+          <path
+            fill="#ffffff"
+            fillOpacity="1"
+            d="M0,64L80,58.7C160,53,320,43,480,48C640,53,800,75,960,80C1120,85,1280,75,1360,69.3L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"
+          ></path>
+        </svg>
+      </div>
     </section>
   );
 }

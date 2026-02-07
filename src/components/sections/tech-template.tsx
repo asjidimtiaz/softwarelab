@@ -24,16 +24,16 @@ export function TechTemplate({ tech, dict, locale }: TechTemplateProps) {
         <section className="relative pt-32 pb-24 md:pt-48 md:pb-32 overflow-hidden bg-zinc-950 text-white">
           {/* Background Accents */}
           <div className="absolute inset-0 -z-10 overflow-hidden">
-             <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-br from-primary/20 via-transparent to-brand-gold/10 opacity-30" />
-             <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-primary/20 blur-[150px] rounded-full" />
-             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(0,0,0,0)_0%,rgba(0,0,0,1)_100%)]" />
+            <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-br from-primary/20 via-transparent to-brand-gold/10 opacity-30" />
+            <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-primary/20 blur-[150px] rounded-full" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(0,0,0,0)_0%,rgba(0,0,0,1)_100%)]" />
           </div>
 
           <Container>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
               <AnimatedSection direction="right">
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass border-white/10 mb-8 text-sm font-bold text-primary uppercase tracking-wider bg-white/5">
-                  <Sparkles size={14} className="text-brand-gold" />
+                <div className="inline-flex items-center gap-4 px-10 py-4 rounded-full bg-white/10 text-white border border-white mb-8 text-[11px] font-bold uppercase tracking-[0.4em] backdrop-blur-md">
+                  <Icons.Sparkle size={18} strokeWidth={2.5} className="text-white" />
                   Technology Laboratory
                 </div>
                 <h1 className="text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9]">
@@ -45,25 +45,25 @@ export function TechTemplate({ tech, dict, locale }: TechTemplateProps) {
                 </p>
                 <Link
                   href={`/${locale}/quote`}
-                  className="group flex h-16 items-center justify-center rounded-full bg-primary px-10 font-black text-xs text-primary-foreground uppercase tracking-[0.2em] transition-all hover:scale-105 active:scale-95 premium-shadow w-max"
+                  className="group flex h-16 items-center justify-center rounded-xl bg-gray-50 text-gray-900 font-extrabold text-[13px] px-10 uppercase tracking-[0.2em] transition-all hover:bg-white hover:scale-[1.02] active:scale-95 border border-white shadow-lg shadow-black/5 w-max"
                 >
-                  Start a Tech Audit
-                  <ArrowRight size={16} className="ml-3 group-hover:translate-x-1 transition-transform" />
+                  <span>Start a Tech Audit</span>
+                  <ArrowRight size={18} strokeWidth={2.5} className="ml-3 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </AnimatedSection>
 
               <AnimatedSection direction="left" className="relative hidden lg:block">
-                 <div className="aspect-square glass border-white/10 rounded-[4rem] flex items-center justify-center relative overflow-hidden bg-white/5">
-                    <Icon size={240} className="text-primary/10" strokeWidth={0.5} />
-                    {/* Animated Pulse */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                       <motion.div 
-                          animate={{ scale: [1, 1.5, 1], opacity: [0, 0.2, 0] }}
-                          transition={{ duration: 4, repeat: Infinity }}
-                          className="w-64 h-64 border-2 border-primary/50 rounded-full"
-                       />
-                    </div>
-                 </div>
+                <div className="aspect-square glass border-white/10 rounded-[4rem] flex items-center justify-center relative overflow-hidden bg-white/5">
+                  <Icon size={240} className="text-primary/10" strokeWidth={0.5} />
+                  {/* Animated Pulse */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <motion.div
+                      animate={{ scale: [1, 1.5, 1], opacity: [0, 0.2, 0] }}
+                      transition={{ duration: 4, repeat: Infinity }}
+                      className="w-64 h-64 border-2 border-primary/50 rounded-full"
+                    />
+                  </div>
+                </div>
               </AnimatedSection>
             </div>
           </Container>
@@ -80,18 +80,18 @@ export function TechTemplate({ tech, dict, locale }: TechTemplateProps) {
             </AnimatedSection>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-               {tech.capabilities.map((cap: string, i: number) => (
-                  <AnimatedSection 
-                    key={i} 
-                    delay={i * 0.1}
-                    className="p-10 rounded-[3rem] glass border border-border/50 hover:border-primary/30 transition-all duration-500 hover:premium-shadow text-center group"
-                  >
-                     <div className="w-16 h-16 rounded-2xl bg-primary/5 flex items-center justify-center text-primary mx-auto mb-6 group-hover:scale-110 transition-transform">
-                        <Target size={32} />
-                     </div>
-                     <h4 className="text-xl font-bold tracking-tight mb-2 uppercase tracking-widest">{cap}</h4>
-                  </AnimatedSection>
-               ))}
+              {tech.capabilities.map((cap: string, i: number) => (
+                <AnimatedSection
+                  key={i}
+                  delay={i * 0.1}
+                  className="p-10 rounded-[3rem] glass border border-border/50 hover:border-primary/30 transition-all duration-500 hover:premium-shadow text-center group"
+                >
+                  <div className="w-16 h-16 rounded-2xl bg-primary/5 flex items-center justify-center text-primary mx-auto mb-6 group-hover:scale-110 transition-transform">
+                    <Target size={32} />
+                  </div>
+                  <h4 className="text-xl font-bold tracking-tight mb-2 uppercase tracking-widest">{cap}</h4>
+                </AnimatedSection>
+              ))}
             </div>
           </Container>
         </Section>
@@ -100,30 +100,30 @@ export function TechTemplate({ tech, dict, locale }: TechTemplateProps) {
         <Section className="py-24 md:py-32 border-t border-border/30">
           <Container>
             <AnimatedSection className="mb-16">
-               <h2 className="text-4xl font-extrabold tracking-tighter">Related Laboratories</h2>
+              <h2 className="text-4xl font-extrabold tracking-tighter">Related Laboratories</h2>
             </AnimatedSection>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-               {tech.relatedServices.map((serviceSlug: string) => {
-                  const service = dict.services; // Need to actually fetch the service object from data
-                  // For now, let's just make a simple link based on slug
-                  const title = serviceSlug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-                  return (
-                    <Link 
-                      key={serviceSlug}
-                      href={`/${locale}/services/${serviceSlug}`}
-                      className="group p-8 rounded-[2.5rem] glass border border-border/50 flex items-center justify-between hover:border-primary/50 transition-all"
-                    >
-                       <div>
-                          <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-2">Service Category</p>
-                          <h4 className="text-2xl font-bold tracking-tight">{title}</h4>
-                       </div>
-                       <div className="w-12 h-12 rounded-full glass flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-all">
-                          <ArrowRight size={20} />
-                       </div>
-                    </Link>
-                  );
-               })}
+              {tech.relatedServices.map((serviceSlug: string) => {
+                const service = dict.services; // Need to actually fetch the service object from data
+                // For now, let's just make a simple link based on slug
+                const title = serviceSlug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                return (
+                  <Link
+                    key={serviceSlug}
+                    href={`/${locale}/services/${serviceSlug}`}
+                    className="group p-8 rounded-[2.5rem] glass border border-border/50 flex items-center justify-between hover:border-primary/50 transition-all"
+                  >
+                    <div>
+                      <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-2">Service Category</p>
+                      <h4 className="text-2xl font-bold tracking-tight">{title}</h4>
+                    </div>
+                    <div className="w-12 h-12 rounded-xl bg-gray-50 border border-gray-200/50 flex items-center justify-center text-gray-900 group-hover:bg-white group-hover:border-white transition-all shadow-sm">
+                      <ArrowRight size={20} strokeWidth={3} />
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           </Container>
         </Section>
@@ -132,18 +132,18 @@ export function TechTemplate({ tech, dict, locale }: TechTemplateProps) {
         <Section className="py-24 md:py-32 bg-secondary/5">
           <Container>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-               {[
-                  { icon: ShieldCheck, title: "Production Grade", desc: "No experimental shortcuts. Only battle-tested, industrial-grade code." },
-                  { icon: Zap, title: "Edge Ready", desc: "Optimized for global delivery with extreme performance and low latency." },
-                  { icon: Rocket, title: "Scalable Logic", desc: "Architectures that handle 10x growth without requiring a rewrite." },
-                  { icon: Heart, title: "Client Focused", desc: "Technology serves the business objective, not the other way around." }
-               ].map((item, i) => (
-                  <AnimatedSection key={i} delay={i * 0.1} className="space-y-4">
-                     <item.icon size={40} className="text-primary" strokeWidth={1} />
-                     <h5 className="text-lg font-black uppercase tracking-tighter">{item.title}</h5>
-                     <p className="text-sm text-muted-foreground font-medium leading-relaxed">{item.desc}</p>
-                  </AnimatedSection>
-               ))}
+              {[
+                { icon: ShieldCheck, title: "Production Grade", desc: "No experimental shortcuts. Only battle-tested, industrial-grade code." },
+                { icon: Zap, title: "Edge Ready", desc: "Optimized for global delivery with extreme performance and low latency." },
+                { icon: Rocket, title: "Scalable Logic", desc: "Architectures that handle 10x growth without requiring a rewrite." },
+                { icon: Heart, title: "Client Focused", desc: "Technology serves the business objective, not the other way around." }
+              ].map((item, i) => (
+                <AnimatedSection key={i} delay={i * 0.1} className="space-y-4">
+                  <item.icon size={40} className="text-primary" strokeWidth={1} />
+                  <h5 className="text-lg font-black uppercase tracking-tighter">{item.title}</h5>
+                  <p className="text-sm text-muted-foreground font-medium leading-relaxed">{item.desc}</p>
+                </AnimatedSection>
+              ))}
             </div>
           </Container>
         </Section>

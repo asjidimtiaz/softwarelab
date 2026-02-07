@@ -1,6 +1,8 @@
 import { Navbar } from "@/components/layout/navbar";
 import { Hero } from "@/components/sections/hero";
+import { FeaturesRow } from "@/components/sections/features-row";
 import { ServicesOverview } from "@/components/sections/services-overview";
+import { HowItWorks } from "@/components/sections/how-it-works";
 import { Footer } from "@/components/layout/footer";
 import { getDictionary } from "@/lib/get-dictionary";
 
@@ -14,8 +16,9 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       <Navbar dict={dict} locale={locale} />
       <main className="flex-1">
         <Hero dict={dict} locale={locale} />
+        <FeaturesRow />
         <ServicesOverview dict={dict} />
-        {/* Further sections will be added here */}
+        <HowItWorks dict={dict} />
       </main>
       <Footer dict={dict} locale={locale} />
     </div>

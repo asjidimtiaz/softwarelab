@@ -50,23 +50,38 @@ interface ServicesOverviewProps {
 }
 
 export function ServicesOverview({ dict }: ServicesOverviewProps) {
+  // Take first 3 for the high-impact overlapping row
+  const coreServices = services.slice(0, 3);
+
   return (
-    <Section className="relative overflow-hidden">
+    <Section className="relative z-10 pt-16 bg-white">
       {/* Background Accent */}
       <div className="absolute top-0 right-0 w-[50%] h-[50%] bg-primary/5 blur-[120px] -z-10 rounded-full translate-x-1/2 -translate-y-1/2" />
-      
-      <AnimatedSection className="text-center max-w-3xl mx-auto mb-16 md:mb-24">
-        <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 text-foreground">
-          {dict.servicesOverview.title1} <span className="text-indigo-600">{dict.servicesOverview.title2}</span>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start mb-20 px-4 md:px-0">
+        {coreServices.map((service, i) => (
+          <ServiceCard
+            key={service.title}
+            {...service}
+            index={i}
+            isHighlighted={i === 1}
+          />
+        ))}
+      </div>
+
+      <AnimatedSection className="text-center max-w-4xl mx-auto mb-20 px-6">
+        <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-8 text-foreground uppercase">
+          {dict.servicesOverview.title1} <br />
+          <span className="text-[#6366F1]">{dict.servicesOverview.title2}</span>
         </h2>
-        <p className="text-xl text-muted-foreground font-medium max-w-2xl mx-auto leading-relaxed">
+        <p className="text-xl text-muted-foreground font-semibold max-w-2xl mx-auto leading-relaxed opacity-80">
           {dict.servicesOverview.description}
         </p>
       </AnimatedSection>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {services.map((service, i) => (
-          <ServiceCard key={service.title} {...service} index={i} />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {services.slice(3).map((service, i) => (
+          <ServiceCard key={service.title} {...service} index={i + 3} />
         ))}
       </div>
     </Section>

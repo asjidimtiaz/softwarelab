@@ -2,8 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import * as Icons from "lucide-react";
-import { ArrowRight } from "lucide-react";
+import { Code2, Globe, ShoppingCart, Zap, Cloud, ShieldCheck, ArrowRight, Circle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ServiceCardProps {
@@ -12,58 +11,56 @@ interface ServiceCardProps {
   iconName: string;
   href: string;
   index: number;
-  learnMoreLabel?: string;
-  className?: string;
+  isHighlighted?: boolean;
 }
 
-export function ServiceCard({ 
-  title, 
-  description, 
-  iconName, 
-  href, 
-  index, 
-  learnMoreLabel = "Learn More",
-  className
+const icons: Record<string, any> = {
+  Code2, Globe, ShoppingCart, Zap, Cloud, ShieldCheck
+};
+
+export function ServiceCard({
+  title,
+  description,
+  href,
+  iconName,
+  index,
+  isHighlighted
 }: ServiceCardProps) {
-  const Icon = (Icons as any)[iconName] || Icons.Circle;
+  const Icon = icons[iconName] || Code2;
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: index * 0.1, ease: [0.21, 0.47, 0.32, 0.98] }}
       viewport={{ once: true }}
+      transition={{ duration: 0.8, delay: index * 0.15, ease: [0.21, 0.47, 0.32, 0.98] }}
       className={cn(
-        "group relative p-10 rounded-[2rem] bg-white border border-border transition-all duration-500 hover:border-indigo-200 hover:shadow-xl hover:shadow-indigo-500/5 hover:-translate-y-1 overflow-hidden flex flex-col h-full",
-        className
+        "group relative p-12 rounded-[2.5rem] bg-white transition-all duration-500 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] hover:shadow-2xl hover:shadow-[#6366F1]/10 hover:-translate-y-2 overflow-hidden flex flex-col items-center text-center h-full",
+        isHighlighted && "lg:-translate-y-12 border-2 border-indigo-100 ring-4 ring-indigo-50 shadow-2xl shadow-[#6366F1]/20 z-10"
       )}
     >
-      <div className="relative z-10 flex flex-col h-full">
-        <div className="w-14 h-14 rounded-xl bg-indigo-50 flex items-center justify-center mb-8 text-indigo-600 transition-colors duration-300 group-hover:bg-indigo-600 group-hover:text-white">
-          <Icon size={28} />
-        </div>
-        
-        <h3 className="text-2xl font-bold mb-4 tracking-tight text-foreground group-hover:text-indigo-600 transition-colors">{title}</h3>
-        <p className="text-muted-foreground mb-10 leading-relaxed font-semibold flex-1 opacity-90">
-          {description}
-        </p>
-        
-        <Link 
-          href={href}
-          className="inline-flex items-center text-xs font-bold text-indigo-600 group/link uppercase tracking-wider mt-auto"
-        >
-          {learnMoreLabel}
-          <div className="ml-3 w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center group-hover/link:bg-indigo-600 group-hover/link:text-white transition-all duration-300">
-            <ArrowRight size={14} className="group-hover/link:translate-x-0.5 transition-transform" />
-          </div>
-        </Link>
+      <div className="w-16 h-16 rounded-2xl bg-indigo-50 flex items-center justify-center mb-10 text-[#6366F1] transition-all duration-500 group-hover:scale-110 group-hover:bg-[#6366F1] group-hover:text-white group-hover:rotate-6 shadow-inner">
+        <Icon size={28} />
       </div>
 
-      {/* Soft Glow Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-      
-      {/* Decorative Blur */}
-      <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000 rounded-full" />
+      <h3 className="text-xl font-black mb-6 tracking-tight text-foreground group-hover:text-[#6366F1] transition-colors uppercase tracking-[0.1em] leading-tight">
+        {title}
+      </h3>
+
+      <p className="text-sm text-muted-foreground mb-10 leading-relaxed opacity-90 flex-1">
+        {description}
+      </p>
+
+      <Link
+        href={href}
+        className="inline-flex items-center justify-center gap-2 h-11 px-8 rounded-xl bg-gray-50 text-gray-900 font-extrabold text-[11px] uppercase tracking-[0.2em] mt-auto hover:bg-white hover:scale-[1.02] transition-all border border-gray-200/50 shadow-sm"
+      >
+        <span>Discover Laboratory</span>
+        <ArrowRight size={14} strokeWidth={3} />
+      </Link>
+
+      {/* Soft Glow */}
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
     </motion.div>
   );
 }

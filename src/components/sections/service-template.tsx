@@ -31,8 +31,8 @@ export function ServiceTemplate({ category, subService, dict, locale }: ServiceT
               <ChevronRight size={12} className="opacity-30" />
               <Link href={`/${locale}/services`} className="hover:text-primary transition-colors">{dict.services.breadcrumbs.services}</Link>
               <ChevronRight size={12} className="opacity-30" />
-              <Link 
-                href={`/${locale}/services/${category.slug}`} 
+              <Link
+                href={`/${locale}/services/${category.slug}`}
                 className={cn("hover:text-primary transition-colors", !isSubService && "text-primary")}
               >
                 {category.title}
@@ -51,13 +51,13 @@ export function ServiceTemplate({ category, subService, dict, locale }: ServiceT
         <section className="relative pt-24 pb-24 md:pt-32 md:pb-32 overflow-hidden bg-secondary/5 border-b border-border/50">
           {/* Background Decor */}
           <div className="absolute inset-0 -z-10 overflow-hidden">
-            <motion.div 
-              animate={{ 
+            <motion.div
+              animate={{
                 scale: [1, 1.2, 1],
                 opacity: [0.1, 0.2, 0.1]
               }}
               transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-              className="absolute -top-[10%] -left-[10%] w-[60%] h-[60%] bg-primary/10 blur-[120px] rounded-full" 
+              className="absolute -top-[10%] -left-[10%] w-[60%] h-[60%] bg-primary/10 blur-[120px] rounded-full"
             />
           </div>
 
@@ -65,8 +65,8 @@ export function ServiceTemplate({ category, subService, dict, locale }: ServiceT
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
               <div>
                 <AnimatedSection direction="right" className="flex flex-col items-start">
-                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass mb-8 text-sm font-bold text-primary uppercase tracking-wider">
-                    <Zap size={14} className="text-brand-gold" />
+                  <div className="inline-flex items-center gap-4 px-8 py-3 rounded-full bg-white/10 text-white border border-white mb-8 text-[11px] font-bold uppercase tracking-[0.3em] backdrop-blur-sm">
+                    <Icons.Sparkle size={16} strokeWidth={2.5} className="text-white" />
                     {isSubService ? category.title : dict.services.specializations}
                   </div>
                   <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter mb-8 leading-[0.9]">
@@ -78,10 +78,10 @@ export function ServiceTemplate({ category, subService, dict, locale }: ServiceT
                   <div className="flex flex-wrap gap-6">
                     <Link
                       href={`/${locale}/quote`}
-                      className="group flex h-16 items-center justify-center rounded-full bg-primary px-10 font-black text-xs text-primary-foreground uppercase tracking-[0.2em] transition-all hover:scale-105 active:scale-95 premium-shadow"
+                      className="group flex h-16 items-center justify-center rounded-xl bg-gray-50 text-gray-900 font-extrabold text-[13px] px-10 uppercase tracking-[0.2em] transition-all hover:bg-white hover:scale-[1.02] active:scale-95 border border-white shadow-lg shadow-black/5"
                     >
-                      {dict.services.fastQuote}
-                      <ArrowRight size={16} className="ml-3 group-hover:translate-x-1 transition-transform" />
+                      <span>{dict.services.fastQuote}</span>
+                      <ArrowRight size={18} strokeWidth={2.5} className="ml-3 group-hover:translate-x-1 transition-transform" />
                     </Link>
                   </div>
                 </AnimatedSection>
@@ -91,10 +91,10 @@ export function ServiceTemplate({ category, subService, dict, locale }: ServiceT
                 <div className="aspect-[4/3] glass rounded-[3rem] border border-border/50 flex items-center justify-center relative overflow-hidden premium-shadow">
                   <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 via-transparent to-brand-gold/5 opacity-50" />
                   <Icon size={180} className="text-primary/10 group-hover:text-primary/20 transition-all duration-700 group-hover:scale-110" strokeWidth={0.5} />
-                  
+
                   {/* Floating Features */}
                   {(data.features || []).slice(0, 3).map((feat: string, i: number) => (
-                    <div 
+                    <div
                       key={feat}
                       className={cn(
                         "absolute glass px-6 py-3 rounded-2xl border border-white/20 shadow-xl text-[10px] font-black uppercase tracking-widest hidden md:block",
@@ -123,8 +123,8 @@ export function ServiceTemplate({ category, subService, dict, locale }: ServiceT
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {(category.subServices || []).map((sub: any, i: number) => (
-                  <AnimatedSection 
-                    key={sub.slug} 
+                  <AnimatedSection
+                    key={sub.slug}
                     delay={i * 0.1}
                     className="group p-10 rounded-[2.5rem] glass border border-border/50 hover:border-primary/30 transition-all duration-500 hover:premium-shadow flex flex-col gap-6 h-full"
                   >
@@ -132,11 +132,11 @@ export function ServiceTemplate({ category, subService, dict, locale }: ServiceT
                     <p className="text-sm text-muted-foreground font-medium leading-relaxed flex-1">
                       {sub.description}
                     </p>
-                    <Link 
+                    <Link
                       href={`/${locale}/services/${category.slug}/${sub.slug}`}
-                      className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-primary pt-4 group-hover:gap-4 transition-all"
+                      className="inline-flex items-center justify-center gap-2 h-11 px-8 rounded-xl bg-gray-50 text-gray-900 font-extrabold text-[11px] uppercase tracking-[0.2em] mt-auto hover:bg-white hover:scale-[1.02] transition-all border border-gray-200/50 shadow-sm"
                     >
-                      Explore Lab <ArrowRight size={14} />
+                      <span>Explore Lab</span> <ArrowRight size={14} strokeWidth={3} />
                     </Link>
                   </AnimatedSection>
                 ))}
@@ -145,37 +145,37 @@ export function ServiceTemplate({ category, subService, dict, locale }: ServiceT
           </Section>
         ) : (
           <Section className="py-24 md:py-32 bg-secondary/5">
-             <Container>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
-                   <AnimatedSection>
-                      <h2 className="text-4xl font-extrabold tracking-tighter mb-12">Industrial Deliverables</h2>
-                      <div className="space-y-4">
-                         {subService.deliverables.map((item: string, i: number) => (
-                            <div key={i} className="flex items-center gap-4 p-6 rounded-2xl glass border border-border/30">
-                               <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
-                                  <Box size={20} />
-                               </div>
-                               <span className="font-bold tracking-tight">{item}</span>
-                            </div>
-                         ))}
+            <Container>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
+                <AnimatedSection>
+                  <h2 className="text-4xl font-extrabold tracking-tighter mb-12">Industrial Deliverables</h2>
+                  <div className="space-y-4">
+                    {subService.deliverables.map((item: string, i: number) => (
+                      <div key={i} className="flex items-center gap-4 p-6 rounded-2xl glass border border-border/30">
+                        <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                          <Box size={20} />
+                        </div>
+                        <span className="font-bold tracking-tight">{item}</span>
                       </div>
-                   </AnimatedSection>
+                    ))}
+                  </div>
+                </AnimatedSection>
 
-                   <AnimatedSection direction="left">
-                      <h2 className="text-4xl font-extrabold tracking-tighter mb-12">The Lab Stack</h2>
-                      <div className="flex flex-wrap gap-4">
-                         {subService.techStack.map((tech: string) => (
-                            <div key={tech} className="px-6 py-4 rounded-2xl glass border border-border/50 font-black text-xs uppercase tracking-widest hover:border-primary/40 transition-colors">
-                               {tech}
-                            </div>
-                         ))}
+                <AnimatedSection direction="left">
+                  <h2 className="text-4xl font-extrabold tracking-tighter mb-12">The Lab Stack</h2>
+                  <div className="flex flex-wrap gap-4">
+                    {subService.techStack.map((tech: string) => (
+                      <div key={tech} className="px-6 py-4 rounded-2xl glass border border-border/50 font-black text-xs uppercase tracking-widest hover:border-primary/40 transition-colors">
+                        {tech}
                       </div>
-                      <div className="mt-12 p-8 rounded-3xl bg-primary/5 border border-primary/10 italic text-muted-foreground">
-                        "Every laboratory is equipped with the latest versions of these tools, ensuring your code is future-proof from Day 1."
-                      </div>
-                   </AnimatedSection>
-                </div>
-             </Container>
+                    ))}
+                  </div>
+                  <div className="mt-12 p-8 rounded-3xl bg-primary/5 border border-primary/10 italic text-muted-foreground">
+                    "Every laboratory is equipped with the latest versions of these tools, ensuring your code is future-proof from Day 1."
+                  </div>
+                </AnimatedSection>
+              </div>
+            </Container>
           </Section>
         )}
 
@@ -189,8 +189,8 @@ export function ServiceTemplate({ category, subService, dict, locale }: ServiceT
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {(data.features || []).map((feat: string, i: number) => (
-                <AnimatedSection 
-                  key={feat} 
+                <AnimatedSection
+                  key={feat}
                   delay={i * 0.1}
                   className="p-10 rounded-[2.5rem] glass border border-border/50 hover:border-primary/30 transition-all duration-500 hover:premium-shadow flex flex-col gap-6"
                 >
@@ -258,21 +258,21 @@ export function ServiceTemplate({ category, subService, dict, locale }: ServiceT
               <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
                 <Link
                   href={`/${locale}/quote`}
-                  className="group flex h-20 items-center justify-center rounded-full bg-primary px-12 font-black text-xs text-primary-foreground uppercase tracking-[0.2em] transition-all hover:scale-105 active:scale-95 premium-shadow"
+                  className="group flex h-20 items-center justify-center rounded-xl bg-gray-50 text-gray-900 font-extrabold text-[13px] px-12 uppercase tracking-[0.2em] transition-all hover:bg-white hover:scale-[1.02] active:scale-95 border border-white shadow-xl shadow-black/5"
                 >
-                  {dict.services.getQuote}
+                  <span>{dict.services.getQuote}</span>
                   <ArrowRight size={20} className="ml-3 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <Link
-                   href={`/${locale}/contact`}
-                   className="flex h-20 items-center justify-center rounded-full glass border border-border px-12 font-black text-xs uppercase tracking-[0.2em] hover:bg-secondary/50 transition-all"
+                  href={`/${locale}/contact`}
+                  className="flex h-20 items-center justify-center rounded-xl bg-white/5 border border-white/20 px-12 font-extrabold text-[13px] text-white uppercase tracking-[0.2em] hover:bg-white/10 transition-all backdrop-blur-md"
                 >
                   {dict.services.strategyCall}
                 </Link>
               </div>
             </AnimatedSection>
           </Container>
-          
+
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[60%] bg-gradient-to-t from-primary/5 to-transparent -z-10" />
         </Section>
       </main>

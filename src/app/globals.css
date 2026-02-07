@@ -48,7 +48,7 @@
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
-    --primary: 255 70% 65%; /* Soft Lavender Purple */
+    --primary: 263 83% 58%; /* Vibrant Purple */
     --primary-foreground: 0 0% 100%;
     --secondary: 240 40% 96%;
     --secondary-foreground: 240 10% 10%;
@@ -64,7 +64,7 @@
     --radius: 2rem;
 
     /* Elite Accents - Soft Aesthetic V3 */
-    --brand-indigo: 255 70% 65%;
+    --brand-indigo: 263 83% 58%;
     --brand-blue: 217 91% 60%;
     --glass-background: rgba(255, 255, 255, 0.6);
     --glass-border: rgba(255, 255, 255, 0.8);
@@ -134,7 +134,7 @@
   }
 
   .text-gradient {
-    background: linear-gradient(to bottom right, #4F46E5, #8B5CF6);
+    background: linear-gradient(to bottom right, #8B5CF6, #A78BFA);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -184,10 +184,12 @@
   body {
     @apply bg-background text-foreground antialiased selection:bg-primary/20;
     background-image: 
+      linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 50%, #E2E8F0 100%),
       linear-gradient(var(--grid-color) 1px, transparent 1px),
       linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-    background-size: 50px 50px;
+    background-size: 100% 100%, 50px 50px, 50px 50px;
     background-attachment: fixed;
+    background-blend-mode: overlay;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply tracking-tight;

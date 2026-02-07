@@ -4,9 +4,10 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Globe, Search, Command, ChevronDown } from "lucide-react";
+import { Menu, X, Search } from "lucide-react";
 import { FaGithub, FaTwitter, FaDiscord } from "react-icons/fa";
 import { cn } from "@/lib/utils";
+import { Container } from "./layout-primitives";
 
 interface NavbarProps {
   dict: any;
@@ -36,83 +37,80 @@ export function Navbar({ dict, locale }: NavbarProps) {
   }, []);
 
   return (
-    <header className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4">
-      <motion.div 
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        className={cn(
-          "flex items-center gap-6 px-3 py-2.5 rounded-full bg-white transition-all duration-300",
-          isScrolled ? "shadow-xl shadow-black/5" : "shadow-lg shadow-black/5"
-        )}
-      >
-        {/* Logo Section */}
-        <div className="flex items-center gap-3 pl-1">
-          <Link href={`/${locale}`} className="flex items-center gap-3 group">
-            <div className="w-9 h-9 bg-[#EA580C] rounded-lg flex items-center justify-center text-white shadow-sm transition-transform hover:scale-105">
-               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                 <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                 <line x1="9" y1="9" x2="15" y2="15" />
-               </svg>
-            </div>
-          </Link>
-          <div className="px-2 py-0.5 rounded-md bg-gray-100 text-[10px] font-bold text-gray-500 border border-gray-200">
-            v1.2
-          </div>
-        </div>
-
-        {/* Navigation Links */}
-        <nav className="hidden md:flex items-center gap-6 px-2">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              href={link.href}
-              className="text-[13px] font-medium text-gray-600 hover:text-black transition-colors flex items-center gap-1 group whitespace-nowrap"
-            >
-              {link.name}
-              {(link.href.includes('services') || link.href.includes('blog')) && (
-                <ChevronDown size={12} className="text-gray-400 group-hover:text-black transition-colors" />
-              )}
+    <header className="fixed top-6 left-0 right-0 z-50">
+      <Container className="flex justify-center">
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          className={cn(
+            "flex items-center gap-6 px-6 py-3 bg-white transition-all duration-300 rounded-full border border-gray-200/50 shadow-[0_20px_50px_rgba(0,0,0,0.08)] w-fit",
+            isScrolled ? "shadow-2xl" : "shadow-xl"
+          )}
+        >
+          {/* Logo Section */}
+          <div className="flex items-center">
+            <Link href={`/${locale}`} className="flex items-center gap-3 group">
+              <div className="w-9 h-9 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-purple-500/20 transition-transform hover:scale-105">
+                <span className="font-bold text-xs">SL</span>
+              </div>
             </Link>
-          ))}
-        </nav>
-        
-        <div className="hidden md:flex items-center gap-3 pl-2 border-l border-gray-100">
-             {/* Search Bar */}
-            <div className="relative group cursor-pointer hidden lg:block">
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-100 text-gray-400 w-48 transition-colors group-hover:bg-gray-100 group-hover:border-gray-200">
-                    <Search size={14} />
-                    <span className="text-xs font-medium">Quick search...</span>
-                    <div className="ml-auto flex items-center gap-0.5 px-1.5 py-0.5 rounded-md bg-white border border-gray-200 shadow-sm">
-                        <Command size={10} className="text-gray-400" />
-                        <span className="text-[10px] font-bold text-gray-400">K</span>
-                    </div>
-                </div>
+          </div>
+
+          {/* Navigation Links */}
+          <nav className="hidden md:flex items-center gap-1">
+            {navLinks.map((link, index) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className={cn(
+                  "px-3 py-2 text-[13px] font-medium text-gray-600 hover:text-gray-900 transition-colors whitespace-nowrap flex items-center gap-1",
+                  index === 0 && "relative group"
+                )}
+              >
+                {link.name}
+                {index === 0 && (
+                  <svg className="w-3 h-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                )}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Right Section: Quick Search + Social Icons */}
+          <div className="hidden lg:flex items-center gap-4 pl-4 border-l border-gray-100">
+            {/* Quick Search */}
+            <button className="flex items-center gap-2 px-3 py-1.5 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200/50">
+              <Search size={14} className="text-gray-400" />
+              <span className="text-[12px] text-gray-400">Quick search...</span>
+              <span className="text-[10px] font-medium text-gray-400 bg-white px-1.5 py-0.5 rounded border border-gray-200 ml-4">⌘K</span>
+            </button>
+
+            {/* Social Icons */}
+            <div className="flex items-center gap-3">
+              <a href="#" className="text-gray-400 hover:text-gray-600 transition-colors">
+                <FaTwitter size={16} />
+              </a>
+              <a href="#" className="text-gray-400 hover:text-gray-600 transition-colors">
+                <FaGithub size={16} />
+              </a>
+              <a href="#" className="text-gray-400 hover:text-gray-600 transition-colors">
+                <FaDiscord size={16} />
+              </a>
             </div>
+          </div>
 
-             {/* Social Icons */}
-             <div className="flex items-center gap-1">
-                <a href="#" className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-50 hover:text-black transition-colors">
-                    <FaTwitter size={14} />
-                </a>
-                <a href="#" className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-50 hover:text-black transition-colors">
-                    <FaGithub size={14} />
-                </a>
-                <a href="#" className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-50 hover:text-black transition-colors">
-                    <FaDiscord size={14} />
-                </a>
-             </div>
-        </div>
-
-        {/* Mobile Toggle */}
-        <div className="flex items-center md:hidden pl-2 border-l border-gray-100">
-          <button
-            className="p-2 text-gray-500 hover:bg-gray-50 rounded-lg transition-colors"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        </div>
-      </motion.div>
+          {/* Mobile Toggle */}
+          <div className="md:hidden">
+            <button
+              className="p-2 mr-[-8px] text-gray-500 hover:bg-gray-50 rounded-lg transition-colors"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
+        </motion.div>
+      </Container>
 
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
@@ -121,7 +119,7 @@ export function Navbar({ dict, locale }: NavbarProps) {
             initial={{ opacity: 0, scale: 0.95, y: -20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -20 }}
-            className="absolute top-20 inset-x-4 p-4 bg-white rounded-2xl shadow-xl border border-gray-100 z-40 md:hidden origin-top"
+            className="absolute top-24 inset-x-4 p-4 bg-white rounded-2xl shadow-xl border border-gray-100 z-50 md:hidden origin-top"
           >
             <div className="flex flex-col gap-2">
               {navLinks.map((link) => (
@@ -135,11 +133,11 @@ export function Navbar({ dict, locale }: NavbarProps) {
                 </Link>
               ))}
               <div className="h-px bg-gray-100 my-2" />
-               <div className="flex items-center gap-4 px-4 py-2">
-                    <FaTwitter size={16} className="text-gray-400" />
-                    <FaGithub size={16} className="text-gray-400" />
-                    <FaDiscord size={16} className="text-gray-400" />
-               </div>
+              <div className="flex items-center gap-4 px-4 py-2">
+                <FaTwitter size={16} className="text-gray-400" />
+                <FaGithub size={16} className="text-gray-400" />
+                <FaDiscord size={16} className="text-gray-400" />
+              </div>
             </div>
           </motion.div>
         )}

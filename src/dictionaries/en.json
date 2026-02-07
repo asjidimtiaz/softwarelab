@@ -15,7 +15,12 @@
     "title3": "Systems",
     "description": "High-performance web applications, automation engines, and conversion-optimized websites tailored for elite scale.",
     "ctaPrimary": "Start Your Project",
-    "ctaSecondary": "View Services"
+    "ctaSecondary": "View Services",
+    "stats": {
+      "efficiency": "Deployment Efficiency",
+      "scalability": "System Scalability",
+      "uptime": "Uptime Reliability"
+    }
   },
   "servicesOverview": {
     "title1": "World-Class Engineering",
