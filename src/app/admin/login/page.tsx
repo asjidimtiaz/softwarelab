@@ -38,13 +38,13 @@ export default function AdminLoginPage() {
       </div>
 
       <Container className="max-w-md relative z-10">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="bg-white/80 backdrop-blur-3xl border border-white/50 rounded-[3rem] p-12 shadow-2xl shadow-primary/10"
         >
           <div className="flex flex-col items-center mb-10">
-            <motion.div 
+            <motion.div
               whileHover={{ rotate: 360 }}
               transition={{ duration: 0.8, ease: "anticipate" }}
               className="w-16 h-16 bg-primary text-primary-foreground rounded-2xl flex items-center justify-center mb-6 shadow-xl shadow-primary/20"
@@ -52,16 +52,16 @@ export default function AdminLoginPage() {
               <Lock size={28} />
             </motion.div>
             <h1 className="text-3xl font-black tracking-tighter">Secure Access</h1>
-            <p className="text-xs font-black uppercase tracking-[0.3em] text-muted-foreground mt-2">Software Lab Command</p>
+            <p className="text-xs font-black uppercase tracking-[0.3em] text-muted-foreground mt-2">Digi Web Crew Command</p>
           </div>
-          
+
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-3">
               <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-3">Terminal ID</label>
-              <input 
+              <input
                 type="email"
                 className="w-full bg-secondary/30 border border-border rounded-2xl h-14 px-6 font-bold text-sm focus:ring-4 focus:ring-primary/10 focus:bg-white outline-none transition-all placeholder:text-muted-foreground/30"
-                placeholder="admin@software-lab.com"
+                placeholder="admin@digiwebcrew.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -69,7 +69,7 @@ export default function AdminLoginPage() {
             </div>
             <div className="space-y-3">
               <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-3">Access Key</label>
-              <input 
+              <input
                 type="password"
                 className="w-full bg-secondary/30 border border-border rounded-2xl h-14 px-6 font-bold text-sm focus:ring-4 focus:ring-primary/10 focus:bg-white outline-none transition-all placeholder:text-muted-foreground/30"
                 placeholder="••••••••"

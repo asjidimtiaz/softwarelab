@@ -17,24 +17,21 @@ export default function DashboardPage() {
             {/* Greeting Section */}
             <div className="flex flex-col gap-6">
                 <div>
-                    <p className="text-xs font-semibold text-muted-foreground/60 mb-2 uppercase tracking-wider">Software Lab Dashboard</p>
-                    <h1 className="text-3xl font-bold tracking-tight text-foreground">Hello, Admin</h1>
-                    <h2 className="text-3xl font-bold tracking-tight text-indigo-600 mt-1">How can I help you today?</h2>
+                    <p className="text-xs font-black text-muted-foreground/60 mb-2 uppercase tracking-widest">Digi Web Crew Terminal</p>
+                    <h1 className="text-3xl font-black tracking-tight text-gray-900 uppercase">Status: <span className="text-electric">Operational</span></h1>
+                    <h2 className="text-3xl font-bold tracking-tight text-gray-400 mt-1 italic">Ready for engineering deployment.</h2>
                 </div>
 
                 <div className="flex flex-wrap gap-3 mt-2">
-                    <button className="h-10 px-6 rounded-xl bg-indigo-600 text-white text-[10px] font-bold uppercase tracking-wider shadow-md shadow-indigo-600/20 flex items-center gap-2 hover:scale-105 transition-all">
+                    <button className="h-10 px-6 rounded-xl bg-electric text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-electric/20 flex items-center gap-2 hover:scale-105 transition-all">
                         <Zap size={14} fill="currentColor" />
-                        Ask AI
+                        AI Logic Map
                     </button>
-                    <button className="h-10 px-6 rounded-xl bg-white border border-border text-foreground text-[10px] font-bold uppercase tracking-wider shadow-sm hover:bg-secondary transition-all">
-                        Get tasks updates
+                    <button className="h-10 px-6 rounded-xl bg-white border border-gray-100 text-gray-900 text-[10px] font-black uppercase tracking-widest shadow-sm hover:bg-gray-50 transition-all">
+                        Sprint Updates
                     </button>
-                    <button className="h-10 px-6 rounded-xl bg-white border border-border text-foreground text-[10px] font-bold uppercase tracking-wider shadow-sm hover:bg-secondary transition-all">
-                        Create workspace
-                    </button>
-                    <button className="h-10 px-6 rounded-xl bg-white border border-border text-foreground text-[10px] font-bold uppercase tracking-wider shadow-sm hover:bg-secondary transition-all">
-                        Connect apps
+                    <button className="h-10 px-6 rounded-xl bg-white border border-gray-100 text-gray-900 text-[10px] font-black uppercase tracking-widest shadow-sm hover:bg-gray-50 transition-all">
+                        New Repository
                     </button>
                 </div>
             </div>
@@ -42,10 +39,10 @@ export default function DashboardPage() {
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {stats.map((stat, i) => (
-                    <Card key={i} className="group overflow-hidden relative border-border bg-white shadow-sm hover:shadow-md transition-all rounded-2xl">
+                    <Card key={i} className="group overflow-hidden relative border-gray-100 bg-white shadow-sm hover:shadow-xl transition-all rounded-[2rem]">
                         <CardHeader className="flex flex-row items-center justify-between pb-2">
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/70">{stat.label}</span>
-                            <div className="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600 group-hover:scale-110 transition-transform">
+                            <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">{stat.label}</span>
+                            <div className="w-10 h-10 rounded-xl bg-electric/10 flex items-center justify-center text-electric group-hover:scale-110 transition-transform">
                                 <stat.icon size={18} strokeWidth={2} />
                             </div>
                         </CardHeader>

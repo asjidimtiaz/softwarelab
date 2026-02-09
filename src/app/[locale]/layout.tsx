@@ -5,9 +5,10 @@ import { cn } from "@/lib/utils";
 import { getDictionary } from "@/lib/get-dictionary";
 import { MotionProvider } from "@/components/MotionProvider";
 import { PageTransition } from "@/components/ui/page-transition";
+import { AnalyticsProvider } from "@/lib/analytics";
 
-const inter = Inter({ 
-  subsets: ["latin"], 
+const inter = Inter({
+  subsets: ["latin"],
   variable: "--font-inter",
   display: 'swap',
   preload: true
@@ -27,18 +28,18 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: {
       default: dict.meta.title,
-      template: `%s | ${dict.meta.ogTitle}`
+      template: `%s | Digi Web Crew`
     },
     description: dict.meta.description,
-    keywords: ["software agency", "custom software", "next.js", "premium design", "automation"],
-    authors: [{ name: "Software Lab" }],
-    creator: "Software Lab",
-    metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://software-lab.com'),
+    keywords: ["software agency", "custom software", "next.js", "premium design", "automation", "AI automation", "Digi Web Crew", "Toqeer Shafique"],
+    authors: [{ name: "Toqeer Shafique" }],
+    creator: "Digi Web Crew",
+    metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://digiwebcrew.com'),
     openGraph: {
       title: dict.meta.ogTitle,
       description: dict.meta.ogDesc,
       url: `/${locale}`,
-      siteName: "Software Lab",
+      siteName: "Digi Web Crew",
       locale: locale,
       type: "website",
       images: [
@@ -46,7 +47,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
           url: '/og-image.png',
           width: 1200,
           height: 630,
-          alt: 'Software Lab Engineering'
+          alt: 'Digi Web Crew Engineering'
         }
       ]
     },
@@ -87,15 +88,17 @@ export default async function RootLayout({
 }) {
   const { locale } = await params;
   const isRtl = locale === 'ar' || locale === 'ur';
-  
+
   return (
     <html lang={locale} dir={isRtl ? 'rtl' : 'ltr'} className="scroll-smooth">
-      <body className={cn(inter.variable, outfit.variable, "font-sans antialiased bg-background text-foreground transition-colors duration-300")}>
-        <MotionProvider>
-          <PageTransition>
-            {children}
-          </PageTransition>
-        </MotionProvider>
+      <body className={cn(inter.variable, outfit.variable, "font-sans antialiased bg-background text-foreground transition-all duration-300 font-medium")}>
+        <AnalyticsProvider>
+          <MotionProvider>
+            <PageTransition>
+              {children}
+            </PageTransition>
+          </MotionProvider>
+        </AnalyticsProvider>
       </body>
     </html>
   );
