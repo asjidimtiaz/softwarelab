@@ -9,13 +9,16 @@
     "getQuote": "Get a Quote"
   },
   "hero": {
-    "badge": "Redefining Software Development",
-    "title1": "We Build",
-    "title2": "Future-Proof",
-    "title3": "Systems",
-    "description": "High-performance web applications, automation engines, and conversion-optimized websites tailored for elite scale.",
-    "ctaPrimary": "Start Your Project",
-    "ctaSecondary": "View Services",
+    "badge": "Enterprise-Grade Innovation",
+    "title1": "Build Your",
+    "title2": "Enterprise Solution",
+    "title3": "Today",
+    "titleVariantB1": "Get Your Custom",
+    "titleVariantB2": "AI Project Scope",
+    "titleVariantB3": "PDF",
+    "description": "Expert-led full-stack development, AI automation, and high-conversion digital solutions. From MVP to enterprise scale.",
+    "ctaPrimary": "Get Your Custom Project Scope",
+    "ctaSecondary": "Explore Services",
     "stats": {
       "efficiency": "Deployment Efficiency",
       "scalability": "System Scalability",
@@ -28,18 +31,18 @@
     "description": "We don't just write code; we build business systems that scale, endure, and convert."
   },
   "footer": {
-    "brandDesc": "Industrial-grade digital engineering for startups and enterprise. We bridge the gap between complex code and beautiful interfaces.",
-    "status": "Accepting Sprints",
-    "rights": "All engineering rights reserved.",
-    "privacy": "Privacy Protocol",
-    "agreement": "Service Agreement"
+    "brandDesc": "Digi Web Crew delivers enterprise-grade digital solutions led by expert engineers. We transform complex technical challenges into scalable, high-performance systems.",
+    "status": "Accepting Projects",
+    "rights": "© 2024 Digi Web Crew. All rights reserved.",
+    "privacy": "Privacy Policy",
+    "agreement": "Terms of Service"
   },
   "about": {
     "badge": "Our Story",
-    "title": "Engineering The Remarkable",
-    "description": "Software Lab was founded on a single premise: Software should be as solid as industrial machinery and as beautiful as digital art. We aren't just an agency; we are a dedicated laboratory for your next big idea.",
-    "philosophy": "The Lab Philosophy",
-    "philosophyDesc": "Four foundational principles that guide every line of code we write.",
+    "title": "Expert-Led Digital Excellence",
+    "description": "Digi Web Crew was founded by Toqeer Shafique, a seasoned full-stack engineer with a proven track record across Upwork, Fiverr, and GitHub. We combine technical mastery with business acumen to deliver solutions that scale.",
+    "philosophy": "Our Core Values",
+    "philosophyDesc": "Four foundational principles that guide every project we undertake.",
     "values": {
         "quality": { "title": "Quality First", "desc": "We never compromise on code integrity or UI polish." },
         "partner": { "title": "Client Partner", "desc": "Your goals are our KPIs. We succeed when you do." },
@@ -53,27 +56,27 @@
     }
   },
   "pricing": {
-    "title": "Investment & Plans",
-    "description": "Transparent tiering for every stage of your digital journey. No hidden fees, just pure engineering excellence.",
+    "title": "Transparent Pricing",
+    "description": "Clear engagement models for every project size. Choose between fixed-price projects or dedicated team arrangements.",
     "startingAt": "starting at",
-    "customTitle": "Custom Requirements?",
-    "customDesc": "If your project doesn't fit into these tiers, our lab team can architect a bespoke solution tailored to your exact technical specifications.",
-    "customCta": "Talk to an Engineer",
-    "mostChosen": "Most Chosen"
+    "customTitle": "Need a Custom Quote?",
+    "customDesc": "Use our AI Project Calculator for an instant estimate, or connect with our technical team for a detailed scope assessment.",
+    "customCta": "Get Custom Estimate",
+    "mostChosen": "Most Popular"
   },
   "process": {
-    "title1": "Our Engineering",
-    "title2": "Lifecycle",
-    "description": "From raw idea to industrial-grade product. We follow a rigorous 5-step lab process to ensure every project is built to last.",
-    "ctaTitle": "Ready to enter the Lab?",
-    "ctaDesc": "Our process is battle-tested. Let's start with Step 1 today.",
-    "ctaButton": "Get Your Project Quote",
+    "title1": "Our Agile-Led",
+    "title2": "Development Process",
+    "description": "From discovery to deployment and beyond. A proven 5-stage methodology that delivers results on time and within budget.",
+    "ctaTitle": "Ready to Start Building?",
+    "ctaDesc": "Let's transform your vision into a production-ready solution.",
+    "ctaButton": "Calculate Your Project Scope",
     "steps": {
-        "step1": { "title": "Project Discovery", "desc": "We dive deep into your business goals, target audience, and technical constraints to define a clear product roadmap." },
-        "step2": { "title": "Strategic Design", "desc": "Our design lab creates conversion-optimized UI/UX that aligns with your brand identity and users' needs." },
-        "step3": { "title": "Engineering Lab", "desc": "The actual build phase where our engineers develop your system using clean, scalable, and modern code." },
-        "step4": { "title": "Launch & Scale", "desc": "Deployment to optimized cloud infrastructure followed by performance monitoring and live adjustments." },
-        "step5": { "title": "Growth Support", "desc": "Post-launch care to ensure your product continues to evolve and stay ahead of the technology curve." }
+        "step1": { "title": "Discovery & Logic Mapping", "desc": "We analyze your business requirements, map user journeys, and define technical architecture with comprehensive documentation." },
+        "step2": { "title": "High-Fidelity Prototyping", "desc": "Interactive prototypes and UI/UX designs that validate the user experience before a single line of code is written." },
+        "step3": { "title": "Agile Development Sprints", "desc": "Iterative development cycles with regular demos, ensuring you stay in control and can course-correct as needed." },
+        "step4": { "title": "Automated QA Testing", "desc": "Comprehensive testing protocols including unit tests, integration tests, and performance audits to ensure reliability." },
+        "step5": { "title": "Deployment & Scaling", "desc": "Strategic launch to production infrastructure with ongoing monitoring, optimization, and technical support." }
     }
   },
   "services": {
@@ -157,9 +160,9 @@
     }
   },
   "meta": {
-    "title": "Software Lab | Premium Digital Engineering & Design Agency",
-    "description": "Enterprise-grade custom software, high-performance web applications, and automation systems. We build future-proof digital products that scale.",
-    "ogTitle": "Software Lab | Elite Software Laboratory",
-    "ogDesc": "Transforming complex business challenges into industry-leading digital products with modern engineering."
+    "title": "Digi Web Crew | Expert-Led Full-Stack Development & AI Automation",
+    "description": "Enterprise-grade custom software, AI automation, and high-performance web applications led by expert engineers. From MVP to enterprise scale.",
+    "ogTitle": "Digi Web Crew | Professional Software Development Services",
+    "ogDesc": "Expert-led development team specializing in React, Next.js, Django, Python, and AI automation. Trusted by businesses worldwide."
   }
 }

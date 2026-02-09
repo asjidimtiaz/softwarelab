@@ -75,29 +75,34 @@
   }
 
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 255 70% 65%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
+    /* Midnight Blue Dark Mode - WCAG 2.1 Compliant */
+    --background: 222 47% 11%; /* #0F172A - Midnight Blue */
+    --foreground: 210 40% 98%; /* #F8FAFC - High contrast white */
+    
+    --card: 217 33% 17%; /* #1E293B - Slate for cards */
+    --card-foreground: 210 40% 98%;
+    
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+    
+    --primary: 217 91% 60%; /* #3B82F6 - Electric Blue */
+    --primary-foreground: 210 40% 98%;
+    
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+    
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20.2% 65.1%;
+    
+    --accent: 217 33% 17%;
+    --accent-foreground: 210 40% 98%;
+    
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 255 70% 65%;
-
-    --glass-background: rgba(255, 255, 255, 0.02);
-    --glass-border: rgba(255, 255, 255, 0.05);
-    --glass-shadow: rgba(0, 0, 0, 0.5);
+    --destructive-foreground: 210 40% 98%;
+    
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 217 91% 60%; /* Electric Blue ring */
   }
 }
 
@@ -179,19 +184,27 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border outline-ring/30 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
   }
   body {
-    @apply bg-background text-foreground antialiased selection:bg-primary/20;
-    background-image: 
-      linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 50%, #E2E8F0 100%),
-      linear-gradient(var(--grid-color) 1px, transparent 1px),
-      linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-    background-size: 100% 100%, 50px 50px, 50px 50px;
-    background-attachment: fixed;
-    background-blend-mode: overlay;
+    @apply bg-background text-foreground antialiased selection:bg-electric/30 selection:text-electric;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply tracking-tight;
   }
 }
+
+/* Custom Scrollbar for High-Tech Aesthetic */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-background;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-midnight-700 rounded-full border-2 border-background hover:bg-midnight-600 transition-colors;
+}
+

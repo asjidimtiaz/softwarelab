@@ -8,6 +8,7 @@ import { Menu, X, Search } from "lucide-react";
 import { FaGithub, FaTwitter, FaDiscord } from "react-icons/fa";
 import { cn } from "@/lib/utils";
 import { Container } from "./layout-primitives";
+import { DarkModeToggle } from "../dark-mode-toggle";
 
 interface NavbarProps {
   dict: any;
@@ -43,8 +44,8 @@ export function Navbar({ dict, locale }: NavbarProps) {
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           className={cn(
-            "flex items-center gap-6 px-6 py-3 bg-white transition-all duration-300 rounded-full border border-gray-200/50 shadow-[0_20px_50px_rgba(0,0,0,0.08)] w-fit",
-            isScrolled ? "shadow-2xl" : "shadow-xl"
+            "flex items-center gap-6 px-6 py-3 bg-white dark:bg-midnight-800 transition-all duration-300 rounded-full border border-gray-200/50 dark:border-midnight-700 shadow-[0_20px_50px_rgba(0,0,0,0.08)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.4)] w-fit",
+            isScrolled ? "shadow-2xl dark:shadow-[0_30px_60px_rgba(0,0,0,0.6)]" : "shadow-xl dark:shadow-[0_20px_50px_rgba(0,0,0,0.4)]"
           )}
         >
           {/* Logo Section */}
@@ -77,24 +78,27 @@ export function Navbar({ dict, locale }: NavbarProps) {
             ))}
           </nav>
 
-          {/* Right Section: Quick Search + Social Icons */}
-          <div className="hidden lg:flex items-center gap-4 pl-4 border-l border-gray-100">
+          {/* Right Section: Dark Mode + Quick Search + Social Icons */}
+          <div className="hidden lg:flex items-center gap-4 pl-4 border-l border-gray-100 dark:border-midnight-700">
+            {/* Dark Mode Toggle */}
+            <DarkModeToggle />
+
             {/* Quick Search */}
-            <button className="flex items-center gap-2 px-3 py-1.5 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200/50">
-              <Search size={14} className="text-gray-400" />
-              <span className="text-[12px] text-gray-400">Quick search...</span>
-              <span className="text-[10px] font-medium text-gray-400 bg-white px-1.5 py-0.5 rounded border border-gray-200 ml-4">⌘K</span>
+            <button className="flex items-center gap-2 px-3 py-1.5 bg-gray-50 dark:bg-midnight-800 hover:bg-gray-100 dark:hover:bg-midnight-700 rounded-lg transition-colors border border-gray-200/50 dark:border-midnight-700">
+              <Search size={14} className="text-gray-400 dark:text-gray-500" />
+              <span className="text-[12px] text-gray-400 dark:text-gray-500">Quick search...</span>
+              <span className="text-[10px] font-medium text-gray-400 dark:text-gray-500 bg-white dark:bg-midnight-900 px-1.5 py-0.5 rounded border border-gray-200 dark:border-midnight-700 ml-4">⌘K</span>
             </button>
 
             {/* Social Icons */}
             <div className="flex items-center gap-3">
-              <a href="#" className="text-gray-400 hover:text-gray-600 transition-colors">
+              <a href="#" className="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors">
                 <FaTwitter size={16} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-gray-600 transition-colors">
+              <a href="#" className="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors">
                 <FaGithub size={16} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-gray-600 transition-colors">
+              <a href="#" className="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors">
                 <FaDiscord size={16} />
               </a>
             </div>
