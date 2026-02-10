@@ -18,9 +18,20 @@ export default async function LeadDetailPage({
    params: Promise<{ id: string }>;
 }) {
    const { id } = await params;
-   const lead = await getLeadById(id);
+   let lead: any = null;
+
+   try {
+      lead = await getLeadById(id);
+   } catch (err) {
+      console.error("Critical error fetching lead details:", err);
+      // Let it fall through to notFound or show an error state
+   }
 
    if (!lead) notFound();
+
+   // Safely process arrays
+   const events = Array.isArray(lead.events) ? lead.events : [];
+   const tasks = Array.isArray(lead.tasks) ? lead.tasks : [];
 
    return (
       <div className="space-y-12 pb-20 relative">
@@ -36,7 +47,7 @@ export default async function LeadDetailPage({
                </Link>
                <div>
                   <h1 className="text-6xl font-[1000] tracking-[-0.05em] text-gray-900 uppercase">
-                     {lead.fullName}
+                     {lead.fullName || "Anonymous Lead"}
                   </h1>
                   <div className="flex items-center gap-3 mt-4">
                      <div className="w-3 h-3 rounded-full bg-electric animate-pulse shadow-[0_0_15px_rgba(59,130,246,0.5)]" />
@@ -66,7 +77,7 @@ export default async function LeadDetailPage({
                         </div>
                         <div className="flex flex-col gap-1">
                            <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Selected Focus</span>
-                           <span className="text-sm font-[1000] text-gray-900 uppercase tracking-tighter leading-tight">{lead.serviceCategory.replace("-", " ")}</span>
+                           <span className="text-sm font-[1000] text-gray-900 uppercase tracking-tighter leading-tight">{(lead.serviceCategory || "None").replace("-", " ")}</span>
                         </div>
                      </div>
                   </Card>
@@ -82,8 +93,8 @@ export default async function LeadDetailPage({
                            <Zap size={32} fill="currentColor" />
                         </div>
                         <div className="flex flex-col">
-                           <span className="text-sm font-[1000] text-gray-900 uppercase tracking-tighter">{lead.leadTier} Priority</span>
-                           <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-1">Score: {lead.leadScore}</span>
+                           <span className="text-sm font-[1000] text-gray-900 uppercase tracking-tighter">{lead.leadTier || "COLD"} Priority</span>
+                           <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-1">Score: {lead.leadScore || 0}</span>
                         </div>
                      </div>
                   </Card>
@@ -93,7 +104,7 @@ export default async function LeadDetailPage({
                         <div className="w-20 h-20 rounded-[2rem] bg-gray-50 border border-gray-100 flex items-center justify-center text-gray-400 group-hover:bg-electric group-hover:text-white group-hover:scale-110 transition-all duration-500 shadow-sm">
                            <Clock size={32} />
                         </div>
-                        <span className="text-sm font-[1000] text-electric uppercase tracking-tighter">{lead.status}</span>
+                        <span className="text-sm font-[1000] text-electric uppercase tracking-tighter">{lead.status || "NEW"}</span>
                      </div>
                   </Card>
                </div>
@@ -115,26 +126,26 @@ export default async function LeadDetailPage({
                      <div className="space-y-12">
                         <div className="group/item">
                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-300 mb-5 group-hover/item:text-electric transition-colors">Service Interest</p>
-                           <p className="text-2xl font-[1000] text-gray-900 uppercase tracking-tighter">{lead.serviceInterest.replace("-", " ")}</p>
+                           <p className="text-2xl font-[1000] text-gray-900 uppercase tracking-tighter">{(lead.serviceInterest || "None").replace("-", " ")}</p>
                         </div>
                         <div className="group/item">
                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-300 mb-5 group-hover/item:text-electric transition-colors">Target Environment</p>
                            <div className="flex items-center gap-3">
                               <Terminal size={18} className="text-gray-400" />
-                              <p className="text-base font-[900] text-gray-500 tracking-tight">{lead.projectType}</p>
+                              <p className="text-base font-[900] text-gray-500 tracking-tight">{lead.projectType || "Unspecified"}</p>
                            </div>
                         </div>
                      </div>
                      <div className="space-y-12">
                         <div className="group/item">
                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-300 mb-5 group-hover/item:text-electric transition-colors">Budget Allocation</p>
-                           <p className="text-2xl font-[1000] tabular-nums text-electric tracking-tighter">{lead.budgetRange}</p>
+                           <p className="text-2xl font-[1000] tabular-nums text-electric tracking-tighter">{lead.budgetRange || "Flexible"}</p>
                         </div>
                         <div className="group/item">
                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-300 mb-5 group-hover/item:text-electric transition-colors">Target Timeline</p>
                            <div className="flex items-center gap-3">
                               <Calendar size={18} className="text-gray-400" />
-                              <p className="text-base font-[900] text-gray-500 tracking-tight">{lead.timeline}</p>
+                              <p className="text-base font-[900] text-gray-500 tracking-tight">{lead.timeline || "TBD"}</p>
                            </div>
                         </div>
                      </div>
@@ -144,7 +155,7 @@ export default async function LeadDetailPage({
                      <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-300 mb-10">Inquiry Transmission</p>
                      <div className="bg-gray-50/50 rounded-[3rem] p-12 italic leading-relaxed text-gray-600 text-2xl font-[900] relative border border-gray-100 group-hover:bg-white transition-all shadow-inner tracking-tight">
                         <MessageSquare size={64} className="absolute -top-8 -right-8 text-gray-100 rotate-12 opacity-50" />
-                        "{lead.message}"
+                        "{lead.message || "No message provided."}"
                      </div>
                   </div>
                </Card>
@@ -163,19 +174,23 @@ export default async function LeadDetailPage({
                      </div>
                   </div>
                   <div className="space-y-16 relative before:absolute before:inset-0 before:left-[27px] before:w-[2px] before:bg-gray-100">
-                     {lead.events.slice().reverse().map((event: any, i: number) => (
-                        <div key={i} className="relative pl-16 group/event">
-                           <div className="absolute left-0 top-1 w-14 h-14 rounded-full bg-white border border-gray-100 flex items-center justify-center z-10 shadow-sm group-hover/event:border-electric group-hover/event:scale-110 transition-all overflow-hidden duration-500">
-                              <div className="w-2.5 h-2.5 rounded-full bg-gray-900 group-hover/event:bg-electric transition-colors" />
-                           </div>
-                           <div>
-                              <div className="text-[10px] font-[900] uppercase tracking-widest text-gray-300 mb-3 italic">
-                                 {format(new Date(event.at), "MMM d · HH:mm")}
+                     {events.length > 0 ? (
+                        events.slice().reverse().map((event: any, i: number) => (
+                           <div key={i} className="relative pl-16 group/event">
+                              <div className="absolute left-0 top-1 w-14 h-14 rounded-full bg-white border border-gray-100 flex items-center justify-center z-10 shadow-sm group-hover/event:border-electric group-hover/event:scale-110 transition-all overflow-hidden duration-500">
+                                 <div className="w-2.5 h-2.5 rounded-full bg-gray-900 group-hover/event:bg-electric transition-colors" />
                               </div>
-                              <div className="text-base font-[1000] text-gray-900 group-hover/event:text-electric transition-colors tracking-tight uppercase">{event.type}</div>
+                              <div>
+                                 <div className="text-[10px] font-[900] uppercase tracking-widest text-gray-300 mb-3 italic">
+                                    {event.at ? format(new Date(event.at), "MMM d · HH:mm") : "Unknown Date"}
+                                 </div>
+                                 <div className="text-base font-[1000] text-gray-900 group-hover/event:text-electric transition-colors tracking-tight uppercase">{event.type || "Event"}</div>
+                              </div>
                            </div>
-                        </div>
-                     ))}
+                        ))
+                     ) : (
+                        <div className="text-center py-10 opacity-30 font-black text-xs uppercase tracking-widest">No activity recorded</div>
+                     )}
                   </div>
                </Card>
 
@@ -183,24 +198,30 @@ export default async function LeadDetailPage({
                   <div className="flex items-center justify-between mb-12">
                      <h3 className="text-xl font-[1000] tracking-tighter text-gray-900 uppercase">Protocols</h3>
                      <span className="bg-gray-900 text-white border border-gray-900 px-5 py-2 rounded-2xl text-[10px] font-black tracking-widest tabular-nums shadow-lg">
-                        {lead.tasks.filter((t: any) => !t.done).length} ACTIVE
+                        {tasks.filter((t: any) => !t.done).length} ACTIVE
                      </span>
                   </div>
                   <div className="space-y-6">
-                     {lead.tasks.map((task: any, i: number) => (
-                        <div key={i} className="flex items-center gap-5 p-6 rounded-[2.5rem] bg-gray-50/50 hover:bg-gray-50 transition-all cursor-pointer group/task border border-transparent hover:border-gray-100">
-                           <div className={cn(
-                              "w-8 h-8 rounded-xl border flex items-center justify-center transition-all shadow-sm",
-                              task.done ? "bg-electric border-electric text-white" : "bg-white border-gray-200 group-hover/task:border-electric"
-                           )}>
-                              {task.done && <CheckCircle2 size={18} strokeWidth={3} />}
+                     {tasks.length > 0 ? (
+                        tasks.map((task: any, i: number) => (
+                           <div key={i} className="flex items-center gap-5 p-6 rounded-[2.5rem] bg-gray-50/50 hover:bg-gray-50 transition-all cursor-pointer group/task border border-transparent hover:border-gray-100">
+                              <div className={cn(
+                                 "w-8 h-8 rounded-xl border flex items-center justify-center transition-all shadow-sm",
+                                 task.done ? "bg-electric border-electric text-white" : "bg-white border-gray-200 group-hover/task:border-electric"
+                              )}>
+                                 {task.done && <CheckCircle2 size={18} strokeWidth={3} />}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                 <div className={cn("text-base font-black tracking-tight truncate", task.done ? "line-through opacity-30 text-gray-900" : "text-gray-900")}>{task.title || "Untitled Task"}</div>
+                                 <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-1 italic">
+                                    Protocol Deadline: {task.dueAt ? format(new Date(task.dueAt), "MMM d") : "No Date"}
+                                 </div>
+                              </div>
                            </div>
-                           <div className="flex-1 min-w-0">
-                              <div className={cn("text-base font-black tracking-tight truncate", task.done ? "line-through opacity-30 text-gray-900" : "text-gray-900")}>{task.title}</div>
-                              <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-1 italic">Protocol Deadline: {format(new Date(task.dueAt), "MMM d")}</div>
-                           </div>
-                        </div>
-                     ))}
+                        ))
+                     ) : (
+                        <div className="text-center py-10 opacity-30 font-black text-xs uppercase tracking-widest">No protocols assigned</div>
+                     )}
                   </div>
                   <Button variant="outline" className="w-full mt-12 h-16 rounded-[2rem] border-dashed border-2 border-gray-200 hover:border-electric/50 hover:bg-electric/5 transition-all text-[11px] font-[1000] uppercase tracking-[0.2em] text-gray-400 hover:text-electric flex items-center justify-center gap-4">
                      <Plus size={20} />
