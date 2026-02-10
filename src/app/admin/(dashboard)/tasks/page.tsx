@@ -1,6 +1,6 @@
 import { connectToDatabase } from "@/lib/db";
 import { Lead } from "@/lib/models/lead";
-import { CheckCircle2, Clock, AlertCircle, RefreshCw } from "lucide-react";
+import { CheckCircle2, Clock, AlertCircle, ShieldAlert, WifiOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -16,7 +16,7 @@ async function getTasks() {
       if (!lead.tasks || !Array.isArray(lead.tasks)) return [];
 
       return lead.tasks
-        .filter((t: any) => !t.done)
+        .filter((t: any) => t && !t.done)
         .map((t: any) => ({
           ...t,
           _id: t._id?.toString() || Math.random().toString(),
@@ -33,32 +33,76 @@ async function getTasks() {
       const dateB = b.dueAt ? new Date(b.dueAt).getTime() : 0;
       return dateA - dateB;
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Infrastructure Error Details:", error);
+
+    // Distinguish between different errors
+    if (error.message?.includes("MONGODB_URI")) {
+      throw new Error("CONFIG_MISSING");
+    }
+
+    if (error.name === "MongooseServerSelectionError" || error.message?.includes("ETIMEDOUT")) {
+      throw new Error("CONNECTION_TIMEOUT");
+    }
+
     throw error;
   }
 }
 
 export default async function TasksPage() {
   let tasks: any[] = [];
-  let errorState = false;
+  let errorType: "NONE" | "CONFIG" | "CONNECTION" | "GENERIC" = "NONE";
 
   try {
     tasks = await getTasks();
-  } catch (err) {
-    errorState = true;
+  } catch (err: any) {
+    if (err.message === "CONFIG_MISSING") errorType = "CONFIG";
+    else if (err.message === "CONNECTION_TIMEOUT") errorType = "CONNECTION";
+    else errorType = "GENERIC";
   }
 
-  if (errorState) {
+  if (errorType !== "NONE") {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] p-12 text-center">
-        <div className="w-20 h-20 bg-rose-50 text-rose-500 rounded-3xl flex items-center justify-center mb-8 shadow-xl shadow-rose-500/10">
-          <AlertCircle size={40} />
+      <div className="flex flex-col items-center justify-center min-h-[70vh] p-12 text-center">
+        <div className={cn(
+          "w-24 h-24 rounded-[2.5rem] flex items-center justify-center mb-10 shadow-2xl transition-all duration-700 animate-in fade-in zoom-in slide-in-from-bottom-8",
+          errorType === "CONFIG" ? "bg-amber-50 text-amber-500 shadow-amber-500/10" :
+            errorType === "CONNECTION" ? "bg-rose-50 text-rose-500 shadow-rose-500/10" :
+              "bg-gray-100 text-gray-500 shadow-gray-500/10"
+        )}>
+          {errorType === "CONFIG" ? <ShieldAlert size={48} /> :
+            errorType === "CONNECTION" ? <WifiOff size={48} /> :
+              <AlertCircle size={48} />}
         </div>
-        <h1 className="text-3xl font-black tracking-tight text-foreground">Infrastructure Offline</h1>
-        <p className="max-w-md text-sm font-bold text-muted-foreground/60 mt-4 uppercase tracking-[0.2em] leading-relaxed">
-          The operations queue is currently unreachable. Please verify database connectivity services.
+
+        <h1 className="text-4xl font-black tracking-tight text-foreground uppercase">
+          {errorType === "CONFIG" ? "Configuration Gap" :
+            errorType === "CONNECTION" ? "Connectivity Shield" :
+              "Infrastructure Offline"}
+        </h1>
+
+        <p className="max-w-lg text-sm font-bold text-muted-foreground/60 mt-6 uppercase tracking-[0.2em] leading-relaxed">
+          {errorType === "CONFIG" ? (
+            <>
+              The <span className="text-amber-600">MONGODB_URI</span> environment variable is not defined for this deployment deployment. Please verify Vercel Secrets.
+            </>
+          ) : errorType === "CONNECTION" ? (
+            <>
+              The operational database rejected the connection. verify that the <span className="text-rose-600">Vercel Deployment IP</span> is whitelisted in MongoDB Atlas.
+            </>
+          ) : (
+            "The operations queue is currently unreachable. Please verify database connectivity services and cloud infrastructure status."
+          )}
         </p>
+
+        {errorType === "CONNECTION" && (
+          <div className="mt-12 p-6 bg-rose-50/50 rounded-2xl border border-rose-100 max-w-md">
+            <p className="text-[10px] font-black text-rose-600/60 uppercase tracking-widest mb-2">Technical Guidance</p>
+            <p className="text-xs text-rose-700/80 font-bold leading-relaxed">
+              Whitelisting "0.0.0.0/0" in MongoDB Atlas is the standard fix for dynamic IP environments like Vercel.
+            </p>
+          </div>
+        )}
       </div>
     );
   }
@@ -98,9 +142,9 @@ export default async function TasksPage() {
                         <div className="w-2 h-2 rounded-full bg-primary" />
                         Lead: <span className="text-foreground">{task.leadName || "Unknown"}</span>
                       </span>
-                      <span className="flex items-center gap-2">
-                        <Clock size={12} className="text-primary/60" />
-                        Due: <span className="text-foreground">
+                      <span className="flex items-center gap-2 text-rose-500">
+                        <Clock size={12} />
+                        Due: <span className="font-black">
                           {task.dueAt ? new Date(task.dueAt).toLocaleString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : "No Date"}
                         </span>
                       </span>
