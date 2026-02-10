@@ -2,30 +2,64 @@
 
 import { motion } from "framer-motion";
 import { Container } from "../layout/layout-primitives";
-import { LucideIcon, ArrowRight, CheckCircle2 } from "lucide-react";
+import * as LucideIcons from "lucide-react";
+import * as SiIcons from "react-icons/si";
+import { ArrowRight, CheckCircle2, FlaskConical, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { AIExecutiveSummary } from "../ui/ai-summary";
+import Link from "next/link";
 
 interface ServiceTemplateProps {
-  title: string;
-  subtitle: string;
-  description: string;
-  icon: LucideIcon;
-  features: string[];
-  techStack: { name: string; icon: any; color: string }[];
-  outcomes: string[];
+  title?: string;
+  subtitle?: string;
+  description?: string;
+  icon?: any;
+  iconName?: string;
+  features?: string[];
+  techStack?: { name: string; icon?: any; iconName?: string; color: string }[];
+  outcomes?: string[];
   ctaText?: string;
+  category?: any;
+  subService?: any;
+  dict?: any;
+  locale?: string;
 }
 
 export function ServiceTemplate({
   title,
   subtitle,
   description,
-  icon: Icon,
+  icon,
+  iconName,
   features,
   techStack,
   outcomes,
-  ctaText = "Initiate Project Discovery"
+  ctaText = "Initiate Project Discovery",
+  category,
+  subService
 }: ServiceTemplateProps) {
+  // Extract data from subService/category if provided
+  const displayTitle = subService?.title || title || "Specialized Service";
+  const displaySubtitle = category?.title || subtitle || "Engineering Lab";
+  const displayDescription = subService?.description || description || "";
+  const displayFeatures = subService?.features || features || [];
+  const displayOutcomes = subService?.outcomes || outcomes || [];
+
+  // Icon handling
+  const IconComponent = typeof icon === 'function' ? icon : ((LucideIcons as any)[iconName || subService?.iconName || category?.iconName || "Code2"] || LucideIcons.Code2);
+
+  // Tech stack mapping
+  const displayTechStack = (techStack || subService?.techStack?.map((name: string) => ({ name, color: "text-gray-400" })) || []).map((tech: any) => {
+    // Resolve icon if it's a string name
+    const resolvedIcon = typeof tech.icon === 'function' ? tech.icon : (
+      (SiIcons as any)[tech.iconName] ||
+      (LucideIcons as any)[tech.iconName] ||
+      (SiIcons as any)[`Si${tech.name.replace(/[^a-zA-Z0-9]/g, '')}`] ||
+      LucideIcons.Zap
+    );
+    return { ...tech, icon: resolvedIcon };
+  });
+
   return (
     <div className="bg-white dark:bg-midnight-950 min-h-screen pt-32 pb-24">
       <Container>
@@ -37,7 +71,7 @@ export function ServiceTemplate({
               animate={{ opacity: 1, x: 0 }}
               className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-electric/10 text-electric text-xs font-bold uppercase tracking-widest"
             >
-              <Icon size={14} />
+              <IconComponent size={14} />
               Specialized Laboratory
             </motion.div>
             <motion.h1
@@ -46,8 +80,8 @@ export function ServiceTemplate({
               transition={{ delay: 0.1 }}
               className="text-5xl md:text-6xl font-black text-gray-900 dark:text-white tracking-tight leading-tight"
             >
-              {title} <br />
-              <span className="text-electric">{subtitle}</span>
+              {displayTitle} <br />
+              <span className="text-electric">{displaySubtitle}</span>
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -55,7 +89,7 @@ export function ServiceTemplate({
               transition={{ delay: 0.2 }}
               className="text-xl text-gray-600 dark:text-gray-400 font-medium leading-relaxed"
             >
-              {description}
+              {displayDescription}
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -71,7 +105,7 @@ export function ServiceTemplate({
           </div>
 
           <div className="lg:w-1/2 grid grid-cols-2 gap-4">
-            {features.map((feature, idx) => (
+            {displayFeatures.map((feature: string, idx: number) => (
               <motion.div
                 key={feature}
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -88,12 +122,46 @@ export function ServiceTemplate({
           </div>
         </div>
 
+        {/* Answer Engine Optimization (AEO) Layer */}
+        <AIExecutiveSummary
+          title={`${displayTitle} Engineering Summary`}
+          summary={`Our ${displayTitle} solutions are architected to deliver maximum business value through ${displayFeatures.slice(0, 2).join(' and ')}. By prioritizing Core Web Vitals and semantic data extraction, we ensure that your ${displaySubtitle} remains visible and authoritative for both human users and AI agents.`}
+          techStack={subService?.techStack || []}
+        />
+
+        {/* Authority Pipeline: Links to Cluster & Proof */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
+          <Link
+            href="/services"
+            className="group p-8 rounded-[2rem] bg-indigo-50 dark:bg-midnight-900 border border-indigo-100 dark:border-midnight-800 hover:border-electric transition-all"
+          >
+            <div className="flex justify-between items-start mb-4">
+              <FlaskConical className="text-electric" size={24} />
+              <ArrowRight className="text-gray-300 group-hover:text-electric transition-all group-hover:translate-x-1" size={20} />
+            </div>
+            <h4 className="text-lg font-black text-gray-900 dark:text-white mb-2">Technical Laboratory</h4>
+            <p className="text-sm text-gray-600 dark:text-gray-400">Explore the full engineering cluster and micro-service definitions.</p>
+          </Link>
+
+          <Link
+            href="/tech"
+            className="group p-8 rounded-[2rem] bg-indigo-950 text-white border border-white/10 hover:border-electric transition-all"
+          >
+            <div className="flex justify-between items-start mb-4">
+              <ExternalLink className="text-electric" size={24} />
+              <ArrowRight className="text-white/20 group-hover:text-electric transition-all group-hover:translate-x-1" size={20} />
+            </div>
+            <h4 className="text-lg font-black mb-2">View Evidence</h4>
+            <p className="text-sm text-white/40">Inspect live proof-of-work and industrial outcomes in our global library.</p>
+          </Link>
+        </div>
+
         {/* Tech Stack */}
         <div className="py-24 border-y border-gray-100 dark:border-midnight-800 mb-24">
           <div className="text-center mb-16">
             <h3 className="text-sm font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.3em] mb-4">Precision Engineering Stack</h3>
             <div className="flex flex-wrap justify-center gap-12 sm:gap-20">
-              {techStack.map((tech) => (
+              {displayTechStack.map((tech: any) => (
                 <div key={tech.name} className="flex flex-col items-center gap-3 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all cursor-default group">
                   <tech.icon className={cn("text-5xl", tech.color)} />
                   <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{tech.name}</span>
@@ -110,7 +178,7 @@ export function ServiceTemplate({
             <p className="text-lg text-gray-600 dark:text-gray-400">Our engineering lab is optimized for these specific KPIs, ensuring your investment translates directly into business value.</p>
           </div>
           <div className="grid grid-cols-1 gap-6">
-            {outcomes.map((outcome, idx) => (
+            {displayOutcomes.map((outcome: string, idx: number) => (
               <motion.div
                 key={outcome}
                 initial={{ opacity: 0, x: 20 }}
@@ -125,7 +193,7 @@ export function ServiceTemplate({
             ))}
           </div>
         </div>
-      </Container>
-    </div>
+      </Container >
+    </div >
   );
 }

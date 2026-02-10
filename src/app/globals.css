@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @plugin "tailwindcss-animate";
 
+/* Enable class-based dark mode for Tailwind v4 */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --font-sans: var(--font-inter);
   --font-mono: var(--font-geist-mono);
@@ -35,6 +38,28 @@
   --color-brand-indigo: hsl(263.4 70% 50.4%);
   --color-brand-gold: hsl(47.9 95.8% 53.1%); /* A premium gold color */
 
+  /* Digi Web Crew Brand Colors */
+  --color-midnight: #0F172A;
+  --color-midnight-50: #F8FAFC;
+  --color-midnight-100: #F1F5F9;
+  --color-midnight-200: #E2E8F0;
+  --color-midnight-300: #CBD5E1;
+  --color-midnight-400: #94A3B8;
+  --color-midnight-500: #64748B;
+  --color-midnight-600: #475569;
+  --color-midnight-700: #1E293B;
+  --color-midnight-800: #1E293B;
+  --color-midnight-900: #0F172A;
+  --color-midnight-950: #020617;
+
+  --color-slate: #1E293B;
+  --color-slate-light: #334155;
+  --color-slate-dark: #0F172A;
+
+  --color-electric: #3B82F6;
+  --color-electric-light: #60A5FA;
+  --color-electric-dark: #2563EB;
+
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
@@ -48,13 +73,13 @@
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
-    --primary: 263 83% 58%; /* Vibrant Purple */
+    --primary: 217 91% 60%; /* #3B82F6 - Electric Blue */
     --primary-foreground: 0 0% 100%;
     --secondary: 240 40% 96%;
     --secondary-foreground: 240 10% 10%;
     --muted: 240 40% 96%;
     --muted-foreground: 240 10% 45%;
-    --accent: 180 70% 45%; /* Soft Teal Accent */
+    --accent: 217 91% 60%; /* Matching Electric Blue Accent */
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
@@ -64,14 +89,14 @@
     --radius: 2rem;
 
     /* Elite Accents - Soft Aesthetic V3 */
-    --brand-indigo: 263 83% 58%;
+    --brand-indigo: 217 91% 60%; /* Updated to Electric Blue */
     --brand-blue: 217 91% 60%;
     --glass-background: rgba(255, 255, 255, 0.6);
     --glass-border: rgba(255, 255, 255, 0.8);
-    --glass-shadow: rgba(100, 100, 200, 0.05);
+    --glass-shadow: rgba(59, 130, 246, 0.05); /* Blue-tinted shadow */
     
     /* Grid Background */
-    --grid-color: rgba(147, 197, 253, 0.1);
+    --grid-color: rgba(59, 130, 246, 0.1);
   }
 
   .dark {
@@ -179,6 +204,24 @@
       linear-gradient(var(--grid-color) 1px, transparent 1px),
       linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
     background-size: 40px 40px;
+  }
+
+  .vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+  }
+
+  .mask-fade {
+    mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-gray-200 rounded-full hover:bg-gray-300 transition-colors;
   }
 }
 

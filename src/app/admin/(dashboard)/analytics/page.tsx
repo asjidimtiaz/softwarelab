@@ -22,53 +22,51 @@ export default async function AnalyticsPage() {
     ];
 
     return (
-        <div className="space-y-10 pb-12">
+        <div className="space-y-6 pb-10 w-full">
             {/* Greeting Section */}
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-4">
                 <div>
-                    <p className="text-xs font-semibold text-muted-foreground/60 mb-2 uppercase tracking-wider">Software Lab Dashboard</p>
-                    <h1 className="text-3xl font-bold tracking-tight text-foreground">Hello, Admin</h1>
-                    <h2 className="text-3xl font-bold tracking-tight text-indigo-600 mt-1">How can I help you today?</h2>
+                    <p className="text-[10px] font-black text-muted-foreground/40 mb-1 uppercase tracking-[0.2em]">Operations Suite: Analytics</p>
+                    <h1 className="text-2xl font-black tracking-tight text-gray-900 dark:text-white">Terminal: <span className="text-indigo-600">Active</span></h1>
+                    <p className="text-sm text-muted-foreground/60 italic mt-1 font-medium">Neural engine sync complete. Projected growth: <span className="text-emerald-500 font-black">+14%</span></p>
                 </div>
 
-                <div className="flex flex-wrap gap-3 mt-2">
-                    <button className="h-10 px-6 rounded-xl bg-indigo-600 text-white text-[10px] font-bold uppercase tracking-wider shadow-md shadow-indigo-600/20 flex items-center gap-2 hover:scale-105 transition-all">
-                        <Zap size={14} fill="currentColor" />
-                        Ask AI
+                <div className="flex flex-wrap gap-2 mt-1">
+                    <button className="h-9 px-5 rounded-xl bg-indigo-600 text-white text-[9px] font-black uppercase tracking-widest shadow-lg shadow-indigo-600/20 flex items-center gap-2 hover:scale-105 transition-all outline-none">
+                        <Zap size={12} fill="currentColor" />
+                        Ask Intelligence
                     </button>
-                    <button className="h-10 px-6 rounded-xl bg-white border border-border text-foreground text-[10px] font-bold uppercase tracking-wider shadow-sm hover:bg-secondary transition-all">
-                        Get tasks updates
-                    </button>
-                    <button className="h-10 px-6 rounded-xl bg-white border border-border text-foreground text-[10px] font-bold uppercase tracking-wider shadow-sm hover:bg-secondary transition-all">
-                        Create workspace
-                    </button>
-                    <button className="h-10 px-6 rounded-xl bg-white border border-border text-foreground text-[10px] font-bold uppercase tracking-wider shadow-sm hover:bg-secondary transition-all">
-                        Connect apps
-                    </button>
+                    {["Sprint Logs", "Resource Map", "Integrations"].map((label) => (
+                        <button key={label} className="h-9 px-5 rounded-xl bg-white dark:bg-midnight-900 border border-border text-foreground text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-secondary transition-all outline-none">
+                            {label}
+                        </button>
+                    ))}
                 </div>
             </div>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {stats.map((stat, i) => (
-                    <Card key={i} className="group overflow-hidden relative border-border bg-white shadow-sm hover:shadow-md transition-all rounded-2xl">
-                        <CardHeader className="flex flex-row items-center justify-between pb-2">
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/70">{stat.label}</span>
-                            <div className="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600 group-hover:scale-110 transition-transform">
-                                <stat.icon size={18} strokeWidth={2} />
+                    <Card key={i} className="group overflow-hidden relative border-border bg-white dark:bg-midnight-900 shadow-sm hover:shadow-md transition-all rounded-2xl">
+                        <CardHeader className="flex flex-row items-center justify-between p-4 pb-1">
+                            <span className="text-[8px] font-black uppercase tracking-[0.2em] text-muted-foreground/40">{stat.label}</span>
+                            <div className="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-midnight-800 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-all">
+                                <stat.icon size={14} />
                             </div>
                         </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold tracking-tight text-foreground mt-1">{stat.value}</div>
-                            <div className="flex items-center gap-2 mt-3">
+                        <CardContent className="p-4 pt-1">
+                            <div className="text-xl font-black tracking-tight text-foreground tabular-nums">
+                                {stat.value}
+                            </div>
+                            <div className="flex items-center gap-2 mt-2">
                                 <span className={cn(
-                                    "flex items-center text-[10px] font-bold px-2 py-0.5 rounded-lg border",
-                                    stat.trending === "up" ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" : "bg-rose-500/10 text-rose-400 border-rose-500/20"
+                                    "flex items-center text-[8px] font-black px-1.5 py-0.5 rounded-lg border",
+                                    stat.trending === "up" ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20" : "bg-rose-500/10 text-rose-500 border-rose-500/20"
                                 )}>
-                                    {stat.trending === "up" ? <ArrowUpRight size={10} className="mr-1" /> : <ArrowDownRight size={10} className="mr-1" />}
+                                    {stat.trending === "up" ? <ArrowUpRight size={8} className="mr-0.5" /> : <ArrowDownRight size={8} className="mr-0.5" />}
                                     {stat.change}
                                 </span>
-                                <span className="text-[10px] font-medium text-muted-foreground/40 uppercase tracking-widest">vs prev. period</span>
+                                <span className="text-[8px] font-black text-muted-foreground/30 uppercase tracking-widest text-[6px]">vs prev</span>
                             </div>
                         </CardContent>
                     </Card>
@@ -81,83 +79,77 @@ export default async function AnalyticsPage() {
             {/* Widgets Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 {/* Left Column - Main Tasks */}
-                <div className="lg:col-span-7 space-y-6">
-                    <Card className="rounded-3xl border-border bg-white shadow-sm overflow-hidden">
-                        <CardHeader className="flex flex-row items-center justify-between p-8 pb-4">
-                            <div className="flex items-center gap-4">
-                                <div className="w-10 h-10 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
-                                    <CheckSquare size={18} />
+                <div className="lg:col-span-8 space-y-4">
+                    <Card className="rounded-2xl border-border bg-white dark:bg-midnight-900 shadow-sm overflow-hidden">
+                        <CardHeader className="flex flex-row items-center justify-between p-5 pb-2">
+                            <div className="flex items-center gap-3">
+                                <div className="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-midnight-800 text-indigo-600 flex items-center justify-center shadow-inner">
+                                    <CheckSquare size={16} />
                                 </div>
-                                <CardTitle className="text-lg font-bold">Active Sprints</CardTitle>
-                            </div>
-                            <div className="flex gap-2">
-                                <button className="w-8 h-8 rounded-full hover:bg-secondary flex items-center justify-center transition-colors">
-                                    <TrendingUp size={16} className="text-muted-foreground" />
-                                </button>
+                                <div>
+                                    <CardTitle className="text-base font-black">Active Engineering Sprints</CardTitle>
+                                    <p className="text-[7px] font-black uppercase tracking-[0.2em] text-muted-foreground/40 mt-0.5">Q1 2026 ROADMAP</p>
+                                </div>
                             </div>
                         </CardHeader>
-                        <CardContent className="p-10 pt-0">
-                            <div className="space-y-6">
-                                <div className="flex items-center gap-4">
-                                    <span className="px-4 py-1.5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-black uppercase tracking-widest">In Progress</span>
-                                    <span className="text-[10px] font-bold text-muted-foreground">• 3 sprints</span>
-                                </div>
-
-                                <div className="space-y-4">
+                        <CardContent className="p-5 pt-2">
+                            <div className="space-y-3">
+                                <div className="space-y-2">
                                     {[
                                         { name: "E-commerce Platform MVP", priority: "High", due: "Due Today", color: "rose" },
                                         { name: "API Gateway Integration", priority: "Medium", due: "3 days left", color: "amber" },
                                         { name: "Dashboard UI Redesign", priority: "Low", due: "1 week left", color: "blue" }
                                     ].map((task, i) => (
-                                        <div key={i} className="flex items-center justify-between p-6 rounded-[1.5rem] bg-secondary/30 hover:bg-secondary/50 transition-colors group cursor-pointer">
-                                            <div className="flex items-center gap-4">
-                                                <div className={cn("w-3 h-3 rounded-full",
-                                                    task.color === "rose" ? "bg-rose-500" :
-                                                        task.color === "amber" ? "bg-amber-500" : "bg-blue-500"
+                                        <div key={i} className="flex items-center justify-between p-3 px-4 rounded-xl bg-secondary/20 hover:bg-secondary/40 transition-colors group cursor-pointer border border-transparent hover:border-border">
+                                            <div className="flex items-center gap-3">
+                                                <div className={cn("w-2 h-2 rounded-full",
+                                                    task.color === "rose" ? "bg-rose-500 shadow-lg shadow-rose-500/20" :
+                                                        task.color === "amber" ? "bg-amber-500 shadow-lg shadow-amber-500/20" : "bg-blue-500 shadow-lg shadow-blue-500/20"
                                                 )} />
-                                                <span className="font-bold text-sm">{task.name}</span>
+                                                <span className="font-bold text-[11px] text-gray-700 dark:text-gray-200">{task.name}</span>
                                             </div>
                                             <div className="flex items-center gap-6">
-                                                <span className={cn("px-4 py-1 rounded-full text-[9px] font-black uppercase tracking-widest",
-                                                    task.priority === "High" ? "bg-rose-100 text-rose-600" :
-                                                        task.priority === "Medium" ? "bg-amber-100 text-amber-600" : "bg-blue-100 text-blue-600"
+                                                <span className={cn("px-2.5 py-0.5 rounded-full text-[7px] font-black uppercase tracking-widest",
+                                                    task.priority === "High" ? "bg-rose-500 text-white" :
+                                                        task.priority === "Medium" ? "bg-amber-500 text-white" : "bg-blue-500 text-white"
                                                 )}>{task.priority}</span>
-                                                <span className="text-[10px] font-bold text-muted-foreground">{task.due}</span>
+                                                <span className="text-[8px] font-bold text-muted-foreground/60">{task.due}</span>
                                             </div>
                                         </div>
                                     ))}
                                 </div>
 
-                                <button className="flex items-center gap-3 text-primary text-[10px] font-black uppercase tracking-widest mt-6 hover:translate-x-1 transition-transform">
-                                    + Add Sprint
+                                <button className="flex items-center gap-2 text-primary text-[8px] font-black uppercase tracking-widest mt-4 hover:translate-x-1 transition-transform">
+                                    <ArrowRight size={10} />
+                                    Access Task Control
                                 </button>
                             </div>
                         </CardContent>
                     </Card>
 
-                    <Card className="rounded-3xl border-border bg-white shadow-sm overflow-hidden">
-                        <CardHeader className="p-8 pb-4">
-                            <div className="flex items-center gap-4">
-                                <div className="w-10 h-10 rounded-lg bg-orange-50 text-orange-600 flex items-center justify-center">
-                                    <TrendingUp size={18} />
+                    <Card className="rounded-2xl border-border bg-white dark:bg-midnight-900 shadow-sm overflow-hidden">
+                        <CardHeader className="p-5 pb-2">
+                            <div className="flex items-center gap-3">
+                                <div className="w-9 h-9 rounded-xl bg-orange-50 dark:bg-midnight-800 text-orange-600 flex items-center justify-center shadow-inner">
+                                    <TrendingUp size={16} />
                                 </div>
-                                <CardTitle className="text-lg font-bold">Engineering Metrics</CardTitle>
+                                <CardTitle className="text-base font-black text-gray-900 dark:text-white">Engineering Metrics</CardTitle>
                             </div>
                         </CardHeader>
-                        <CardContent className="p-10 pt-4 pb-12">
-                            <div className="space-y-10">
+                        <CardContent className="p-5 pt-2 pb-5">
+                            <div className="space-y-6">
                                 {[
-                                    { label: "Sprint Velocity Target", percentage: 94, color: "bg-primary" },
-                                    { label: "Code Coverage (Unit Tests)", percentage: 88, color: "bg-emerald-400" },
-                                    { label: "Client Deliverables", percentage: 63, color: "bg-orange-400" }
+                                    { label: "Sprint Velocity Target", percentage: 94, color: "bg-indigo-600 shadow-lg shadow-indigo-600/20" },
+                                    { label: "Code Coverage (Unit Tests)", percentage: 88, color: "bg-emerald-500 shadow-lg shadow-emerald-500/20" },
+                                    { label: "Client Deliverables", percentage: 63, color: "bg-orange-500 shadow-lg shadow-orange-500/20" }
                                 ].map((goal, i) => (
-                                    <div key={i} className="space-y-3">
+                                    <div key={i} className="space-y-2">
                                         <div className="flex justify-between items-end">
-                                            <span className="font-bold text-sm tracking-tight">{goal.label}</span>
-                                            <span className="font-black text-sm">{goal.percentage}%</span>
+                                            <span className="font-bold text-[11px] tracking-tight">{goal.label}</span>
+                                            <span className="font-black text-[11px] tabular-nums">{goal.percentage}%</span>
                                         </div>
-                                        <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
-                                            <div className={cn("h-full rounded-full", goal.color)} style={{ width: `${goal.percentage}%` }} />
+                                        <div className="h-1.5 w-full bg-secondary/30 rounded-full overflow-hidden">
+                                            <div className={cn("h-full rounded-full transition-all duration-1000", goal.color)} style={{ width: `${goal.percentage}%` }} />
                                         </div>
                                     </div>
                                 ))}
@@ -167,89 +159,86 @@ export default async function AnalyticsPage() {
                 </div>
 
                 {/* Right Column - Secondary Widgets */}
-                <div className="lg:col-span-5 space-y-6">
-                    <Card className="rounded-3xl border-border bg-white shadow-sm p-8">
-                        <div className="flex items-center justify-between mb-6">
-                            <div className="flex items-center gap-4">
-                                <div className="w-10 h-10 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
-                                    <Target size={18} />
+                <div className="lg:col-span-4 space-y-4">
+                    <Card className="rounded-2xl border-border bg-white dark:bg-midnight-900 shadow-sm p-5">
+                        <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center gap-3">
+                                <div className="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-midnight-800 text-indigo-600 flex items-center justify-center">
+                                    <Target size={16} />
                                 </div>
-                                <h3 className="text-lg font-bold">Projects</h3>
+                                <h3 className="text-base font-black">Active Projects</h3>
                             </div>
-                            <button className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-2">
-                                Recents <ArrowDownRight size={14} className="rotate-45" />
-                            </button>
                         </div>
-                        <div className="grid grid-cols-1 gap-4">
+                        <div className="grid grid-cols-1 gap-2">
                             {[
-                                { name: "E-commerce Platform", tasks: 12, team: 4, color: "bg-primary/10 text-primary" },
-                                { name: "SaaS Dashboard", tasks: 8, team: 3, color: "bg-blue-100 text-blue-600" },
-                                { name: "Mobile App API", tasks: 15, team: 5, color: "bg-emerald-100 text-emerald-600" }
+                                { name: "E-commerce Platform", tasks: 12, team: 4, color: "bg-indigo-600/10 text-indigo-600" },
+                                { name: "SaaS Dashboard", tasks: 8, team: 3, color: "bg-blue-500/10 text-blue-500" },
+                                { name: "Mobile App API", tasks: 15, team: 5, color: "bg-emerald-500/10 text-emerald-500" }
                             ].map((project, i) => (
-                                <div key={i} className="flex items-center gap-4 p-4 rounded-2xl hover:bg-secondary/30 transition-all group cursor-pointer">
-                                    <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center font-bold text-lg", project.color)}>P</div>
+                                <div key={i} className="flex items-center gap-3 p-3 rounded-xl hover:bg-secondary/30 transition-all group cursor-pointer border border-transparent hover:border-border">
+                                    <div className={cn("w-9 h-9 rounded-lg flex items-center justify-center font-black text-xs", project.color)}>P</div>
                                     <div>
-                                        <h4 className="font-bold text-sm">{project.name}</h4>
-                                        <p className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-widest mt-1">
-                                            {project.tasks} tasks • {project.team} teammates
+                                        <h4 className="font-bold text-[11px] text-gray-700 dark:text-gray-200">{project.name}</h4>
+                                        <p className="text-[7px] font-black text-muted-foreground/40 uppercase tracking-widest mt-0.5">
+                                            {project.tasks} tasks • {project.team} mates
                                         </p>
                                     </div>
                                 </div>
                             ))}
-                            <button className="w-full h-14 rounded-2xl border-2 border-dashed border-border flex items-center justify-center gap-3 text-muted-foreground hover:border-primary/50 hover:bg-primary/5 transition-all mt-4 text-[10px] font-black uppercase tracking-widest">
-                                + Create new project
+                            <button className="w-full h-10 rounded-xl border-2 border-dashed border-border flex items-center justify-center gap-2 text-muted-foreground hover:border-primary/50 hover:bg-primary/5 transition-all mt-2 text-[7px] font-black uppercase tracking-widest">
+                                + New Instance
                             </button>
                         </div>
                     </Card>
 
-                    <Card className="rounded-3xl border-border bg-white shadow-sm p-8 overflow-hidden relative">
-                        <div className="flex items-center justify-between mb-6">
-                            <div className="flex items-center gap-4">
-                                <div className="w-10 h-10 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center">
-                                    <Users size={18} />
+                    <Card className="rounded-2xl border-border bg-white dark:bg-midnight-900 shadow-sm p-5 overflow-hidden relative">
+                        <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center gap-3">
+                                <div className="w-9 h-9 rounded-xl bg-rose-50 dark:bg-midnight-800 text-rose-600 flex items-center justify-center">
+                                    <Users size={16} />
                                 </div>
-                                <h3 className="text-lg font-bold">Reminders</h3>
+                                <h3 className="text-base font-black">System Reminders</h3>
                             </div>
                         </div>
-                        <div className="space-y-6">
-                            <div className="flex items-center gap-2 mb-6">
-                                <span className="text-[10px] font-black text-foreground uppercase tracking-widest">Today</span>
-                                <span className="text-[10px] font-bold text-muted-foreground">• 2</span>
+                        <div className="space-y-4">
+                            <div className="flex items-center gap-2 mb-2">
+                                <span className="text-[8px] font-black text-foreground uppercase tracking-widest">Today</span>
+                                <span className="text-[8px] font-black text-muted-foreground/30">• 2</span>
                             </div>
 
                             {[
-                                "Assess any new risks identified in the morning meeting.",
-                                "Outline key points for tomorrow's stand-up meeting."
+                                "Assess risks identified in morning terminal sync.",
+                                "Finalize stand-up metrics for Q1 Roadmap."
                             ].map((reminder, i) => (
-                                <div key={i} className="flex gap-4 group">
-                                    <div className="w-5 h-5 rounded-md border-2 border-border mt-1 group-hover:border-primary transition-colors shrink-0" />
-                                    <p className="text-sm font-medium leading-relaxed">{reminder}</p>
+                                <div key={i} className="flex gap-3 group">
+                                    <div className="w-4 h-4 rounded-md border-2 border-border mt-0.5 group-hover:border-primary transition-colors shrink-0 flex items-center justify-center">
+                                        <div className="w-1.5 h-1.5 rounded-sm group-hover:bg-primary transition-colors" />
+                                    </div>
+                                    <p className="text-[11px] font-medium leading-relaxed text-gray-600 dark:text-gray-400">{reminder}</p>
                                 </div>
                             ))}
                         </div>
-
-                        <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-primary/5 blur-3xl rounded-full" />
                     </Card>
                 </div>
             </div>
 
             {/* Forecast Footer */}
-            <div className="p-12 rounded-[3.5rem] bg-indigo-950 text-white flex flex-col md:flex-row items-center justify-between gap-10 relative overflow-hidden group">
-                <div className="relative z-10 flex items-center gap-10">
-                    <div className="w-20 h-20 rounded-[2rem] bg-white/10 flex items-center justify-center border border-white/10 group-hover:scale-110 transition-transform">
-                        <Zap size={32} className="text-primary" fill="currentColor" />
+            <div className="p-8 px-10 rounded-[2.5rem] bg-indigo-950 text-white flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden group border border-white/5">
+                <div className="relative z-10 flex flex-col md:flex-row items-center gap-6 md:gap-10">
+                    <div className="w-16 h-16 rounded-2xl bg-white/5 backdrop-blur-xl flex items-center justify-center border border-white/10 group-hover:scale-110 group-hover:bg-electric/20 transition-all duration-500 group-hover:border-electric/50">
+                        <Zap size={24} className="text-electric animate-pulse" fill="currentColor" />
                     </div>
-                    <div>
-                        <p className="text-2xl font-black tracking-tight">System Forecast Overview</p>
-                        <p className="text-sm font-bold text-white/60 mt-2 uppercase tracking-[0.2em]">Expected velocity pulse: +14% leads projected</p>
+                    <div className="text-center md:text-left">
+                        <p className="text-xl font-black tracking-tight uppercase tracking-widest text-indigo-200">System Forecast Overview</p>
+                        <p className="text-[9px] font-black text-white/40 mt-1 uppercase tracking-[0.3em]">Expected velocity pulse: <span className="text-emerald-400">+14% projected</span></p>
                     </div>
                 </div>
-                <Button className="h-14 px-12 rounded-full bg-white text-indigo-950 font-black uppercase tracking-widest hover:scale-105 transition-transform relative z-10 shadow-2xl">
+                <Button className="h-12 px-10 rounded-xl bg-white text-indigo-950 font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all relative z-10 shadow-2xl text-[10px]">
                     Access Terminal
                 </Button>
 
-                <div className="absolute top-0 right-0 w-80 h-80 bg-primary/20 blur-[100px] rounded-full -translate-y-1/2 translate-x-1/2" />
-                <div className="absolute bottom-0 left-0 w-60 h-60 bg-blue-500/10 blur-[80px] rounded-full translate-y-1/2 -translate-x-1/2" />
+                <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/20 blur-[100px] rounded-full -translate-y-1/2 translate-x-1/2 group-hover:bg-indigo-500/30 transition-all duration-1000" />
+                <div className="absolute bottom-0 left-0 w-48 h-48 bg-electric/10 blur-[80px] rounded-full translate-y-1/2 -translate-x-1/2 group-hover:bg-electric/20 transition-all duration-1000" />
             </div>
         </div>
     );

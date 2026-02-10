@@ -14,11 +14,12 @@ interface HeroProps {
 
 export function Hero({ dict, locale }: HeroProps) {
   return (
-    <section className="relative pt-24 pb-0 overflow-hidden bg-gradient-to-br from-[#7C3AED] via-[#6D28D9] to-[#4C1D95] z-10 w-full">
-      {/* Background Decorative Circles */}
+    <section className="relative pt-24 pb-0 overflow-hidden bg-electric dark:bg-midnight-950 z-10 w-full">
+      {/* Background Decorative Circles - Enhanced */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-white/10 blur-[100px] rounded-full" />
-        <div className="absolute bottom-[20%] right-[-5%] w-[35%] h-[35%] bg-indigo-400/20 blur-[100px] rounded-full" />
+        <div className="absolute top-[-15%] left-[-15%] w-[50%] h-[50%] bg-gradient-to-br from-white/20 to-indigo-300/20 blur-[120px] rounded-full animate-pulse" />
+        <div className="absolute bottom-[10%] right-[-10%] w-[45%] h-[45%] bg-gradient-to-tr from-indigo-400/30 to-purple-400/20 blur-[120px] rounded-full" />
+        <div className="absolute top-[40%] left-[30%] w-[30%] h-[30%] bg-white/10 blur-[100px] rounded-full" />
       </div>
 
       <Container className="relative z-10">
@@ -29,9 +30,9 @@ export function Hero({ dict, locale }: HeroProps) {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-4 px-10 py-4 rounded-full border border-white text-white mb-12 text-[11px] font-bold uppercase tracking-[0.4em]"
+              className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md text-white mb-12 text-[11px] font-bold uppercase tracking-[0.2em] shadow-lg"
             >
-              <Sparkle size={16} strokeWidth={2.5} className="text-white" />
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
               <span>{dict.hero.badge}</span>
             </motion.div>
 
@@ -93,75 +94,86 @@ export function Hero({ dict, locale }: HeroProps) {
             transition={{ duration: 1, ease: "circOut" }}
             className="relative hidden lg:block"
           >
-            <div className="relative z-10 bg-white shadow-2xl rounded-[2.5rem] overflow-hidden border border-white/20 flex flex-col min-h-[440px]">
-              {/* Browser Header */}
-              <div className="flex items-center gap-2 px-6 py-4 bg-gray-50/50 border-b border-gray-100">
-                <div className="flex gap-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-[#FEBC2E]" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-[#28C840]" />
+            <div className="relative z-10 bg-white/90 dark:bg-midnight-900/95 backdrop-blur-2xl shadow-[0_32px_80px_-20px_rgba(0,0,0,0.25),0_0_0_1px_rgba(255,255,255,0.9)_inset] dark:shadow-[0_32px_80px_-20px_rgba(0,0,0,0.6)] rounded-[2.5rem] overflow-hidden border border-white/40 dark:border-midnight-700 flex flex-col min-h-[480px]">
+              {/* Browser Header - Premium */}
+              <div className="flex items-center gap-2 px-6 py-4 bg-gradient-to-b from-gray-50 to-white dark:from-midnight-800 dark:to-midnight-900 border-b border-gray-100/80 dark:border-midnight-700">
+                <div className="flex gap-2">
+                  <div className="w-3 h-3 rounded-full bg-gradient-to-br from-red-400 to-red-500 shadow-[0_2px_4px_rgba(239,68,68,0.3)]" />
+                  <div className="w-3 h-3 rounded-full bg-gradient-to-br from-amber-400 to-amber-500 shadow-[0_2px_4px_rgba(251,191,36,0.3)]" />
+                  <div className="w-3 h-3 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-500 shadow-[0_2px_4px_rgba(52,211,153,0.3)]" />
                 </div>
-                <div className="mx-auto h-5 w-48 bg-white rounded-lg border border-gray-100/50 flex items-center px-3">
-                  <div className="h-1.5 w-full bg-gray-100 rounded-full" />
+                <div className="mx-auto h-6 w-52 bg-gray-50 dark:bg-midnight-800 rounded-lg border border-gray-100 dark:border-midnight-700 flex items-center px-3 shadow-inner">
+                  <div className="h-2 w-full bg-gradient-to-r from-gray-100 via-gray-50 to-gray-100 rounded-full" />
                 </div>
               </div>
 
-              <div className="p-8 space-y-12 flex-1 flex flex-col justify-center">
-                {/* Data Bars */}
+              <div className="p-10 space-y-10 flex-1 flex flex-col justify-center">
+                {/* Data Bars - Enhanced */}
                 <div className="space-y-8">
                   {[
-                    { label: dict.hero.stats.efficiency, val: 94, color: "from-indigo-500 to-blue-400" },
-                    { label: dict.hero.stats.scalability, val: 88, color: "from-purple-500 to-indigo-400" },
-                    { label: dict.hero.stats.uptime, val: 99, color: "from-emerald-400 to-teal-400" }
+                    { label: dict.hero.stats.efficiency, val: 94, color: "from-electric to-blue-400", glow: "rgba(59,130,246,0.4)" },
+                    { label: dict.hero.stats.scalability, val: 88, color: "from-purple-500 to-indigo-400", glow: "rgba(139,92,246,0.4)" },
+                    { label: dict.hero.stats.uptime, val: 99, color: "from-emerald-400 to-teal-400", glow: "rgba(52,211,153,0.4)" }
                   ].map((bar, i) => (
                     <div key={i} className="space-y-3">
-                      <div className="flex justify-between text-[11px] font-black text-gray-400 uppercase tracking-[0.2em]">
+                      <div className="flex justify-between text-[11px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-[0.2em]">
                         <span>{bar.label}</span>
-                        <span className="text-[#6366F1]">{bar.val}%</span>
+                        <span className="text-electric font-black">{bar.val}%</span>
                       </div>
-                      <div className="h-2.5 w-full bg-gray-50 rounded-full overflow-hidden border border-gray-100 p-[2px]">
+                      <div className="h-3.5 w-full bg-gray-100/80 dark:bg-midnight-800 rounded-full overflow-hidden border border-gray-200/50 dark:border-midnight-700 p-[3px] shadow-inner">
                         <motion.div
                           initial={{ width: 0 }}
                           whileInView={{ width: `${bar.val}%` }}
-                          transition={{ duration: 1.5, delay: 0.5 + i * 0.2, ease: "anticipate" }}
-                          className={`h-full bg-gradient-to-r ${bar.color} rounded-full`}
-                        />
+                          transition={{ duration: 1.8, delay: 0.5 + i * 0.2, ease: [0.16, 1, 0.3, 1] }}
+                          className={`h-full bg-gradient-to-r ${bar.color} rounded-full relative`}
+                          style={{ boxShadow: `0 0 16px ${bar.glow}` }}
+                        >
+                          <div className="absolute inset-0 bg-white/20 rounded-full" />
+                        </motion.div>
                       </div>
                     </div>
                   ))}
                 </div>
 
-                {/* Decorative summary footer */}
-                <div className="pt-8 border-t border-gray-100 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-[#6366F1]">
-                      <Rocket size={18} />
+                {/* Decorative summary footer - Premium */}
+                <div className="pt-8 border-t border-gray-100/80 dark:border-midnight-700 flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-electric/20 to-indigo-100 dark:from-electric/30 dark:to-midnight-800 flex items-center justify-center text-electric shadow-lg shadow-electric/10">
+                      <Rocket size={22} strokeWidth={2} />
                     </div>
                     <div>
-                      <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1.5">Total Scale</p>
-                      <p className="text-xs font-bold text-gray-800 leading-none">Global Coverage</p>
+                      <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] leading-none mb-2">Total Scale</p>
+                      <p className="text-sm font-bold text-gray-900 dark:text-white leading-none">Global Coverage</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-[16px] font-black text-[#6366F1]">99.9%</p>
-                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none">Industry Lead</p>
+                    <p className="text-2xl font-black text-electric tracking-tight">99.9%</p>
+                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.15em] leading-none">Industry Lead</p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Floating Status Badge - Premium Pill Style */}
+            {/* Floating Status Badge - Ultra Premium */}
             <motion.div
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -top-4 -right-6 pl-5 pr-8 py-4 bg-white rounded-[2rem] shadow-[0_24px_48px_-8px_rgba(0,0,0,0.12)] z-20 flex items-center gap-4 border border-gray-100/80"
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -top-6 -right-8 pl-6 pr-10 py-6 bg-white/95 dark:bg-midnight-900/95 backdrop-blur-2xl rounded-[2rem] shadow-[0_32px_80px_-12px_rgba(0,0,0,0.3),0_0_0_1px_rgba(255,255,255,0.8)_inset] dark:shadow-[0_32px_80px_-12px_rgba(0,0,0,0.6)] z-20 flex items-center gap-5 border border-white/50 dark:border-midnight-700"
             >
-              <div className="w-14 h-14 bg-emerald-50 rounded-[1.25rem] flex items-center justify-center text-emerald-500 shrink-0">
-                <Check size={28} strokeWidth={3} />
+              <div className="relative">
+                <div className="w-16 h-16 bg-gradient-to-br from-emerald-400 to-emerald-500 rounded-2xl flex items-center justify-center text-white shrink-0 shadow-lg shadow-emerald-400/30">
+                  <Check size={32} strokeWidth={3} />
+                </div>
+                {/* Animated pulse ring */}
+                <motion.div
+                  animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0, 0.5] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
+                  className="absolute inset-0 rounded-2xl border-2 border-emerald-400"
+                />
               </div>
               <div>
-                <p className="text-[9px] font-bold text-gray-400 uppercase tracking-[0.25em] leading-none mb-1.5">Status</p>
-                <p className="text-lg font-extrabold text-gray-900 leading-none tracking-tight">Accepting Sprints</p>
+                <p className="text-[11px] font-black text-gray-400 uppercase tracking-[0.2em] leading-none mb-2">System Status</p>
+                <p className="text-xl font-black text-gray-900 dark:text-white leading-none tracking-tight">Accepting Sprints</p>
               </div>
             </motion.div>
           </motion.div>
@@ -179,8 +191,8 @@ export function Hero({ dict, locale }: HeroProps) {
           preserveAspectRatio="none"
         >
           <path
-            fill="#ffffff"
-            fillOpacity="1"
+            fill="currentColor"
+            className="text-white dark:text-midnight-950"
             d="M0,64L80,58.7C160,53,320,43,480,48C640,53,800,75,960,80C1120,85,1280,75,1360,69.3L1440,64L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"
           ></path>
         </svg>

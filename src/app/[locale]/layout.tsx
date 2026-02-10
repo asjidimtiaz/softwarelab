@@ -5,7 +5,10 @@ import { cn } from "@/lib/utils";
 import { getDictionary } from "@/lib/get-dictionary";
 import { MotionProvider } from "@/components/MotionProvider";
 import { PageTransition } from "@/components/ui/page-transition";
-import { AnalyticsProvider } from "@/lib/analytics";
+import { TrackingProvider } from "@/lib/analytics";
+import { ConsentBanner } from "@/components/ui/consent-banner";
+import { Suspense } from "react";
+import { ChatbotUI } from "@/components/chatbot/chatbot-ui";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -14,7 +17,7 @@ const inter = Inter({
   preload: true
 });
 
-const outfit = Outfit({
+const outfit = Inter({
   subsets: ["latin"],
   variable: "--font-heading",
   display: 'swap',
@@ -91,14 +94,44 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} dir={isRtl ? 'rtl' : 'ltr'} className="scroll-smooth">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Digi Web Crew",
+              "url": "https://digiwebcrew.com/",
+              "logo": "https://digiwebcrew.com/logo.png",
+              "founder": {
+                "@type": "Person",
+                "name": "Toqeer Shafique",
+                "sameAs": [
+                  "https://pk.linkedin.com/in/toqeer-shafique",
+                  "https://github.com/toqeer74",
+                  "https://www.upwork.com/freelancers/toqeer",
+                  "https://www.fiverr.com/toqeer486",
+                  "https://www.freelancer.pk/u/toqeer74"
+                ]
+              },
+              "description": "Specialized development of high-performance web applications and technical SEO strategies."
+            })
+          }}
+        />
+      </head>
       <body className={cn(inter.variable, outfit.variable, "font-sans antialiased bg-background text-foreground transition-all duration-300 font-medium")}>
-        <AnalyticsProvider>
+        <TrackingProvider>
           <MotionProvider>
             <PageTransition>
-              {children}
+              <Suspense fallback={null}>
+                {children}
+              </Suspense>
             </PageTransition>
+            <ChatbotUI />
           </MotionProvider>
-        </AnalyticsProvider>
+          <ConsentBanner />
+        </TrackingProvider>
       </body>
     </html>
   );

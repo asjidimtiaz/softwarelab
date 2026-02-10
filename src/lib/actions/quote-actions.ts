@@ -1,6 +1,6 @@
 "use server";
 
-import connectDB from "@/lib/db";
+import { connectToDatabase } from "@/lib/db";
 import { Lead } from "@/lib/models/lead";
 import { QuoteSchema, QuoteFormData } from "@/types/quote";
 
@@ -36,13 +36,13 @@ async function triggerAutomation(lead: any) {
 export async function submitQuote(data: QuoteFormData) {
   try {
     const validatedData = QuoteSchema.parse(data);
-    
+
     // 0. Honeypot check
     if (validatedData.honeypot) {
       return { success: false, message: "Security check failed." };
     }
 
-    await connectDB();
+    await connectToDatabase();
 
     // 1. Calculate Initial lead score
     let score = 0;
@@ -55,7 +55,7 @@ export async function submitQuote(data: QuoteFormData) {
 
     if (validatedData.message.length > 500) score += 20;
     else if (validatedData.message.length > 200) score += 10;
-    
+
     const tier = score >= 60 ? "HOT" : score >= 30 ? "WARM" : "COLD";
 
     // 2. Create Lead
@@ -67,8 +67,8 @@ export async function submitQuote(data: QuoteFormData) {
         { type: "LeadCreated", meta: { source: "Quote Wizard", referral: validatedData.referral } }
       ],
       tasks: [
-        { 
-          title: "Qualify Lead & Send Proposal", 
+        {
+          title: "Qualify Lead & Send Proposal",
           dueAt: new Date(Date.now() + 12 * 60 * 60 * 1000) // +12 hours for premium feel
         }
       ]
@@ -80,16 +80,16 @@ export async function submitQuote(data: QuoteFormData) {
     // 4. Mock Email Trigger
     console.log(`[SIMULATION] Sending notification to admin about new ${tier} lead: ${validatedData.email}`);
 
-    return { 
-      success: true, 
+    return {
+      success: true,
       leadId: newLead._id.toString(),
-      message: "Quote submitted successfully!" 
+      message: "Quote submitted successfully!"
     };
   } catch (error: any) {
     console.error("Quote submission error:", error);
-    return { 
-      success: false, 
-      message: error.message || "Failed to submit quote" 
+    return {
+      success: false,
+      message: error.message || "Failed to submit quote"
     };
   }
 }

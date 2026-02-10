@@ -1,49 +1,24 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
+// Database Configuration - Force Build Refresh v2
 const MONGODB_URI = process.env.MONGODB_URI;
 
-/**
- * Global is used here to maintain a cached connection across hot reloads
- * in development. This prevents connections growing exponentially
- * during API Route usage.
- */
-interface MongooseCache {
-    conn: mongoose.Connection | null;
-    promise: Promise<mongoose.Connection> | null;
+if (!MONGODB_URI) {
+  throw new Error("Please define the MONGODB_URI environment variable");
 }
 
-declare global {
-    var mongoose: MongooseCache;
-}
-
-let cached = global.mongoose;
+let cached = (global as any).mongoose;
 
 if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
+  cached = (global as any).mongoose = { conn: null, promise: null };
 }
 
-// Add connection listeners
-mongoose.connection.on('connected', () => {
-    console.log('>>> [DATABASE] MongoDB connected successfully.');
-});
-
-mongoose.connection.on('error', (err) => {
-    console.error('>>> [DATABASE] MongoDB connection error:', err);
-});
-
-mongoose.connection.on('disconnected', () => {
-    console.warn('>>> [DATABASE] MongoDB disconnected.');
-});
-
-async function connectDB() {
+/**
+ * Standard Database Connection Utility
+ */
+export async function connectToDatabase() {
   if (cached.conn) {
     return cached.conn;
-  }
-
-  if (!MONGODB_URI) {
-    throw new Error(
-      'Please define the MONGODB_URI environment variable inside .env.local'
-    );
   }
 
   if (!cached.promise) {
@@ -66,4 +41,5 @@ async function connectDB() {
   return cached.conn;
 }
 
-export default connectDB;
+export const connectDB = connectToDatabase;
+export default connectToDatabase;

@@ -1,196 +1,214 @@
 import { getLeadById } from "@/lib/actions/lead-actions";
 import { notFound } from "next/navigation";
 import { format } from "date-fns";
-import { 
-  Mail, Building2, Calendar, Globe, Clock, 
-  ChevronLeft, MessageSquare, Target, Zap,
-  CheckCircle2, Clock3, AlertCircle
+import {
+   Mail, Building2, Calendar, Globe, Clock,
+   ChevronLeft, MessageSquare, Target, Zap,
+   CheckCircle2, Clock3, AlertCircle, Plus, Terminal
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 export default async function LeadDetailPage({
-  params,
+   params,
 }: {
-  params: Promise<{ id: string }>;
+   params: Promise<{ id: string }>;
 }) {
-  const { id } = await params;
-  const lead = await getLeadById(id);
+   const { id } = await params;
+   const lead = await getLeadById(id);
 
-  if (!lead) notFound();
+   if (!lead) notFound();
 
-  return (
-    <div className="space-y-12 pb-20">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
-        <div className="flex items-center gap-6">
-          <Link href="/admin/leads">
-            <Button variant="glass" size="sm" className="h-12 w-12 p-0 rounded-xl group/back">
-              <ChevronLeft size={20} className="group-hover/back:-translate-x-1 transition-transform" />
-            </Button>
-          </Link>
-          <div>
-            <h1 className="text-4xl font-bold tracking-tight text-white">{lead.fullName}</h1>
-            <p className="text-sm font-medium text-muted-foreground/60 mt-2 flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-primary/40" />
-                Inquiry ID: {lead._id}
-            </p>
-          </div>
-        </div>
-        <div className="flex gap-3">
-           <Button variant="glass" className="px-6">
-              Manage Lead
-           </Button>
-           <Button className="px-6">
-              Update Details
-           </Button>
-        </div>
-      </div>
+   return (
+      <div className="space-y-12 pb-20 relative">
+         <div className="absolute inset-0 bg-[radial-gradient(#6366f1_1px,transparent_1px)] [background-size:32px_32px] opacity-[0.03] pointer-events-none" />
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-         {/* Left Side: Details */}
-         <div className="lg:col-span-8 space-y-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Card className="border-white/5 bg-white/[0.01] p-8">
-                   <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/40 mb-4">Service Category</p>
-                   <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center border border-primary/20">
-                         <Target size={22} />
-                      </div>
-                      <span className="text-sm font-bold text-white uppercase tracking-tight">{lead.serviceCategory.replace("-", " ")}</span>
-                   </div>
-                </Card>
-                <Card className="border-white/5 bg-white/[0.01] p-8">
-                   <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/40 mb-4">Lead Status</p>
-                   <div className="flex items-center gap-4">
-                      <div className={cn(
-                        "w-12 h-12 rounded-2xl flex items-center justify-center border",
-                        lead.leadTier === "HOT" ? "bg-rose-500/10 text-rose-500 border-rose-500/20" :
-                        lead.leadTier === "WARM" ? "bg-amber-500/10 text-amber-500 border-amber-500/20" :
-                        "bg-blue-500/10 text-blue-500 border-blue-500/20"
-                      )}>
-                         <Zap size={22} fill="currentColor" />
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-sm font-bold text-white uppercase tracking-tight">{lead.leadTier} Priority</span>
-                        <span className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest leading-none mt-1">Score: {lead.leadScore}</span>
-                      </div>
-                   </div>
-                </Card>
-                <Card className="border-white/5 bg-white/[0.01] p-8">
-                   <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/40 mb-4">Pipeline Status</p>
-                   <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-muted-foreground/40">
-                         <Clock size={22} />
-                      </div>
-                      <span className="text-sm font-bold text-primary uppercase tracking-tight">{lead.status}</span>
-                   </div>
-                </Card>
+         {/* Header Area */}
+         <div className="flex flex-col md:flex-row md:items-center justify-between gap-10 relative z-10">
+            <div className="flex items-center gap-10">
+               <Link href="/admin/leads">
+                  <Button variant="ghost" size="sm" className="h-16 w-16 p-0 rounded-3xl bg-white border border-gray-100 shadow-sm group/back hover:bg-gray-50">
+                     <ChevronLeft size={28} className="text-gray-900 group-hover/back:-translate-x-1 transition-transform" />
+                  </Button>
+               </Link>
+               <div>
+                  <h1 className="text-6xl font-[1000] tracking-[-0.05em] text-gray-900 uppercase">
+                     {lead.fullName}
+                  </h1>
+                  <div className="flex items-center gap-3 mt-4">
+                     <div className="w-3 h-3 rounded-full bg-electric animate-pulse shadow-[0_0_15px_rgba(59,130,246,0.5)]" />
+                     <p className="text-xs font-black text-gray-400 uppercase tracking-[0.3em]">Inquiry ID: <span className="text-gray-900/80">{lead._id}</span></p>
+                  </div>
+               </div>
+            </div>
+            <div className="flex gap-4">
+               <Button variant="outline" className="h-16 px-10 rounded-full border-gray-200 bg-white shadow-sm text-[11px] font-[900] uppercase tracking-widest hover:bg-gray-50 hover:scale-105 transition-all">
+                  Manage Lead
+               </Button>
+               <Button className="h-16 px-10 rounded-full bg-[#111827] text-white shadow-2xl shadow-gray-900/20 text-[11px] font-[900] uppercase tracking-widest hover:scale-105 transition-all">
+                  Update Details
+               </Button>
+            </div>
+         </div>
+
+         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 relative z-10">
+            {/* Left Side: Intelligence Modules */}
+            <div className="lg:col-span-8 space-y-10">
+               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <Card className="rounded-[3.5rem] border-gray-100 bg-white/40 backdrop-blur-3xl p-12 shadow-sm hover:shadow-2xl transition-all group border-b-4 border-b-transparent hover:border-b-electric">
+                     <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 mb-8">Service Category</p>
+                     <div className="flex items-center gap-6">
+                        <div className="w-20 h-20 rounded-[2rem] bg-gray-50 text-gray-900 flex items-center justify-center border border-gray-100 group-hover:bg-electric group-hover:text-white group-hover:scale-110 transition-all duration-500 shadow-sm">
+                           <Target size={32} />
+                        </div>
+                        <div className="flex flex-col gap-1">
+                           <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Selected Focus</span>
+                           <span className="text-sm font-[1000] text-gray-900 uppercase tracking-tighter leading-tight">{lead.serviceCategory.replace("-", " ")}</span>
+                        </div>
+                     </div>
+                  </Card>
+                  <Card className="rounded-[3.5rem] border-gray-100 bg-white/40 backdrop-blur-3xl p-12 shadow-sm hover:shadow-2xl transition-all group border-b-4 border-b-transparent hover:border-b-rose-500">
+                     <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 mb-8">Lead Protocol</p>
+                     <div className="flex items-center gap-6">
+                        <div className={cn(
+                           "w-20 h-20 rounded-[2rem] flex items-center justify-center border group-hover:scale-110 transition-all duration-500 shadow-sm",
+                           lead.leadTier === "HOT" ? "bg-rose-500 text-white border-rose-500/20" :
+                              lead.leadTier === "WARM" ? "bg-amber-500 text-white border-amber-500/20" :
+                                 "bg-gray-900 text-white border-gray-900/20"
+                        )}>
+                           <Zap size={32} fill="currentColor" />
+                        </div>
+                        <div className="flex flex-col">
+                           <span className="text-sm font-[1000] text-gray-900 uppercase tracking-tighter">{lead.leadTier} Priority</span>
+                           <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-1">Score: {lead.leadScore}</span>
+                        </div>
+                     </div>
+                  </Card>
+                  <Card className="rounded-[3.5rem] border-gray-100 bg-white/40 backdrop-blur-3xl p-12 shadow-sm hover:shadow-2xl transition-all group border-b-4 border-b-transparent hover:border-b-electric">
+                     <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 mb-8">Pipeline Logic</p>
+                     <div className="flex items-center gap-6">
+                        <div className="w-20 h-20 rounded-[2rem] bg-gray-50 border border-gray-100 flex items-center justify-center text-gray-400 group-hover:bg-electric group-hover:text-white group-hover:scale-110 transition-all duration-500 shadow-sm">
+                           <Clock size={32} />
+                        </div>
+                        <span className="text-sm font-[1000] text-electric uppercase tracking-tighter">{lead.status}</span>
+                     </div>
+                  </Card>
+               </div>
+
+               <Card className="rounded-[4rem] border-gray-100 bg-white shadow-2xl shadow-gray-300/40 p-16 relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-80 h-80 bg-electric/5 blur-[120px] rounded-full -mr-40 -mt-40 transition-all duration-700 group-hover:scale-125" />
+
+                  <div className="flex items-center gap-6 mb-16 pb-10 border-b border-gray-50 relative z-10">
+                     <div className="w-14 h-14 rounded-[1.25rem] bg-gray-900 flex items-center justify-center text-white shadow-xl">
+                        <Globe size={26} />
+                     </div>
+                     <div>
+                        <h3 className="text-3xl font-[1000] tracking-[-0.03em] text-gray-900 uppercase">Project Architecture</h3>
+                        <p className="text-[11px] font-black text-gray-400 uppercase tracking-[0.3em] mt-1.5 opacity-60">Detailed Technical Specifications</p>
+                     </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-20 relative z-10">
+                     <div className="space-y-12">
+                        <div className="group/item">
+                           <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-300 mb-5 group-hover/item:text-electric transition-colors">Service Interest</p>
+                           <p className="text-2xl font-[1000] text-gray-900 uppercase tracking-tighter">{lead.serviceInterest.replace("-", " ")}</p>
+                        </div>
+                        <div className="group/item">
+                           <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-300 mb-5 group-hover/item:text-electric transition-colors">Target Environment</p>
+                           <div className="flex items-center gap-3">
+                              <Terminal size={18} className="text-gray-400" />
+                              <p className="text-base font-[900] text-gray-500 tracking-tight">{lead.projectType}</p>
+                           </div>
+                        </div>
+                     </div>
+                     <div className="space-y-12">
+                        <div className="group/item">
+                           <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-300 mb-5 group-hover/item:text-electric transition-colors">Budget Allocation</p>
+                           <p className="text-2xl font-[1000] tabular-nums text-electric tracking-tighter">{lead.budgetRange}</p>
+                        </div>
+                        <div className="group/item">
+                           <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-300 mb-5 group-hover/item:text-electric transition-colors">Target Timeline</p>
+                           <div className="flex items-center gap-3">
+                              <Calendar size={18} className="text-gray-400" />
+                              <p className="text-base font-[900] text-gray-500 tracking-tight">{lead.timeline}</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
+                  <div className="mt-20 pt-16 border-t border-gray-50 relative z-10">
+                     <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-300 mb-10">Inquiry Transmission</p>
+                     <div className="bg-gray-50/50 rounded-[3rem] p-12 italic leading-relaxed text-gray-600 text-2xl font-[900] relative border border-gray-100 group-hover:bg-white transition-all shadow-inner tracking-tight">
+                        <MessageSquare size={64} className="absolute -top-8 -right-8 text-gray-100 rotate-12 opacity-50" />
+                        "{lead.message}"
+                     </div>
+                  </div>
+               </Card>
             </div>
 
-            <Card className="border-white/5 bg-white/[0.01] p-10 relative overflow-hidden">
-               <div className="flex items-center gap-4 mb-10 pb-6 border-b border-white/5">
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
-                    <Globe size={18} />
-                  </div>
-                  <h3 className="text-2xl font-bold tracking-tight text-white">Project Information</h3>
-               </div>
-               
-               <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                  <div className="space-y-8">
-                     <div>
-                        <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/40 mb-3">Service Interest</p>
-                        <p className="text-lg font-bold text-white uppercase tracking-tight">{lead.serviceInterest.replace("-", " ")}</p>
-                     </div>
-                     <div>
-                        <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/40 mb-3">Project Type</p>
-                        <p className="text-sm font-semibold text-muted-foreground/80">{lead.projectType}</p>
+            {/* Right Side: Timeline & Protocols */}
+            <div className="lg:col-span-4 space-y-10">
+               <Card className="rounded-[4rem] border-gray-100 bg-white/40 backdrop-blur-3xl p-12 shadow-sm">
+                  <div className="flex items-center justify-between mb-12">
+                     <h3 className="text-xl font-[1000] tracking-tighter text-gray-900 uppercase">
+                        Activity Log
+                     </h3>
+                     <div className="flex items-center gap-3 px-4 py-2 rounded-full bg-emerald-50 border border-emerald-100">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-emerald-600">Syncing</span>
+                        <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
                      </div>
                   </div>
-                  <div className="space-y-8">
-                     <div>
-                        <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/40 mb-3">Budget Allocation</p>
-                        <p className="text-lg font-bold tabular-nums text-primary">{lead.budgetRange}</p>
-                     </div>
-                     <div>
-                        <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/40 mb-3">Target Timeline</p>
-                        <p className="text-sm font-semibold text-muted-foreground/80">{lead.timeline}</p>
-                     </div>
-                  </div>
-               </div>
-               
-               <div className="mt-12 pt-10 border-t border-white/5">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/40 mb-6">Inquiry Message</p>
-                  <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-8 italic leading-relaxed text-muted-foreground/80 text-lg relative group">
-                     <MessageSquare size={32} className="absolute -top-3 -right-3 opacity-10" />
-                     "{lead.message}"
-                  </div>
-               </div>
-            </Card>
-         </div>
-
-         {/* Right Side: Timeline & Tasks */}
-         <div className="lg:col-span-4 space-y-8">
-            <Card className="border-white/5 bg-white/[0.01] p-8">
-               <h3 className="text-lg font-bold tracking-tight text-white mb-8 flex items-center justify-between">
-                  Activity Log
-                  <div className="flex items-center gap-2">
-                    <span className="text-[9px] font-bold uppercase tracking-widest text-primary">Syncing</span>
-                    <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                  </div>
-               </h3>
-               <div className="space-y-10 relative before:absolute before:inset-0 before:left-[19px] before:w-[2px] before:bg-white/5">
-                  {lead.events.slice().reverse().map((event: any, i: number) => (
-                     <div key={i} className="relative pl-12 group/event">
-                        <div className="absolute left-0 top-1 w-10 h-10 rounded-xl bg-slate-900 border border-white/5 flex items-center justify-center z-10 group-hover/event:border-primary/50 transition-colors">
-                           <div className="w-1.5 h-1.5 rounded-full bg-primary/60" />
-                        </div>
-                        <div>
-                           <div className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/30 mb-2">
-                              {format(new Date(event.at), "MMM d, HH:mm")}
+                  <div className="space-y-16 relative before:absolute before:inset-0 before:left-[27px] before:w-[2px] before:bg-gray-100">
+                     {lead.events.slice().reverse().map((event: any, i: number) => (
+                        <div key={i} className="relative pl-16 group/event">
+                           <div className="absolute left-0 top-1 w-14 h-14 rounded-full bg-white border border-gray-100 flex items-center justify-center z-10 shadow-sm group-hover/event:border-electric group-hover/event:scale-110 transition-all overflow-hidden duration-500">
+                              <div className="w-2.5 h-2.5 rounded-full bg-gray-900 group-hover/event:bg-electric transition-colors" />
                            </div>
-                           <div className="text-sm font-bold text-white/90 group-hover/event:text-primary transition-colors">{event.type}</div>
+                           <div>
+                              <div className="text-[10px] font-[900] uppercase tracking-widest text-gray-300 mb-3 italic">
+                                 {format(new Date(event.at), "MMM d · HH:mm")}
+                              </div>
+                              <div className="text-base font-[1000] text-gray-900 group-hover/event:text-electric transition-colors tracking-tight uppercase">{event.type}</div>
+                           </div>
                         </div>
-                     </div>
-                  ))}
-               </div>
-            </Card>
+                     ))}
+                  </div>
+               </Card>
 
-            <Card className="border-white/5 bg-white/[0.01] p-8">
-               <h3 className="text-lg font-bold tracking-tight text-white mb-8 flex items-center justify-between">
-                  Tasks
-                  <span className="bg-primary/10 text-primary border border-primary/20 px-3 py-1 rounded-lg text-[10px] font-bold tracking-widest tabular-nums">
-                     {lead.tasks.filter((t: any) => !t.done).length} ACTIVE
-                  </span>
-               </h3>
-               <div className="space-y-4">
-                  {lead.tasks.map((task: any, i: number) => (
-                     <div key={i} className="flex items-start gap-4 p-5 rounded-2xl bg-white/[0.02] hover:bg-white/[0.04] transition-all cursor-pointer group/task border border-white/5">
-                        <div className={cn(
-                           "w-6 h-6 rounded-lg border flex items-center justify-center transition-all mt-0.5",
-                           task.done ? "bg-primary border-primary text-white" : "bg-white/5 border-white/10 group-hover/task:border-primary/50"
-                        )}>
-                           {task.done && <CheckCircle2 size={14} strokeWidth={3} />}
+               <Card className="rounded-[4rem] border-gray-100 bg-white p-12 shadow-xl shadow-gray-200/50">
+                  <div className="flex items-center justify-between mb-12">
+                     <h3 className="text-xl font-[1000] tracking-tighter text-gray-900 uppercase">Protocols</h3>
+                     <span className="bg-gray-900 text-white border border-gray-900 px-5 py-2 rounded-2xl text-[10px] font-black tracking-widest tabular-nums shadow-lg">
+                        {lead.tasks.filter((t: any) => !t.done).length} ACTIVE
+                     </span>
+                  </div>
+                  <div className="space-y-6">
+                     {lead.tasks.map((task: any, i: number) => (
+                        <div key={i} className="flex items-center gap-5 p-6 rounded-[2.5rem] bg-gray-50/50 hover:bg-gray-50 transition-all cursor-pointer group/task border border-transparent hover:border-gray-100">
+                           <div className={cn(
+                              "w-8 h-8 rounded-xl border flex items-center justify-center transition-all shadow-sm",
+                              task.done ? "bg-electric border-electric text-white" : "bg-white border-gray-200 group-hover/task:border-electric"
+                           )}>
+                              {task.done && <CheckCircle2 size={18} strokeWidth={3} />}
+                           </div>
+                           <div className="flex-1 min-w-0">
+                              <div className={cn("text-base font-black tracking-tight truncate", task.done ? "line-through opacity-30 text-gray-900" : "text-gray-900")}>{task.title}</div>
+                              <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-1 italic">Protocol Deadline: {format(new Date(task.dueAt), "MMM d")}</div>
+                           </div>
                         </div>
-                        <div>
-                           <div className={cn("text-sm font-bold", task.done ? "line-through opacity-30 text-white" : "text-white/80")}>{task.title}</div>
-                           <div className="text-[10px] font-bold text-muted-foreground/30 uppercase tracking-widest mt-1">Due: {format(new Date(task.dueAt), "MMM d")}</div>
-                        </div>
-                     </div>
-                  ))}
-               </div>
-               <Button variant="outline" className="w-full mt-10 h-12 rounded-xl border-dashed border-white/10 hover:border-primary/50 hover:bg-primary/5 transition-all text-[10px] font-bold uppercase tracking-widest text-muted-foreground/40 flex items-center justify-center gap-2">
-                  <Plus size={16} />
-                  Add Task
-               </Button>
-            </Card>
+                     ))}
+                  </div>
+                  <Button variant="outline" className="w-full mt-12 h-16 rounded-[2rem] border-dashed border-2 border-gray-200 hover:border-electric/50 hover:bg-electric/5 transition-all text-[11px] font-[1000] uppercase tracking-[0.2em] text-gray-400 hover:text-electric flex items-center justify-center gap-4">
+                     <Plus size={20} />
+                     New Protocol
+                  </Button>
+               </Card>
+            </div>
          </div>
       </div>
-    </div>
-  );
+   );
 }
-
-import { Plus } from "lucide-react";

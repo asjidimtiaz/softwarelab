@@ -39,7 +39,7 @@ export default function ServicesHub({ dict, locale }: { dict: any; locale: strin
               onClick={() => setActiveFilter("all")}
               className={cn(
                 "px-10 py-5 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all border",
-                activeFilter === "all" ? "bg-gray-900 text-white border-gray-900 shadow-xl shadow-gray-200" : "bg-gray-50 text-gray-900 border-gray-200/50 hover:bg-gray-100"
+                activeFilter === "all" ? "bg-gray-900 dark:bg-white text-white dark:text-gray-900 border-gray-900 dark:border-white shadow-xl shadow-gray-200 dark:shadow-black/30" : "bg-gray-50 dark:bg-midnight-800 text-gray-900 dark:text-white border-gray-200/50 dark:border-midnight-700 hover:bg-gray-100 dark:hover:bg-midnight-700"
               )}
             >
               All Labs
@@ -50,7 +50,7 @@ export default function ServicesHub({ dict, locale }: { dict: any; locale: strin
                 onClick={() => setActiveFilter(service.slug)}
                 className={cn(
                   "px-10 py-5 rounded-[2rem] text-[10px] font-black uppercase tracking-[0.2em] transition-all",
-                  activeFilter === service.slug ? "bg-primary text-primary-foreground shadow-2xl shadow-primary/30" : "bg-white border-2 border-primary/10 hover:border-primary/50"
+                  activeFilter === service.slug ? "bg-primary text-primary-foreground shadow-2xl shadow-primary/30" : "bg-white dark:bg-midnight-800 border-2 border-primary/10 dark:border-midnight-700 hover:border-primary/50"
                 )}
               >
                 {service.title}
@@ -88,18 +88,18 @@ export default function ServicesHub({ dict, locale }: { dict: any; locale: strin
                 <AnimatedSection
                   key={tech.slug}
                   delay={i * 0.1}
-                  className="p-12 rounded-[3.5rem] bg-white border border-primary/10 transition-all duration-700 hover:border-primary/50 hover:premium-shadow group"
+                  className="p-12 rounded-[3.5rem] bg-white dark:bg-midnight-900 border border-primary/10 dark:border-midnight-800 transition-all duration-700 hover:border-primary/50 hover:premium-shadow group"
                 >
                   <div className="w-20 h-20 rounded-2xl bg-primary/10 border border-primary/10 flex items-center justify-center text-primary mb-10 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500">
                     <Icon size={40} />
                   </div>
-                  <h4 className="text-3xl font-black tracking-tight mb-6">{tech.title}</h4>
+                  <h4 className="text-3xl font-black tracking-tight mb-6 text-gray-900 dark:text-white">{tech.title}</h4>
                   <p className="text-lg text-muted-foreground font-semibold leading-relaxed mb-12 opacity-90">
                     {tech.description}
                   </p>
                   <Link
                     href={`/${locale}/tech/${tech.slug}`}
-                    className="flex h-16 items-center justify-center rounded-xl bg-gray-50 text-gray-900 font-extrabold text-[11px] uppercase tracking-[0.2em] transition-all hover:bg-white hover:scale-[1.02] active:scale-95 border border-gray-200/50 shadow-sm"
+                    className="flex h-16 items-center justify-center rounded-xl bg-gray-50 dark:bg-midnight-800 text-gray-900 dark:text-white font-extrabold text-[11px] uppercase tracking-[0.2em] transition-all hover:bg-white dark:hover:bg-midnight-700 hover:scale-[1.02] active:scale-95 border border-gray-200/50 dark:border-midnight-700 shadow-sm"
                   >
                     View Tech Laboratory
                   </Link>

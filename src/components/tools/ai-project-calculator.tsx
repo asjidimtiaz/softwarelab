@@ -4,6 +4,10 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calculator, Download, Zap, Code, Server } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useToolTracking, useFormTracking } from "@/lib/tracking-hooks";
+import { useEffect } from "react";
+import { useParams } from "next/navigation";
+import Link from "next/link";
 
 interface CalculatorInputs {
     platform: "Web" | "Mobile" | "Both";
@@ -13,6 +17,8 @@ interface CalculatorInputs {
 }
 
 export function AIProjectCalculator() {
+    const params = useParams();
+    const locale = params?.locale || "en";
     const [inputs, setInputs] = useState<CalculatorInputs>({
         platform: "Web",
         pages: 10,
@@ -21,6 +27,13 @@ export function AIProjectCalculator() {
     });
 
     const [showResults, setShowResults] = useState(false);
+    const { trackCalculatorStart, trackCalculatorComplete } = useToolTracking();
+    const { trackPdfDownload } = useFormTracking();
+
+    // Track initial interaction
+    useEffect(() => {
+        trackCalculatorStart();
+    }, [trackCalculatorStart]);
 
     // Weighted Logic Formula
     const calculateHours = () => {
@@ -44,6 +57,12 @@ export function AIProjectCalculator() {
     };
 
     const handleDownloadPDF = async () => {
+        // Track the download event
+        trackPdfDownload({
+            documentName: "AI_Project_Scope_Estimate",
+            documentType: "tech_breakdown"
+        });
+
         // TODO: Implement PDF generation via API route
         console.log("PDF Download requested", { inputs, hours, weeks, estimatedCost });
         alert("PDF generation functionality is being developed. Your estimate: " + hours + " hours, " + weeks + " weeks, $" + estimatedCost.toLocaleString());
@@ -160,7 +179,17 @@ export function AIProjectCalculator() {
 
                 {/* Calculate Button */}
                 <button
-                    onClick={() => setShowResults(!showResults)}
+                    onClick={() => {
+                        const isUpdate = showResults;
+                        setShowResults(!showResults);
+                        if (!isUpdate) {
+                            trackCalculatorComplete({
+                                estimatedHours: hours,
+                                platform: inputs.platform,
+                                complexity: inputs.complexity
+                            });
+                        }
+                    }}
                     className="w-full py-4 bg-electric hover:bg-electric-dark text-white font-black text-sm uppercase tracking-wider rounded-xl transition-all shadow-lg shadow-electric/30 hover:shadow-xl hover:shadow-electric/40 hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3"
                 >
                     <Zap size={18} />
@@ -213,14 +242,24 @@ export function AIProjectCalculator() {
                         </div>
                     </div>
 
-                    {/* Download CTA */}
-                    <button
-                        onClick={handleDownloadPDF}
-                        className="w-full py-4 bg-gray-900 dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-100 text-white dark:text-gray-900 font-black text-sm uppercase tracking-wider rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3"
-                    >
-                        <Download size={18} />
-                        Download Detailed Tech Breakdown
-                    </button>
+                    {/* Download & Quote CTAs */}
+                    <div className="grid grid-cols-1 gap-3">
+                        <button
+                            onClick={handleDownloadPDF}
+                            className="w-full py-4 bg-gray-50 dark:bg-midnight-900 border border-gray-200 dark:border-midnight-700 text-gray-900 dark:text-white font-black text-sm uppercase tracking-wider rounded-xl transition-all hover:bg-white dark:hover:bg-midnight-800 flex items-center justify-center gap-3"
+                        >
+                            <Download size={18} />
+                            Download Tech Breakdown
+                        </button>
+
+                        <Link
+                            href={`/${locale}/quote`}
+                            className="w-full py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-black text-sm uppercase tracking-wider rounded-xl transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3"
+                        >
+                            <Zap size={18} />
+                            Request Industrial Quote
+                        </Link>
+                    </div>
 
                     <p className="text-xs text-center text-gray-500 dark:text-gray-500">
                         This is an AI-generated estimate. Actual scope may vary based on specific requirements.

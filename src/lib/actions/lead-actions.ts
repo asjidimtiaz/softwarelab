@@ -1,29 +1,29 @@
 "use server";
 
-import connectDB from "@/lib/db";
+import { connectToDatabase } from "@/lib/db";
 import { Lead } from "@/lib/models/lead";
 import { revalidatePath } from "next/cache";
 
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth-options";
 
-export async function getLeads(filters: { 
-  query?: string; 
-  status?: string; 
+export async function getLeads(filters: {
+  query?: string;
+  status?: string;
   tier?: string;
   page?: number;
 } = {}) {
   const session = await getServerSession(authOptions);
   if (!session) throw new Error("Unauthorized");
 
-  await connectDB();
-  
+  await connectToDatabase();
+
   const { query, status, tier, page = 1 } = filters;
   const limit = 20;
   const skip = (page - 1) * limit;
 
   const mongoQuery: any = {};
-  
+
   if (query) {
     mongoQuery.$or = [
       { fullName: { $regex: query, $options: "i" } },
@@ -60,7 +60,7 @@ export async function getLeadById(id: string) {
   const session = await getServerSession(authOptions);
   if (!session) throw new Error("Unauthorized");
 
-  await connectDB();
+  await connectToDatabase();
   const lead = await Lead.findById(id).lean();
   return JSON.parse(JSON.stringify(lead));
 }
@@ -69,18 +69,18 @@ export async function updateLeadStatus(id: string, status: string) {
   const session = await getServerSession(authOptions);
   if (!session) throw new Error("Unauthorized");
 
-  await connectDB();
+  await connectToDatabase();
   const lead = await Lead.findByIdAndUpdate(
-    id, 
-    { 
+    id,
+    {
       status,
-      $push: { 
-        events: { 
-          type: "StatusUpdated", 
+      $push: {
+        events: {
+          type: "StatusUpdated",
           meta: { newStatus: status },
           at: new Date()
-        } 
-      } 
+        }
+      }
     },
     { new: true }
   );
@@ -93,7 +93,7 @@ export async function addLeadNote(id: string, note: string) {
   const session = await getServerSession(authOptions);
   if (!session) throw new Error("Unauthorized");
 
-  await connectDB();
+  await connectToDatabase();
   const lead = await Lead.findByIdAndUpdate(
     id,
     {
@@ -115,13 +115,13 @@ export async function createLead(data: any) {
   const session = await getServerSession(authOptions);
   if (!session) throw new Error("Unauthorized");
 
-  await connectDB();
-  
+  await connectToDatabase();
+
   // Calculate score & tier
   let score = 0;
   if (data.budgetRange?.includes("25k") || data.budgetRange?.includes("50k")) score += 40;
   else if (data.budgetRange?.includes("10k")) score += 20;
-  
+
   const tier = score >= 60 ? "HOT" : score >= 30 ? "WARM" : "COLD";
 
   const lead = await Lead.create({

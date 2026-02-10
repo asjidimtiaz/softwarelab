@@ -51,8 +51,11 @@ export function Navbar({ dict, locale }: NavbarProps) {
           {/* Logo Section */}
           <div className="flex items-center">
             <Link href={`/${locale}`} className="flex items-center gap-3 group">
-              <div className="w-9 h-9 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-purple-500/20 transition-transform hover:scale-105">
-                <span className="font-bold text-xs">SL</span>
+              <div className="w-10 h-10 bg-gradient-to-br from-gray-900 to-black rounded-full flex items-center justify-center border border-white/10 shadow-[0_4px_12px_rgba(0,0,0,0.5)] group-hover:scale-105 transition-all duration-300 relative overflow-hidden">
+                <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="w-5 h-5 rounded-full border-[2px] border-electric/80 flex items-center justify-center shadow-[0_0_12px_rgba(59,130,246,0.4)]">
+                  <div className="w-2 h-2 rounded-full bg-electric shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
+                </div>
               </div>
             </Link>
           </div>
@@ -64,7 +67,7 @@ export function Navbar({ dict, locale }: NavbarProps) {
                 key={link.name}
                 href={link.href}
                 className={cn(
-                  "px-3 py-2 text-[13px] font-medium text-gray-600 hover:text-gray-900 transition-colors whitespace-nowrap flex items-center gap-1",
+                  "px-3 py-2 text-[13px] font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors whitespace-nowrap flex items-center gap-1",
                   index === 0 && "relative group"
                 )}
               >

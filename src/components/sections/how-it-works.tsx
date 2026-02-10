@@ -36,14 +36,14 @@ export function HowItWorks({ dict }: HowItWorksProps) {
     }));
 
     return (
-        <Section className="bg-white relative overflow-hidden py-12 md:py-20">
+        <Section className="bg-white dark:bg-midnight-950 relative overflow-hidden py-12 md:py-20">
             <Container>
                 <div className="text-center mb-12">
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-3xl md:text-4xl font-black text-gray-900 mb-4"
+                        className="text-3xl md:text-4xl font-black text-gray-900 dark:text-white mb-4"
                     >
                         How It Works?
                     </motion.h2>
@@ -96,7 +96,7 @@ export function HowItWorks({ dict }: HowItWorksProps) {
                                             <div className="absolute inset-0 rounded-full border-4 border-white opacity-20 scale-110" />
 
                                             {/* Inner visual (could be a phone mock, using icon for now) */}
-                                            <div className="bg-white rounded-2xl w-full h-full shadow-2xl flex flex-col items-center justify-center p-4">
+                                            <div className="bg-white dark:bg-midnight-800 rounded-2xl w-full h-full shadow-2xl flex flex-col items-center justify-center p-4">
                                                 <div className={cn("w-12 h-12 rounded-lg flex items-center justify-center text-white mb-2", step.color)}>
                                                     <span className="font-black text-lg">SL</span>
                                                 </div>
@@ -124,8 +124,8 @@ export function HowItWorks({ dict }: HowItWorksProps) {
                                             isEven ? "md:text-right" : ""
                                         )}
                                     >
-                                        <h3 className="text-2xl font-black text-gray-900 mb-4">{step.title}</h3>
-                                        <p className="text-gray-600 leading-relaxed text-lg">
+                                        <h3 className="text-2xl font-black text-gray-900 dark:text-white mb-4">{step.title}</h3>
+                                        <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-lg">
                                             {step.desc}
                                         </p>
                                     </motion.div>

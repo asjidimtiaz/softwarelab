@@ -20,8 +20,11 @@ export function Footer({ dict, locale }: FooterProps) {
           <div className="flex flex-col md:flex-row items-center gap-8">
             {/* Logo */}
             <Link href={`/${locale}`} className="flex items-center gap-3 group">
-              <div className="w-10 h-10 bg-electric rounded-xl flex items-center justify-center text-white font-black shadow-lg transition-transform group-hover:scale-105">
-                <span className="text-sm">D</span>
+              <div className="w-10 h-10 bg-gradient-to-br from-gray-900 to-black rounded-full flex items-center justify-center border border-white/10 shadow-[0_4px_12px_rgba(0,0,0,0.5)] group-hover:scale-105 transition-all duration-300 relative overflow-hidden">
+                <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="w-5 h-5 rounded-full border-[2px] border-electric/80 flex items-center justify-center shadow-[0_0_12px_rgba(59,130,246,0.4)]">
+                  <div className="w-2 h-2 rounded-full bg-electric shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
+                </div>
               </div>
               <span className="font-black text-gray-900 dark:text-white uppercase tracking-tighter text-xl">Digi <span className="text-electric">Web Crew</span></span>
             </Link>

@@ -11,13 +11,22 @@ interface CardProps {
 }
 
 export function Card({ children, className, animate = true }: CardProps) {
-  const content = (
-    <div className={cn("bento-card", className)}>
-      {children}
-    </div>
+  const cardClasses = cn(
+    "relative w-full h-full transition-all duration-500",
+    "rounded-[2.5rem] overflow-hidden",
+    // Only apply default bg/border if not provided in className
+    !className?.includes("bg-") && "bg-white dark:bg-midnight-900 border border-border shadow-sm hover:shadow-xl",
+    "hover:-translate-y-2",
+    className
   );
 
-  if (!animate) return content;
+  if (!animate) {
+    return (
+      <div className={cardClasses}>
+        {children}
+      </div>
+    );
+  }
 
   return (
     <motion.div
@@ -25,8 +34,9 @@ export function Card({ children, className, animate = true }: CardProps) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, ease: "easeOut" }}
+      className={cardClasses}
     >
-      {content}
+      {children}
     </motion.div>
   );
 }

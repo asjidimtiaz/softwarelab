@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Badge } from "../ui/badge";
 import { ArrowUpRight, Search } from "lucide-react";
 import Image from "next/image";
+import { useToolTracking } from "@/lib/tracking-hooks";
 
 const categories = ["All", "Fintech", "AI & Automation", "E-commerce", "SaaS"];
 
@@ -46,6 +47,7 @@ const caseStudies = [
 
 export function CaseStudiesLibrary() {
     const [activeCategory, setActiveCategory] = useState("All");
+    const { trackPortfolioProjectInteraction } = useToolTracking();
 
     const filtered = activeCategory === "All"
         ? caseStudies
@@ -76,8 +78,8 @@ export function CaseStudiesLibrary() {
                                 key={cat}
                                 onClick={() => setActiveCategory(cat)}
                                 className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border ${activeCategory === cat
-                                        ? "bg-gray-900 border-gray-900 text-white dark:bg-white dark:border-white dark:text-gray-900 shadow-xl"
-                                        : "bg-white border-gray-100 text-gray-400 hover:border-gray-200 dark:bg-midnight-900 dark:border-midnight-800 dark:text-gray-500"
+                                    ? "bg-gray-900 border-gray-900 text-white dark:bg-white dark:border-white dark:text-gray-900 shadow-xl"
+                                    : "bg-white border-gray-100 text-gray-400 hover:border-gray-200 dark:bg-midnight-900 dark:border-midnight-800 dark:text-gray-500"
                                     }`}
                             >
                                 {cat}
@@ -95,6 +97,13 @@ export function CaseStudiesLibrary() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: idx * 0.1 }}
                             className="group cursor-pointer"
+                            onClick={() => {
+                                trackPortfolioProjectInteraction(
+                                    cs.title.toLowerCase().replace(/\s+/g, '-'),
+                                    'view_details',
+                                    cs.tags.join(', ')
+                                );
+                            }}
                         >
                             <div className="relative aspect-[16/10] bg-gray-100 dark:bg-midnight-900 rounded-[2.5rem] overflow-hidden border border-gray-100 dark:border-midnight-800 mb-8 transition-all group-hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.2)] dark:group-hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.6)]">
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10 flex items-end p-12">

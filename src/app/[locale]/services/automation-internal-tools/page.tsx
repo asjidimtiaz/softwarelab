@@ -1,6 +1,4 @@
 import { ServiceTemplate } from "@/components/sections/service-template";
-import { Zap } from "lucide-react";
-import { SiPython, SiOpenai, SiDjango, SiDocker } from "react-icons/si";
 
 export default function AutomationPage() {
     return (
@@ -8,7 +6,7 @@ export default function AutomationPage() {
             title="AI & Workflow"
             subtitle="Automation Tools"
             description="Internal dashboards, GPT integrations, and automated workflows that eliminate manual processing and save thousands of engineering hours."
-            icon={Zap}
+            iconName="Zap"
             features={[
                 "GPT-4 Integrations",
                 "Workflow Automation",
@@ -16,10 +14,10 @@ export default function AutomationPage() {
                 "Data Mining Pipelines"
             ]}
             techStack={[
-                { name: "Python", icon: SiPython, color: "text-[#3776AB]" },
-                { name: "OpenAI", icon: SiOpenai, color: "text-[#412991]" },
-                { name: "Django", icon: SiDjango, color: "text-[#092E20]" },
-                { name: "Docker", icon: SiDocker, color: "text-[#2496ED]" },
+                { name: "Python", iconName: "SiPython", color: "text-[#3776AB]" },
+                { name: "OpenAI", iconName: "SiOpenai", color: "text-[#412991]" },
+                { name: "Django", iconName: "SiDjango", color: "text-[#092E20]" },
+                { name: "Docker", iconName: "SiDocker", color: "text-[#2496ED]" },
             ]}
             outcomes={[
                 "70% Manual Task Reduction",

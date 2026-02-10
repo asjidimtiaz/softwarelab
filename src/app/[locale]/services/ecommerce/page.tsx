@@ -1,6 +1,4 @@
 import { ServiceTemplate } from "@/components/sections/service-template";
-import { ShoppingCart } from "lucide-react";
-import { SiShopify, SiNextdotjs, SiStripe, SiPostgresql } from "react-icons/si";
 
 export default function EcommercePage() {
     return (
@@ -8,7 +6,7 @@ export default function EcommercePage() {
             title="Enterprise"
             subtitle="E-commerce Ops"
             description="Scalable Shopify, Headless Commerce, and custom commerce solutions built to maximize conversion, loyalty, and average order value."
-            icon={ShoppingCart}
+            iconName="ShoppingCart"
             features={[
                 "Headless Commerce",
                 "Stripe Integration",
@@ -16,10 +14,10 @@ export default function EcommercePage() {
                 "Custom Loyalty Systems"
             ]}
             techStack={[
-                { name: "Shopify", icon: SiShopify, color: "text-[#96BF48]" },
-                { name: "Next.js", icon: SiNextdotjs, color: "text-gray-900" },
-                { name: "Stripe", icon: SiStripe, color: "text-[#635BFF]" },
-                { name: "Postgres", icon: SiPostgresql, color: "text-[#4169E1]" },
+                { name: "Shopify", iconName: "SiShopify", color: "text-[#96BF48]" },
+                { name: "Next.js", iconName: "SiNextdotjs", color: "text-gray-900" },
+                { name: "Stripe", iconName: "SiStripe", color: "text-[#635BFF]" },
+                { name: "Postgres", iconName: "SiPostgresql", color: "text-[#4169E1]" },
             ]}
             outcomes={[
                 "25%+ Conversion Increase",

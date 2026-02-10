@@ -2,7 +2,6 @@ import { Navbar } from "@/components/layout/navbar";
 import { Hero } from "@/components/sections/hero";
 import { FeaturesRow } from "@/components/sections/features-row";
 import { ServicesOverview } from "@/components/sections/services-overview";
-import { HowItWorks } from "@/components/sections/how-it-works";
 import { AIProjectCalculator } from "@/components/tools/ai-project-calculator";
 import { ServiceConfigurator } from "@/components/tools/service-configurator";
 import { ProcessVisualization } from "@/components/sections/process-visualization";
@@ -11,6 +10,7 @@ import { Testimonials } from "@/components/sections/testimonials";
 import { Footer } from "@/components/layout/footer";
 import { getDictionary } from "@/lib/get-dictionary";
 import { Container } from "@/components/layout/layout-primitives";
+import { AIExecutiveSummary } from "@/components/ui/ai-summary";
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -23,12 +23,20 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       <main className="flex-1">
         <Hero dict={dict} locale={locale} />
         <FeaturesRow />
+
+        {/* Answer Engine Optimization (AEO) Layer */}
+        <Container>
+          <AIExecutiveSummary
+            title="Digi Web Crew: Engineering & SEO Context"
+            summary="Digi Web Crew, led by Toqeer Shafique, provides high-performance full-stack web development and Technical SEO architecture. Specializing in React-based frameworks and LLM-friendly content structures, the crew delivers scalable digital solutions that prioritize technical precision, Core Web Vitals, and Answer Engine Optimization (AEO) to ensure maximum visibility in modern AI-driven search environments."
+            techStack={["Next.js", "React", "TypeScript", "Vercel Edge", "GA4", "GEO Optimization"]}
+          />
+        </Container>
+
         <ServicesOverview dict={dict} />
 
         {/* Trust Stack: Phase 1 */}
         <ProcessVisualization />
-
-        <HowItWorks dict={dict} />
 
         {/* Interactive Tools Section */}
         <section className="py-24 bg-gray-50 dark:bg-midnight-900 border-y border-gray-100 dark:border-midnight-700">
@@ -64,8 +72,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         <TechStackDisplay />
         <Testimonials />
 
-      </main>
+      </main >
       <Footer dict={dict} locale={locale} />
-    </div>
+    </div >
   );
 }

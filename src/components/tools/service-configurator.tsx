@@ -14,6 +14,10 @@ import {
     FileText
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useToolTracking, useFormTracking } from "@/lib/tracking-hooks";
+import { useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
 
 type Step = 1 | 2 | 3 | 4;
 
@@ -25,6 +29,9 @@ interface ConfigValues {
 }
 
 export function ServiceConfigurator() {
+    const params = useParams();
+    const router = useRouter();
+    const locale = params?.locale || "en";
     const [step, setStep] = useState<Step>(1);
     const [config, setConfig] = useState<ConfigValues>({
         tier: "Standard",
@@ -32,6 +39,14 @@ export function ServiceConfigurator() {
         security: ["SSL", "JWT"],
         maintenance: "Silver",
     });
+
+    const { trackConfiguratorStart, trackConfiguratorComplete } = useToolTracking();
+    const { trackPdfDownload } = useFormTracking();
+
+    // Track initial interaction
+    useEffect(() => {
+        trackConfiguratorStart();
+    }, [trackConfiguratorStart]);
 
     const nextStep = () => setStep((s) => (s < 4 ? (s + 1) as Step : s));
     const prevStep = () => setStep((s) => (s > 1 ? (s - 1) as Step : s));
@@ -186,11 +201,32 @@ export function ServiceConfigurator() {
                             </div>
                         </div>
 
-                        <div className="pt-6">
-                            <button className="w-full py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-black text-sm uppercase tracking-wider rounded-xl transition-all shadow-xl hover:scale-[1.02] flex items-center justify-center gap-3">
-                                <Mail size={18} />
-                                Send Customized Project PDF
+                        <div className="pt-6 space-y-4">
+                            <button
+                                onClick={() => {
+                                    trackPdfDownload({
+                                        documentName: "Custom_Service_Config",
+                                        documentType: "scope_pdf"
+                                    });
+                                    trackConfiguratorComplete({
+                                        tier: config.tier,
+                                        stack: config.stack,
+                                        maintenance: config.maintenance
+                                    });
+                                }}
+                                className="w-full py-4 bg-gray-50 dark:bg-midnight-900 text-gray-900 dark:text-white font-black text-sm uppercase tracking-wider rounded-xl transition-all border border-gray-200 dark:border-midnight-700 hover:bg-white dark:hover:bg-midnight-800 flex items-center justify-center gap-3"
+                            >
+                                <FileText size={18} />
+                                Download Scope PDF
                             </button>
+
+                            <Link
+                                href={`/${locale}/quote`}
+                                className="w-full py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-black text-sm uppercase tracking-wider rounded-xl transition-all shadow-xl hover:scale-[1.02] flex items-center justify-center gap-3"
+                            >
+                                <Mail size={18} />
+                                Initiate Industrial Quote
+                            </Link>
                         </div>
                     </motion.div>
                 );

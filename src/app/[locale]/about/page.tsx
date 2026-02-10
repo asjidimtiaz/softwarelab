@@ -6,6 +6,8 @@ import { getDictionary } from "@/lib/get-dictionary";
 import { AnimatedSection } from "@/components/AnimatedSection";
 import { cn } from "@/lib/utils";
 
+import { HowItWorks } from "@/components/sections/how-it-works";
+
 export default async function AboutPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const dict = await getDictionary(locale);
@@ -97,7 +99,10 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
           </div>
         </Section>
 
+        <HowItWorks dict={dict} />
+
         {/* Global Impact */}
+
         <Section>
           <AnimatedSection className="grid grid-cols-1 md:grid-cols-3 gap-10 p-16 rounded-[4rem] bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-2xl relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-br from-electric/20 via-transparent to-transparent opacity-50 group-hover:scale-110 transition-transform duration-1000" />

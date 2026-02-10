@@ -1,6 +1,6 @@
 "use server";
 
-import connectDB from "@/lib/db";
+import { connectToDatabase } from "@/lib/db";
 import { Lead } from "@/lib/models/lead";
 import { startOfDay, subDays, startOfMonth, format } from "date-fns";
 
@@ -11,14 +11,14 @@ export async function getDashboardStats() {
   const session = await getServerSession(authOptions);
   if (!session) throw new Error("Unauthorized");
 
-  await connectDB();
+  await connectToDatabase();
 
   const totalLeads = await Lead.countDocuments();
   const newLeads = await Lead.countDocuments({ status: "NEW" });
-  
+
   // Calculate average score for "HOT" leads as a proxy for pipeline quality
   const hotLeads = await Lead.find({ leadTier: "HOT" }).select("leadScore");
-  const avgHotScore = hotLeads.length > 0 
+  const avgHotScore = hotLeads.length > 0
     ? Math.round(hotLeads.reduce((acc, lead) => acc + (lead.leadScore || 0), 0) / hotLeads.length)
     : 0;
 
@@ -45,8 +45,8 @@ export async function getLeadTrends() {
   const session = await getServerSession(authOptions);
   if (!session) throw new Error("Unauthorized");
 
-  await connectDB();
-  
+  await connectToDatabase();
+
   const last7Days = Array.from({ length: 7 }).map((_, i) => {
     const d = subDays(new Date(), 6 - i);
     return {
@@ -73,8 +73,8 @@ export async function getCategoryDistribution() {
   const session = await getServerSession(authOptions);
   if (!session) throw new Error("Unauthorized");
 
-  await connectDB();
-  
+  await connectToDatabase();
+
   const distribution = await Lead.aggregate([
     { $group: { _id: "$serviceCategory", value: { $sum: 1 } } },
     { $project: { name: { $toUpper: "$_id" }, value: 1 } },

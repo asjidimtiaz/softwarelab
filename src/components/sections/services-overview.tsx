@@ -54,7 +54,7 @@ export function ServicesOverview({ dict }: ServicesOverviewProps) {
   const coreServices = services.slice(0, 3);
 
   return (
-    <Section className="relative z-10 pt-16 bg-white">
+    <Section className="relative z-10 pt-16 bg-white dark:bg-midnight-950">
       {/* Background Accent */}
       <div className="absolute top-0 right-0 w-[50%] h-[50%] bg-primary/5 blur-[120px] -z-10 rounded-full translate-x-1/2 -translate-y-1/2" />
 
@@ -70,11 +70,15 @@ export function ServicesOverview({ dict }: ServicesOverviewProps) {
       </div>
 
       <AnimatedSection className="text-center max-w-4xl mx-auto mb-20 px-6">
-        <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-8 text-foreground uppercase">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-electric/10 text-electric text-xs font-bold uppercase tracking-widest mb-6">
+          <span className="w-1.5 h-1.5 rounded-full bg-electric animate-pulse" />
+          Our Expertise
+        </div>
+        <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-8 text-foreground">
           {dict.servicesOverview.title1} <br />
-          <span className="text-[#6366F1]">{dict.servicesOverview.title2}</span>
+          <span className="text-electric">{dict.servicesOverview.title2}</span>
         </h2>
-        <p className="text-xl text-muted-foreground font-semibold max-w-2xl mx-auto leading-relaxed opacity-80">
+        <p className="text-xl text-muted-foreground font-medium max-w-2xl mx-auto leading-relaxed">
           {dict.servicesOverview.description}
         </p>
       </AnimatedSection>
