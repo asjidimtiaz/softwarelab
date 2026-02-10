@@ -1,32 +1,67 @@
 import { connectToDatabase } from "@/lib/db";
 import { Lead } from "@/lib/models/lead";
-import { CheckCircle2, Clock, AlertCircle } from "lucide-react";
+import { CheckCircle2, Clock, AlertCircle, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-async function getTasks() {
-  await connectToDatabase();
-  const leads = await Lead.find({ "tasks.done": false }).sort({ "tasks.dueAt": 1 });
-
-  const allTasks = leads.flatMap(lead =>
-    lead.tasks
-      .filter((t: any) => !t.done)
-      .map((t: any) => ({
-        ...t.toObject(),
-        leadId: lead._id.toString(),
-        leadName: lead.fullName,
-        leadEmail: lead.email,
-        leadTier: lead.leadTier
-      }))
-  );
-
-  return allTasks.sort((a: any, b: any) => a.dueAt.getTime() - b.dueAt.getTime());
-}
-
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
+async function getTasks() {
+  try {
+    await connectToDatabase();
+
+    // Find leads and safely process tasks
+    const leads = await Lead.find({ "tasks.done": false }).lean();
+
+    const allTasks = leads.flatMap(lead => {
+      if (!lead.tasks || !Array.isArray(lead.tasks)) return [];
+
+      return lead.tasks
+        .filter((t: any) => !t.done)
+        .map((t: any) => ({
+          ...t,
+          _id: t._id?.toString() || Math.random().toString(),
+          leadId: lead._id?.toString(),
+          leadName: lead.fullName,
+          leadEmail: lead.email,
+          leadTier: lead.leadTier
+        }));
+    });
+
+    // Elite sorting with date validation
+    return allTasks.sort((a: any, b: any) => {
+      const dateA = a.dueAt ? new Date(a.dueAt).getTime() : 0;
+      const dateB = b.dueAt ? new Date(b.dueAt).getTime() : 0;
+      return dateA - dateB;
+    });
+  } catch (error) {
+    console.error("Infrastructure Error Details:", error);
+    throw error;
+  }
+}
+
 export default async function TasksPage() {
-  const tasks = await getTasks();
+  let tasks: any[] = [];
+  let errorState = false;
+
+  try {
+    tasks = await getTasks();
+  } catch (err) {
+    errorState = true;
+  }
+
+  if (errorState) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] p-12 text-center">
+        <div className="w-20 h-20 bg-rose-50 text-rose-500 rounded-3xl flex items-center justify-center mb-8 shadow-xl shadow-rose-500/10">
+          <AlertCircle size={40} />
+        </div>
+        <h1 className="text-3xl font-black tracking-tight text-foreground">Infrastructure Offline</h1>
+        <p className="max-w-md text-sm font-bold text-muted-foreground/60 mt-4 uppercase tracking-[0.2em] leading-relaxed">
+          The operations queue is currently unreachable. Please verify database connectivity services.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="p-12 space-y-12 pb-20">
@@ -45,7 +80,7 @@ export default async function TasksPage() {
         {tasks.length > 0 ? (
           tasks.map((task: any) => (
             <Card
-              key={task._id.toString()}
+              key={task._id}
               className="group border-border bg-white p-8 hover:shadow-xl hover:shadow-primary/5 transition-all rounded-[2.5rem] cursor-pointer"
             >
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
@@ -57,15 +92,17 @@ export default async function TasksPage() {
                     {task.leadTier === "HOT" ? <AlertCircle size={28} /> : <Clock size={28} />}
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold tracking-tight text-foreground mb-2 group-hover:text-primary transition-colors">{task.title}</h3>
+                    <h3 className="text-xl font-bold tracking-tight text-foreground mb-2 group-hover:text-primary transition-colors">{task.title || "Untitled Task"}</h3>
                     <div className="flex flex-wrap items-center gap-6 text-[11px] font-bold text-muted-foreground/60 uppercase tracking-widest">
                       <span className="flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full bg-primary" />
-                        Lead: <span className="text-foreground">{task.leadName}</span>
+                        Lead: <span className="text-foreground">{task.leadName || "Unknown"}</span>
                       </span>
                       <span className="flex items-center gap-2">
                         <Clock size={12} className="text-primary/60" />
-                        Due: <span className="text-foreground">{new Date(task.dueAt).toLocaleString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+                        Due: <span className="text-foreground">
+                          {task.dueAt ? new Date(task.dueAt).toLocaleString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : "No Date"}
+                        </span>
                       </span>
                     </div>
                   </div>
@@ -76,7 +113,7 @@ export default async function TasksPage() {
                     "px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-widest border",
                     task.leadTier === "HOT" ? "bg-rose-100 text-rose-600 border-rose-200" : "bg-secondary text-muted-foreground border-border"
                   )}>
-                    {task.leadTier} PRIORITY
+                    {task.leadTier || "COLD"} PRIORITY
                   </div>
                   <Button className="h-12 px-8 rounded-full bg-primary text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-105 transition-all">
                     Complete Task
