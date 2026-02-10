@@ -1,6 +1,9 @@
 import { getLeads } from "@/lib/actions/lead-actions";
 import { LeadsTable } from "@/components/admin/leads-table";
 import { LeadsHeader } from "@/components/admin/leads-header";
+import { ArrowRight, AlertCircle } from "lucide-react";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 export default async function LeadsPage({
   searchParams,
@@ -15,12 +18,36 @@ export default async function LeadsPage({
   const { q, status, tier, page } = await searchParams;
   const pageNum = parseInt(page || "1");
 
-  const { leads, total, pages } = await getLeads({
-    query: q,
-    status,
-    tier,
-    page: pageNum,
-  });
+  let data: any = { leads: [], total: 0, pages: 0 };
+  let errorState = false;
+
+  try {
+    data = await getLeads({
+      query: q,
+      status: status || "ALL",
+      tier: tier || "ALL",
+      page: pageNum,
+    });
+  } catch (err) {
+    console.error("Leads Fetch Error:", err);
+    errorState = true;
+  }
+
+  if (errorState) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] p-12 text-center">
+        <div className="w-20 h-20 bg-rose-50 text-rose-500 rounded-3xl flex items-center justify-center mb-8 shadow-xl shadow-rose-500/10">
+          <AlertCircle size={40} />
+        </div>
+        <h1 className="text-3xl font-black tracking-tight text-foreground">Infrastructure Offline</h1>
+        <p className="max-w-md text-sm font-bold text-muted-foreground/60 mt-4 uppercase tracking-[0.2em] leading-relaxed">
+          The records database is currently unreachable. Please verify connectivity services.
+        </p>
+      </div>
+    );
+  }
+
+  const { leads, pages } = data;
 
   return (
     <div className="p-6 lg:p-10 space-y-6">
@@ -30,35 +57,48 @@ export default async function LeadsPage({
 
       {pages > 1 && (
         <div className="mt-10 flex justify-center items-center gap-2">
-          <Button variant="outline" size="sm" className="h-9 w-9 p-0 rounded-xl border-border" disabled={pageNum === 1}>
+          <Link
+            href={{
+              query: { q, status, tier, page: Math.max(1, pageNum - 1).toString() }
+            }}
+            className={cn(
+              "h-9 w-9 flex items-center justify-center rounded-xl border border-border transition-all hover:bg-secondary",
+              pageNum === 1 && "pointer-events-none opacity-30"
+            )}
+          >
             <ArrowRight size={14} className="rotate-180" />
-          </Button>
+          </Link>
+
           {Array.from({ length: pages }).map((_, i) => (
-            <Button
+            <Link
               key={i}
-              variant={pageNum === i + 1 ? "primary" : "outline"}
-              className={cn(
-                "w-9 h-9 p-0 rounded-xl font-black transition-all border-border text-[10px]",
-                pageNum === i + 1 ? "bg-primary text-white shadow-lg shadow-primary/20 scale-105" : "text-muted-foreground hover:bg-secondary"
-              )}
-              onClick={() => {
-                const params = new URLSearchParams(window.location.search);
-                params.set("page", (i + 1).toString());
-                window.location.search = params.toString();
+              href={{
+                query: { q, status, tier, page: (i + 1).toString() }
               }}
+              className={cn(
+                "w-9 h-9 flex items-center justify-center rounded-xl font-black transition-all border border-border text-[10px]",
+                pageNum === i + 1
+                  ? "bg-primary text-white shadow-lg shadow-primary/20 scale-105 border-primary"
+                  : "text-muted-foreground hover:bg-secondary"
+              )}
             >
               {i + 1}
-            </Button>
+            </Link>
           ))}
-          <Button variant="outline" size="sm" className="h-9 w-9 p-0 rounded-xl border-border" disabled={pageNum === pages}>
+
+          <Link
+            href={{
+              query: { q, status, tier, page: Math.min(pages, pageNum + 1).toString() }
+            }}
+            className={cn(
+              "h-9 w-9 flex items-center justify-center rounded-xl border border-border transition-all hover:bg-secondary",
+              pageNum === pages && "pointer-events-none opacity-30"
+            )}
+          >
             <ArrowRight size={14} />
-          </Button>
+          </Link>
         </div>
       )}
     </div>
   );
 }
-
-import { ArrowRight } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
