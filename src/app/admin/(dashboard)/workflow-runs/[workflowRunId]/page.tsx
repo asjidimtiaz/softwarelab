@@ -36,7 +36,7 @@ export default async function WorkflowRunDetailPage({
   const workflowKey = String((drafts[0] as any).workflowKey || "");
 
   return (
-    <div className="space-y-6 pb-10">
+    <div className="admin-page-stack space-y-6 pb-10 w-full">
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <div>
           <div className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/40">Workflow Run</div>
@@ -53,7 +53,7 @@ export default async function WorkflowRunDetailPage({
         </Link>
       </div>
 
-      <Card className="rounded-[2rem] border-border bg-white shadow-sm overflow-hidden">
+      <Card className="admin-card admin-card-unified admin-card-hover rounded-[2rem] border-border bg-white shadow-sm overflow-hidden">
         <CardHeader className="pb-3">
           <CardTitle className="text-base font-black uppercase tracking-widest text-muted-foreground/60">Steps</CardTitle>
         </CardHeader>

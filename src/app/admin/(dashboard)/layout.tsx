@@ -17,7 +17,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
 
   return (
-    <div className="flex h-screen bg-background text-foreground overflow-hidden font-sans grid-bg">
+    <div className="admin-dashboard-shell flex h-screen bg-background text-foreground overflow-hidden font-sans grid-bg">
       {/* Background Glows */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-50">
         <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/20 blur-[120px] rounded-full animate-pulse" />
@@ -25,7 +25,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       </div>
 
       {/* Compressed Sidebar */}
-      <aside className="w-20 border-r border-border bg-white/70 backdrop-blur-3xl flex flex-col items-center py-6 gap-10 z-20 shrink-0 relative">
+      <aside className="w-16 border-r border-border bg-white/70 backdrop-blur-3xl flex flex-col items-center py-5 gap-7 z-20 shrink-0 relative">
         <SidebarLogo />
         <SidebarNav isCompressed={true} />
       </aside>
@@ -40,7 +40,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
               <input
                 type="text"
                 placeholder="Ask AI or search anything..."
-                className="w-full h-12 pl-14 pr-6 bg-white border border-border rounded-full outline-none shadow-sm focus:ring-4 focus:ring-primary/10 transition-all font-bold text-xs placeholder:text-muted-foreground/40"
+                className="admin-input w-full h-12 pl-14 pr-6 bg-white border border-border rounded-full outline-none shadow-sm focus:ring-4 focus:ring-primary/10 transition-all font-bold text-xs placeholder:text-muted-foreground/40"
               />
             </div>
           </div>
@@ -53,7 +53,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         {/* Dynamic Page Container */}
         <div className="flex-1 overflow-y-auto overflow-x-hidden w-full p-4 lg:p-8 custom-scrollbar">
           <PageTransition>
-            <div className="w-full">
+            <div className="admin-page-stack w-full">
               {children}
             </div>
           </PageTransition>

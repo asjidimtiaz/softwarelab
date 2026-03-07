@@ -1,6 +1,5 @@
 import { getLeads } from "@/lib/actions/lead-actions";
 import { LeadsTable } from "@/components/admin/leads-table";
-import { PageHeader } from "@/components/admin/page-header";
 import { ArrowRight, AlertCircle, ShieldAlert, WifiOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -84,13 +83,7 @@ export default async function LeadsPage({
   const { leads, pages } = data;
 
   return (
-    <div className="p-6 lg:p-10 space-y-6">
-      <PageHeader
-        label="Contacts"
-        title="Leads"
-        description="Contacts and opportunities stored in MongoDB."
-      />
-
+    <div className="admin-page-stack space-y-6 pb-10 w-full">
       <LeadsTable leads={leads} />
 
       {pages > 1 && (
@@ -100,7 +93,7 @@ export default async function LeadsPage({
               query: { q, status, tier, page: Math.max(1, pageNum - 1).toString() }
             }}
             className={cn(
-              "h-9 w-9 flex items-center justify-center rounded-xl border border-border transition-all hover:bg-secondary",
+              "admin-btn-ghost h-9 w-9 flex items-center justify-center rounded-xl border border-border transition-all hover:bg-secondary",
               pageNum === 1 && "pointer-events-none opacity-30"
             )}
           >
@@ -116,8 +109,8 @@ export default async function LeadsPage({
               className={cn(
                 "w-9 h-9 flex items-center justify-center rounded-xl font-black transition-all border border-border text-[10px]",
                 pageNum === i + 1
-                  ? "bg-primary text-white shadow-lg shadow-primary/20 scale-105 border-primary"
-                  : "text-muted-foreground hover:bg-secondary"
+                  ? "admin-btn-primary text-white shadow-lg shadow-primary/20 scale-105 border-primary"
+                  : "admin-btn-ghost text-muted-foreground hover:bg-secondary"
               )}
             >
               {i + 1}
@@ -129,7 +122,7 @@ export default async function LeadsPage({
               query: { q, status, tier, page: Math.min(pages, pageNum + 1).toString() }
             }}
             className={cn(
-              "h-9 w-9 flex items-center justify-center rounded-xl border border-border transition-all hover:bg-secondary",
+              "admin-btn-ghost h-9 w-9 flex items-center justify-center rounded-xl border border-border transition-all hover:bg-secondary",
               pageNum === pages && "pointer-events-none opacity-30"
             )}
           >

@@ -2,12 +2,9 @@
 
 import { useState, useEffect } from "react";
 import {
-  Shield, Database, Globe, User, BarChart3, Save, Eye, EyeOff,
-  Check, AlertCircle, Zap, Lock, Server, Activity, Sparkles,
-  ChevronRight, ExternalLink
+  Shield, Database, Globe, BarChart3, Save, Eye, EyeOff,
+  Check, AlertCircle, Zap, Lock, Server, Activity
 } from "lucide-react";
-import { Card } from "@/components/ui/card";
-import { PageHeader } from "@/components/admin/page-header";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
@@ -139,14 +136,8 @@ export default function SettingsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-midnight-950 dark:via-midnight-900 dark:to-midnight-950">
-      <PageHeader
-        label="System"
-        title="Command Center"
-        description="System configuration & tracking infrastructure"
-      />
-
-      <div className="p-8 pt-6">
+    <div className="admin-page-stack space-y-6 pb-10 w-full">
+      <div>
         <AnimatePresence mode="wait">
           {activeTab === 'tracking' ? (
             <motion.div
@@ -157,23 +148,23 @@ export default function SettingsPage() {
               transition={{ duration: 0.3 }}
             >
               {/* Quick Stats Bar */}
-              <div className="grid grid-cols-4 gap-4 mb-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
                 {systemMetrics.map((metric, i) => (
                   <motion.div
                     key={metric.label}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.05 }}
-                    className="bg-white dark:bg-midnight-800/50 backdrop-blur-sm rounded-2xl p-5 border border-gray-200/50 dark:border-midnight-700/50 shadow-sm hover:shadow-lg transition-all group"
+                    className="bg-gray-50 dark:bg-midnight-800/50 rounded-2xl p-5 border border-gray-200/50 dark:border-midnight-700/50 hover:border-electric/30 dark:hover:border-electric/30 transition-all hover:shadow-lg group"
                   >
                     <div className="flex items-center justify-between mb-3">
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-electric/10 to-purple-500/10 dark:from-electric/20 dark:to-purple-500/20 flex items-center justify-center text-electric group-hover:scale-110 transition-transform">
-                        <metric.icon size={18} />
+                      <div className="w-10 h-10 rounded-xl bg-white dark:bg-midnight-900 border border-gray-200 dark:border-midnight-700 flex items-center justify-center text-gray-700 dark:text-gray-300">
+                        <metric.icon size={17} strokeWidth={2} />
                       </div>
-                      <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.5)]" />
+                      <div className="w-2 h-2 rounded-full bg-emerald-500/90 shadow-[0_0_10px_rgba(16,185,129,0.35)]" />
                     </div>
-                    <p className="text-2xl font-black text-gray-900 dark:text-white">{metric.value}</p>
-                    <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mt-1">{metric.label}</p>
+                    <p className="text-2xl font-heading font-extrabold tracking-tight text-gray-900 dark:text-white">{metric.value}</p>
+                    <p className="text-xs font-heading font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-[0.14em] mt-1">{metric.label}</p>
                   </motion.div>
                 ))}
               </div>
@@ -215,11 +206,8 @@ export default function SettingsPage() {
                       >
                         <div className="bg-gray-50 dark:bg-midnight-800/50 rounded-2xl p-5 border border-gray-200/50 dark:border-midnight-700/50 hover:border-electric/30 dark:hover:border-electric/30 transition-all hover:shadow-lg">
                           <div className="flex items-center gap-3 mb-4">
-                            <div className={cn(
-                              "w-10 h-10 rounded-xl bg-gradient-to-br flex items-center justify-center text-white shadow-lg",
-                              field.color
-                            )}>
-                              <BarChart3 size={18} />
+                            <div className="w-10 h-10 rounded-xl bg-white dark:bg-midnight-900 border border-gray-200 dark:border-midnight-700 flex items-center justify-center text-gray-700 dark:text-gray-300">
+                              <BarChart3 size={17} />
                             </div>
                             <div className="flex-1 min-w-0">
                               <p className="text-sm font-bold text-gray-900 dark:text-white truncate">{field.label}</p>

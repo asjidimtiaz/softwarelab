@@ -35,7 +35,7 @@ export default async function LeadDetailPage({
    const tasks = Array.isArray(lead.tasks) ? lead.tasks : [];
 
    return (
-      <div className="space-y-12 pb-20 relative">
+      <div className="admin-page-stack space-y-12 pb-10 w-full relative">
          <div className="absolute inset-0 bg-[radial-gradient(#6366f1_1px,transparent_1px)] [background-size:32px_32px] opacity-[0.03] pointer-events-none" />
 
          {/* Header Area */}
@@ -70,7 +70,7 @@ export default async function LeadDetailPage({
             {/* Left Side: Intelligence Modules */}
             <div className="lg:col-span-8 space-y-10">
                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  <Card className="rounded-[3.5rem] border-gray-100 bg-white/40 backdrop-blur-3xl p-12 shadow-sm hover:shadow-2xl transition-all group border-b-4 border-b-transparent hover:border-b-electric">
+                  <Card className="admin-card admin-card-unified admin-card-hover rounded-[3.5rem] border-gray-100 bg-white/40 backdrop-blur-3xl p-12 shadow-sm hover:shadow-2xl transition-all group border-b-4 border-b-transparent hover:border-b-electric">
                      <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 mb-8">Service Category</p>
                      <div className="flex items-center gap-6">
                         <div className="w-20 h-20 rounded-[2rem] bg-gray-50 text-gray-900 flex items-center justify-center border border-gray-100 group-hover:bg-electric group-hover:text-white group-hover:scale-110 transition-all duration-500 shadow-sm">
@@ -82,7 +82,7 @@ export default async function LeadDetailPage({
                         </div>
                      </div>
                   </Card>
-                  <Card className="rounded-[3.5rem] border-gray-100 bg-white/40 backdrop-blur-3xl p-12 shadow-sm hover:shadow-2xl transition-all group border-b-4 border-b-transparent hover:border-b-rose-500">
+                  <Card className="admin-card admin-card-unified admin-card-hover rounded-[3.5rem] border-gray-100 bg-white/40 backdrop-blur-3xl p-12 shadow-sm hover:shadow-2xl transition-all group border-b-4 border-b-transparent hover:border-b-rose-500">
                      <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 mb-8">Lead Protocol</p>
                      <div className="flex items-center gap-6">
                         <div className={cn(
@@ -99,7 +99,7 @@ export default async function LeadDetailPage({
                         </div>
                      </div>
                   </Card>
-                  <Card className="rounded-[3.5rem] border-gray-100 bg-white/40 backdrop-blur-3xl p-12 shadow-sm hover:shadow-2xl transition-all group border-b-4 border-b-transparent hover:border-b-electric">
+                  <Card className="admin-card admin-card-unified admin-card-hover rounded-[3.5rem] border-gray-100 bg-white/40 backdrop-blur-3xl p-12 shadow-sm hover:shadow-2xl transition-all group border-b-4 border-b-transparent hover:border-b-electric">
                      <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 mb-8">Pipeline Logic</p>
                      <div className="flex items-center gap-6">
                         <div className="w-20 h-20 rounded-[2rem] bg-gray-50 border border-gray-100 flex items-center justify-center text-gray-400 group-hover:bg-electric group-hover:text-white group-hover:scale-110 transition-all duration-500 shadow-sm">
@@ -110,7 +110,7 @@ export default async function LeadDetailPage({
                   </Card>
                </div>
 
-               <Card className="rounded-[4rem] border-gray-100 bg-white shadow-2xl shadow-gray-300/40 p-16 relative overflow-hidden group">
+               <Card className="admin-card admin-card-unified admin-card-hover rounded-[4rem] border-gray-100 bg-white shadow-2xl shadow-gray-300/40 p-16 relative overflow-hidden group">
                   <div className="absolute top-0 right-0 w-80 h-80 bg-electric/5 blur-[120px] rounded-full -mr-40 -mt-40 transition-all duration-700 group-hover:scale-125" />
 
                   <div className="flex items-center gap-6 mb-16 pb-10 border-b border-gray-50 relative z-10">
@@ -164,7 +164,7 @@ export default async function LeadDetailPage({
 
             {/* Right Side: Timeline & Protocols */}
             <div className="lg:col-span-4 space-y-10">
-               <Card className="rounded-[4rem] border-gray-100 bg-white/40 backdrop-blur-3xl p-12 shadow-sm">
+               <Card className="admin-card admin-card-unified admin-card-hover rounded-[4rem] border-gray-100 bg-white/40 backdrop-blur-3xl p-12 shadow-sm">
                   <div className="flex items-center justify-between mb-12">
                      <h3 className="text-xl font-[1000] tracking-tighter text-gray-900 uppercase">
                         Activity Log
@@ -195,7 +195,7 @@ export default async function LeadDetailPage({
                   </div>
                </Card>
 
-               <Card className="rounded-[4rem] border-gray-100 bg-white p-12 shadow-xl shadow-gray-200/50">
+               <Card className="admin-card admin-card-unified admin-card-hover rounded-[4rem] border-gray-100 bg-white p-12 shadow-xl shadow-gray-200/50">
                   <div className="flex items-center justify-between mb-12">
                      <h3 className="text-xl font-[1000] tracking-tighter text-gray-900 uppercase">Protocols</h3>
                      <span className="bg-gray-900 text-white border border-gray-900 px-5 py-2 rounded-2xl text-[10px] font-black tracking-widest tabular-nums shadow-lg">

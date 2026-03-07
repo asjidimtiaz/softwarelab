@@ -5,7 +5,6 @@ import { connectToDatabase } from "@/lib/db";
 import { ContentDraft } from "@/lib/models/content-draft";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { PageHeader } from "@/components/admin/page-header";
 
 export default async function WorkflowRunsPage() {
   const session = await getServerSession(authOptions);
@@ -14,13 +13,7 @@ export default async function WorkflowRunsPage() {
   // Quick development mode check
   if (!process.env.MONGODB_URI) {
     return (
-      <div className="space-y-6 pb-10 w-full">
-        <PageHeader
-          label="Workflow Management"
-          title="Workflow Runs"
-          highlight="0 Active"
-          description="Database connection disabled in development mode"
-        />
+      <div className="admin-page-stack space-y-6 pb-10 w-full">
         <div className="text-center py-12">
           <p className="text-muted-foreground">No workflow runs available in development mode</p>
         </div>
@@ -31,13 +24,7 @@ export default async function WorkflowRunsPage() {
   const db = await connectToDatabase();
   if (!db) {
     return (
-      <div className="space-y-6 pb-10 w-full">
-        <PageHeader
-          label="Workflow Management"
-          title="Workflow Runs"
-          highlight="0 Active"
-          description="Database connection unavailable"
-        />
+      <div className="admin-page-stack space-y-6 pb-10 w-full">
         <div className="text-center py-12">
           <p className="text-muted-foreground">Unable to connect to database</p>
         </div>
@@ -88,14 +75,8 @@ export default async function WorkflowRunsPage() {
     });
 
   return (
-    <div className="space-y-6 pb-10">
-      <PageHeader
-        label="AI Studio Output"
-        title="Workflow Runs"
-        description="Grouped workflow executions with step drafts."
-      />
-
-      <Card className="rounded-[2rem] border-border bg-white shadow-sm overflow-hidden">
+    <div className="admin-page-stack space-y-6 pb-10 w-full">
+      <Card className="admin-card admin-card-unified admin-card-hover rounded-[2rem] border-border bg-white shadow-sm overflow-hidden">
         <CardHeader className="pb-3">
           <CardTitle className="text-base font-black uppercase tracking-widest text-muted-foreground/60">Recent Runs</CardTitle>
         </CardHeader>
@@ -136,3 +117,4 @@ export default async function WorkflowRunsPage() {
     </div>
   );
 }
+

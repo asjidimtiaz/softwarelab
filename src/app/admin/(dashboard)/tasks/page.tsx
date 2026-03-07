@@ -116,12 +116,12 @@ export default async function TasksPage() {
   }
 
   return (
-    <div className="p-6 lg:p-8 space-y-12 pb-20">
+    <div className="admin-page-stack space-y-12 pb-10 w-full">
       <div className="flex flex-col gap-4">
         <div>
           <p className="text-[10px] font-black text-muted-foreground/40 mb-1 uppercase tracking-[0.2em]">Operations Suite</p>
           <h1 className="text-2xl font-black tracking-tight text-gray-900 dark:text-white">Tasks: <span className="text-raly-accent">Queue</span></h1>
-          <p className="text-sm text-muted-foreground/60 italic mt-1 font-medium">Manage pending <span className="text-raly-accent font-black\">task</span> protocols</p>
+          <p className="text-sm text-muted-foreground/60 italic mt-1 font-medium">Manage pending <span className="text-raly-accent font-black">task</span> protocols</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Button className="h-9 px-5 rounded-xl bg-raly-accent text-white text-[9px] font-black uppercase tracking-widest shadow-lg shadow-raly-accent/20 hover:scale-105 transition-all">
@@ -136,7 +136,7 @@ export default async function TasksPage() {
           tasks.map((task: any) => (
             <Card
               key={task._id}
-              className="group border-border bg-white p-8 hover:shadow-xl hover:shadow-primary/5 transition-all rounded-[2.5rem] cursor-pointer"
+              className="admin-card admin-card-unified admin-card-hover group border-border bg-white p-8 hover:shadow-xl hover:shadow-primary/5 transition-all rounded-[2.5rem] cursor-pointer"
             >
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
                 <div className="flex items-center gap-8">
@@ -190,3 +190,4 @@ export default async function TasksPage() {
     </div>
   );
 }
+

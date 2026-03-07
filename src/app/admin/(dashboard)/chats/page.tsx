@@ -5,9 +5,8 @@ import { authOptions } from "@/lib/auth-options";
 import { connectToDatabase } from "@/lib/db";
 import ChatSession from "@/lib/models/chat";
 import { Card } from "@/components/ui/card";
-import { MessageSquare, Terminal } from "lucide-react";
+import { MessageSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { PageHeader } from "@/components/admin/page-header";
 
 type SearchParams = Promise<{ session?: string }>;
 
@@ -62,19 +61,10 @@ export default async function ChatsPage({
     const selected = selectedSessionId ? await getSessionById(selectedSessionId) : null;
 
     return (
-        <div className="h-[calc(100vh-16rem)] flex flex-col gap-8">
-            <PageHeader
-                label="Communication Suite"
-                title="Chats"
-                highlight="Sessions"
-                description="Real-time chat sessions"
-                descriptionHighlight=""
-                icon={<Terminal />}
-            />
-
+        <div className="admin-page-stack h-[calc(100vh-16rem)] flex flex-col gap-8 w-full">
             <div className="flex-1 flex gap-8 min-h-0">
                 <div className="w-96 flex flex-col gap-6 shrink-0 min-h-0">
-                    <Card className="flex-1 rounded-[2.5rem] border-gray-100 bg-white shadow-sm overflow-hidden flex flex-col p-6 min-h-0">
+                    <Card className="admin-card admin-card-unified admin-card-hover flex-1 rounded-[2.5rem] border-gray-100 bg-white shadow-sm overflow-hidden flex flex-col p-6 min-h-0">
                         <div className="flex items-center justify-between mb-6">
                             <h3 className="font-bold text-sm uppercase tracking-widest text-gray-400 px-2">Sessions</h3>
                             <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/50">
@@ -127,7 +117,7 @@ export default async function ChatsPage({
                     </Card>
                 </div>
 
-                <Card className="flex-1 rounded-[3rem] border-gray-100 bg-white shadow-sm overflow-hidden flex flex-col relative min-h-0">
+                <Card className="admin-card admin-card-unified admin-card-hover flex-1 rounded-[3rem] border-gray-100 bg-white shadow-sm overflow-hidden flex flex-col relative min-h-0">
                     <div className="absolute inset-0 bg-[radial-gradient(#6366f1_1px,transparent_1px)] [background-size:20px_20px] opacity-[0.03]" />
 
                     {!selected ? (
@@ -186,3 +176,4 @@ export default async function ChatsPage({
         </div>
     );
 }
+

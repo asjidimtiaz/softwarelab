@@ -48,7 +48,7 @@ export default async function AuditPage() {
   };
 
   return (
-    <div className="space-y-6 p-6 lg:p-8">
+    <div className="admin-page-stack space-y-6 pb-10 w-full">
       <div className="flex flex-col gap-4 mb-6">
         <div>
           <p className="text-[10px] font-black text-muted-foreground/40 mb-1 uppercase tracking-[0.2em]">Operations Suite</p>
@@ -57,7 +57,7 @@ export default async function AuditPage() {
         </div>
       </div>
 
-      <Card>
+      <Card className="admin-card admin-card-unified admin-card-hover">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Activity className="h-5 w-5" />
@@ -131,3 +131,4 @@ export default async function AuditPage() {
     </div>
   );
 }
+

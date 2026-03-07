@@ -20,7 +20,7 @@ export default async function DraftDetailPage({ params }: { params: Promise<{ id
   const variables = d.variables ? JSON.stringify(d.variables, null, 2) : "{}";
 
   return (
-    <div className="space-y-6 pb-10">
+    <div className="admin-page-stack space-y-6 pb-10 w-full">
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <div>
           <div className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/40">Draft</div>
@@ -38,7 +38,7 @@ export default async function DraftDetailPage({ params }: { params: Promise<{ id
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <Card className="lg:col-span-8 rounded-[2rem] border-border bg-white shadow-sm overflow-hidden">
+        <Card className="admin-card admin-card-unified admin-card-hover lg:col-span-8 rounded-[2rem] border-border bg-white shadow-sm overflow-hidden">
           <CardHeader className="pb-3">
             <CardTitle className="text-base font-black uppercase tracking-widest text-muted-foreground/60">Content</CardTitle>
           </CardHeader>
@@ -51,7 +51,7 @@ export default async function DraftDetailPage({ params }: { params: Promise<{ id
           </CardContent>
         </Card>
 
-        <Card className="lg:col-span-4 rounded-[2rem] border-border bg-white shadow-sm overflow-hidden">
+        <Card className="admin-card admin-card-unified admin-card-hover lg:col-span-4 rounded-[2rem] border-border bg-white shadow-sm overflow-hidden">
           <CardHeader className="pb-3">
             <CardTitle className="text-base font-black uppercase tracking-widest text-muted-foreground/60">Metadata</CardTitle>
           </CardHeader>

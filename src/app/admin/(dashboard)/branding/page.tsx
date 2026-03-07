@@ -97,13 +97,13 @@ export default function BrandingPage() {
     };
 
     return (
-        <div className="space-y-8 pb-12 p-6 lg:p-8">
+        <div className="admin-page-stack space-y-8 pb-10 w-full">
             {/* Header */}
-            <div className="flex flex-col gap-4 mb-6">
+            <div className="flex flex-col gap-3 mb-4">
                 <div>
-                    <p className="text-[10px] font-black text-muted-foreground/40 mb-1 uppercase tracking-[0.2em]">Customization Suite</p>
-                    <h1 className="text-2xl font-black tracking-tight text-gray-900 dark:text-white">Branding: <span className="text-raly-accent">Configuration</span></h1>
-                    <p className="text-sm text-muted-foreground/60 italic mt-1 font-medium">Manage site <span className="text-raly-accent font-black">identity</span> and appearance</p>
+                    <p className="text-xs font-black text-gray-500 mb-1 uppercase tracking-[0.14em]">Customization Suite</p>
+                    <h1 className="text-3xl font-heading font-extrabold tracking-tight text-gray-900 dark:text-white">Branding Configuration</h1>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mt-1 font-medium">Manage site identity and visual appearance.</p>
                 </div>
             </div>
 
@@ -112,22 +112,22 @@ export default function BrandingPage() {
             )}
 
             {/* Logo Upload Section */}
-            <Card className="rounded-2xl border-border bg-white shadow-sm">
-                <CardHeader className="pb-4">
-                    <CardTitle className="text-lg font-bold flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-raly-accent/10 text-raly-accent flex items-center justify-center">
+            <Card className="admin-card admin-card-unified admin-card-hover rounded-2xl">
+                <CardHeader className="px-6 pt-6 pb-2 mb-0">
+                    <CardTitle className="text-2xl font-heading font-extrabold tracking-tight text-gray-900 dark:text-white flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-white dark:bg-midnight-900 border border-gray-200 dark:border-midnight-700 text-gray-700 dark:text-gray-300 flex items-center justify-center">
                             <Image size={18} />
                         </div>
                         Site Logo
                     </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-6">
-                    <div className="flex items-start gap-8">
+                <CardContent className="space-y-6 px-6 pb-6 pt-2">
+                    <div className="flex flex-col md:flex-row items-start gap-8">
                         {/* Logo Preview */}
                         <div className="flex flex-col items-center gap-4">
                             <div className={cn(
                                 "w-32 h-32 rounded-2xl border-2 border-dashed flex items-center justify-center transition-all overflow-hidden",
-                                logo ? "border-transparent bg-gray-50" : "border-gray-200 bg-gray-50/50"
+                                logo ? "border-gray-200 bg-white" : "border-gray-200 bg-gray-50/60"
                             )}>
                                 {isUploading ? (
                                     <Loader2 className="w-8 h-8 text-gray-400 animate-spin" />
@@ -140,14 +140,14 @@ export default function BrandingPage() {
                                     </div>
                                 )}
                             </div>
-                            <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">Preview</p>
+                            <p className="text-xs text-gray-500 uppercase tracking-[0.14em] font-bold">Preview</p>
                         </div>
 
                         {/* Upload Controls */}
                         <div className="flex-1 space-y-4">
                             <div>
-                                <p className="text-sm font-medium text-gray-700 mb-2">Upload a new logo</p>
-                                <p className="text-xs text-gray-400 mb-4">Recommended size: 512x512px. Supported formats: PNG, JPG, SVG</p>
+                                <p className="text-base font-semibold text-gray-900 dark:text-white mb-2">Upload a new logo</p>
+                                <p className="text-sm text-gray-500 mb-4">Recommended size: 512x512px. Supported formats: PNG, JPG, SVG.</p>
                             </div>
 
                             <div className="flex items-center gap-3">
@@ -161,7 +161,7 @@ export default function BrandingPage() {
                                 />
                                 <Button
                                     variant="outline"
-                                    className="rounded-xl"
+                                    className="rounded-xl h-10 px-4 text-sm font-semibold border-gray-200 dark:border-midnight-700"
                                     onClick={() => fileInputRef.current?.click()}
                                     disabled={isUploading}
                                 >
@@ -171,7 +171,7 @@ export default function BrandingPage() {
                                 {logo && (
                                     <Button
                                         variant="ghost"
-                                        className="rounded-xl text-rose-500 hover:text-rose-600 hover:bg-rose-50"
+                                        className="rounded-xl h-10 px-4 text-sm font-semibold text-rose-500 hover:text-rose-600 hover:bg-rose-50"
                                         onClick={handleRemoveLogo}
                                     >
                                         <Trash2 size={16} className="mr-2" />
@@ -185,36 +185,36 @@ export default function BrandingPage() {
             </Card>
 
             {/* Site Name Section */}
-            <Card className="rounded-2xl border-border bg-white shadow-sm">
-                <CardHeader className="pb-4">
-                    <CardTitle className="text-lg font-bold">Site Details</CardTitle>
+            <Card className="admin-card admin-card-unified admin-card-hover rounded-2xl">
+                <CardHeader className="px-6 pt-6 pb-2 mb-0">
+                    <CardTitle className="text-2xl font-heading font-extrabold tracking-tight text-gray-900 dark:text-white">Site Details</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-6">
+                <CardContent className="space-y-6 px-6 pb-6 pt-2">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                            <Label htmlFor="site-name" className="text-sm font-medium">Site Name</Label>
+                            <Label htmlFor="site-name" className="text-sm font-semibold text-gray-700 dark:text-gray-300">Site Name</Label>
                             <Input
                                 id="site-name"
                                 value={siteName}
                                 onChange={(e) => setSiteName(e.target.value)}
-                                className="rounded-xl"
+                                className="rounded-xl h-11 border-gray-200 dark:border-midnight-700 bg-white dark:bg-midnight-900"
                                 placeholder="Enter site name"
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="primary-color" className="text-sm font-medium">Primary Color</Label>
+                            <Label htmlFor="primary-color" className="text-sm font-semibold text-gray-700 dark:text-gray-300">Primary Color</Label>
                             <div className="flex items-center gap-3">
                                 <input
                                     type="color"
                                     id="primary-color"
                                     value={primaryColor}
                                     onChange={(e) => setPrimaryColor(e.target.value)}
-                                    className="w-12 h-10 rounded-lg border border-gray-200 cursor-pointer"
+                                    className="w-12 h-11 rounded-lg border border-gray-200 dark:border-midnight-700 cursor-pointer bg-white"
                                 />
                                 <Input
                                     value={primaryColor}
                                     onChange={(e) => setPrimaryColor(e.target.value)}
-                                    className="rounded-xl flex-1"
+                                    className="rounded-xl h-11 flex-1 border-gray-200 dark:border-midnight-700 bg-white dark:bg-midnight-900"
                                     placeholder="#7C3AED"
                                 />
                             </div>
@@ -229,7 +229,7 @@ export default function BrandingPage() {
                     onClick={handleSave}
                     disabled={isSaving}
                     className={cn(
-                        "rounded-xl px-8 transition-all",
+                        "rounded-xl h-11 px-8 text-sm font-semibold transition-all border border-gray-200 dark:border-midnight-700 bg-white dark:bg-midnight-900 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-midnight-800",
                         saved && "bg-emerald-500 hover:bg-emerald-600"
                     )}
                 >
@@ -251,3 +251,4 @@ export default function BrandingPage() {
         </div>
     );
 }
+

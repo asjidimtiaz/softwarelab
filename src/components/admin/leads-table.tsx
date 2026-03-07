@@ -13,9 +13,9 @@ interface LeadsTableProps {
 export function LeadsTable({ leads }: LeadsTableProps) {
   return (
     <div className="space-y-4">
-      <Card className="p-0 overflow-hidden border-border bg-white shadow-xl shadow-primary/5 rounded-2xl">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+      <Card className="admin-card admin-card-hover p-0 overflow-hidden border-border bg-white shadow-xl shadow-primary/5 rounded-2xl">
+        <div className="admin-table-wrap overflow-x-auto">
+          <table className="admin-table w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-border bg-gray-50/30">
                 <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-muted-foreground/40">Lead Details</th>
@@ -67,11 +67,11 @@ export function LeadsTable({ leads }: LeadsTableProps) {
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-2">
                       <Link href={`/admin/leads/${lead._id}`}>
-                        <Button className="h-9 px-4 rounded-lg bg-gray-900 text-white text-[9px] font-black uppercase tracking-widest shadow-md shadow-gray-900/10 hover:scale-105 hover:bg-indigo-600 transition-all">
+                        <Button className="admin-btn-primary h-9 px-4 rounded-lg text-[9px] font-black uppercase tracking-widest shadow-md shadow-gray-900/10 hover:scale-105 transition-all">
                           Protocol
                         </Button>
                       </Link>
-                      <Button variant="ghost" size="sm" className="h-9 w-9 p-0 rounded-lg text-gray-300 hover:text-gray-900 hover:bg-gray-50 border border-transparent hover:border-border">
+                      <Button variant="ghost" size="sm" className="admin-btn-ghost h-9 w-9 p-0 rounded-lg text-gray-300 hover:text-gray-900 border border-transparent hover:border-border">
                         <MoreVertical size={16} />
                       </Button>
                     </div>

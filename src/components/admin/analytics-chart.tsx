@@ -22,7 +22,7 @@ export function AnalyticsChart() {
   const previousTotal = data.slice(0, -1).reduce((sum, item) => sum + item.leads, 0);
   const trend = previousTotal > 0 ? ((totalLeads - previousTotal) / previousTotal * 100).toFixed(1) : "0.0";
   return (
-    <Card className="rounded-2xl border-border bg-white dark:bg-midnight-900 shadow-sm overflow-hidden">
+    <Card className="admin-card admin-card-hover rounded-2xl border-border bg-white dark:bg-midnight-900 shadow-sm overflow-hidden">
       <CardHeader className="flex flex-row items-center justify-between p-5 pb-1">
         <div className="space-y-0.5">
           <CardTitle className="text-base font-black">Lead Acquisition Flow</CardTitle>

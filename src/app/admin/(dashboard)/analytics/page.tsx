@@ -5,7 +5,6 @@ import { Users, Target, Zap, TrendingUp, ArrowUpRight, ArrowDownRight, Download,
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { PageHeader } from "@/components/admin/page-header";
 
 export default async function AnalyticsPage() {
     // Fetch real data
@@ -23,20 +22,11 @@ export default async function AnalyticsPage() {
     ];
 
     return (
-        <div className="space-y-6 pb-10 w-full">
-            <PageHeader
-                label="Operations Suite"
-                title="Analytics"
-                highlight="Active"
-                description="Neural engine sync complete. Projected growth: "
-                descriptionHighlight="+14%"
-                icon={<Users />}
-            />
-
+        <div className="admin-page-stack space-y-6 pb-10 w-full">
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="admin-stat-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {stats.map((stat, i) => (
-                    <Card key={i} className="group overflow-hidden relative border-border bg-white dark:bg-midnight-900 shadow-sm hover:shadow-md transition-all rounded-2xl">
+                    <Card key={i} className="admin-card admin-card-unified admin-stat-card admin-card-hover group overflow-hidden relative border-border bg-white dark:bg-midnight-900 shadow-sm hover:shadow-md transition-all rounded-2xl">
                         <CardHeader className="flex flex-row items-center justify-between p-4 pb-1">
                             <span className="text-[8px] font-black uppercase tracking-[0.2em] text-muted-foreground/40">{stat.label}</span>
                             <div className="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-midnight-800 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-all">
@@ -69,7 +59,7 @@ export default async function AnalyticsPage() {
             <div className="grid grid-cols-1 gap-8 items-start">
                 {/* Category Distribution */}
                 <div className="space-y-4">
-                    <Card className="rounded-2xl border-border bg-white dark:bg-midnight-900 shadow-sm overflow-hidden">
+                    <Card className="admin-card admin-card-unified admin-card-hover rounded-2xl border-border bg-white dark:bg-midnight-900 shadow-sm overflow-hidden">
                         <CardHeader className="flex flex-row items-center justify-between p-5 pb-2">
                             <div className="flex items-center gap-3">
                                 <div className="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-midnight-800 text-indigo-600 flex items-center justify-center shadow-inner">
@@ -98,7 +88,7 @@ export default async function AnalyticsPage() {
                         </CardContent>
                     </Card>
 
-                    <Card className="rounded-2xl border-border bg-white dark:bg-midnight-900 shadow-sm overflow-hidden">
+                    <Card className="admin-card admin-card-unified admin-card-hover rounded-2xl border-border bg-white dark:bg-midnight-900 shadow-sm overflow-hidden">
                         <CardHeader className="p-5 pb-2">
                             <div className="flex items-center gap-3">
                                 <div className="w-9 h-9 rounded-xl bg-orange-50 dark:bg-midnight-800 text-orange-600 flex items-center justify-center shadow-inner">
@@ -131,7 +121,7 @@ export default async function AnalyticsPage() {
             </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <Card className="rounded-2xl border-border bg-white dark:bg-midnight-900 shadow-sm p-5">
+                    <Card className="admin-card admin-card-unified admin-card-hover rounded-2xl border-border bg-white dark:bg-midnight-900 shadow-sm p-5">
                         <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center gap-3">
                                 <div className="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-midnight-800 text-indigo-600 flex items-center justify-center">
@@ -156,13 +146,13 @@ export default async function AnalyticsPage() {
                                     </div>
                                 </div>
                             ))}
-                            <button className="w-full h-10 rounded-xl border-2 border-dashed border-border flex items-center justify-center gap-2 text-muted-foreground hover:border-primary/50 hover:bg-primary/5 transition-all mt-2 text-[7px] font-black uppercase tracking-widest">
+                            <button className="admin-btn-ghost w-full h-10 rounded-xl border-2 border-dashed border-border flex items-center justify-center gap-2 text-muted-foreground hover:border-primary/50 hover:bg-primary/5 transition-all mt-2 text-[7px] font-black uppercase tracking-widest">
                                 + New Instance
                             </button>
                         </div>
                     </Card>
 
-                    <Card className="rounded-2xl border-border bg-white dark:bg-midnight-900 shadow-sm p-5 overflow-hidden relative">
+                    <Card className="admin-card admin-card-unified admin-card-hover rounded-2xl border-border bg-white dark:bg-midnight-900 shadow-sm p-5 overflow-hidden relative">
                         <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center gap-3">
                                 <div className="w-9 h-9 rounded-xl bg-rose-50 dark:bg-midnight-800 text-rose-600 flex items-center justify-center">
@@ -203,7 +193,7 @@ export default async function AnalyticsPage() {
                         <p className="text-[9px] font-black text-white/40 mt-1 uppercase tracking-[0.3em]">Expected velocity pulse: <span className="text-emerald-400">+14% projected</span></p>
                     </div>
                 </div>
-                <Button className="h-12 px-10 rounded-xl bg-white text-indigo-950 font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all relative z-10 shadow-2xl text-[10px]">
+                <Button className="admin-btn-accent h-12 px-10 rounded-xl font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all relative z-10 shadow-2xl text-[10px]">
                     Access Terminal
                 </Button>
 
@@ -213,3 +203,4 @@ export default async function AnalyticsPage() {
         </div>
     );
 }
+

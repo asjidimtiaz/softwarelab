@@ -1,9 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Sparkles, BrainCircuit, Bot, Zap, MessageSquare, Terminal } from "lucide-react";
+import { BrainCircuit, Bot, Zap, MessageSquare } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { PageHeader } from "@/components/admin/page-header";
 import { useEffect, useState } from "react";
 
 type AILibraryResponse = {
@@ -15,9 +14,9 @@ type AILibraryResponse = {
 
 export default function AIAssistantPage() {
     const features = [
-        { title: "Logic Mapping", desc: "AI-driven architecture blueprints based on lead intent.", icon: BrainCircuit, color: "text-blue-500" },
-        { title: "Scope Extraction", desc: "Automated cost and timeline estimations for new inquiries.", icon: Zap, color: "text-amber-500" },
-        { title: "Drafting Assistant", desc: "AI-powered proposal generation and technical responses.", icon: Bot, color: "text-electric" },
+        { title: "Logic Mapping", desc: "AI-driven architecture blueprints based on lead intent.", icon: BrainCircuit },
+        { title: "Scope Extraction", desc: "Automated cost and timeline estimations for new inquiries.", icon: Zap },
+        { title: "Drafting Assistant", desc: "AI-powered proposal generation and technical responses.", icon: Bot },
     ];
 
     const [aiLibrary, setAiLibrary] = useState<AILibraryResponse | null>(null);
@@ -67,14 +66,7 @@ export default function AIAssistantPage() {
     }, []);
 
     return (
-        <div className="space-y-10 pb-12">
-                <PageHeader
-                    label="Experimental Feature"
-                    title="AI Assistant"
-                    icon={<Sparkles />}
-                    description="Unified Intelligence Layer Operational."
-                />
-
+        <div className="admin-page-stack space-y-8 pb-10 w-full">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {features.map((feature, i) => (
                     <motion.div
@@ -83,22 +75,22 @@ export default function AIAssistantPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: i * 0.1 }}
                     >
-                        <Card className="rounded-[2rem] border-gray-100 bg-white shadow-sm hover:shadow-xl transition-all h-full group">
-                            <CardHeader>
-                                <div className={`w-12 h-12 rounded-2xl ${feature.color.replace('text', 'bg').replace('-500', '/10')} flex items-center justify-center ${feature.color} mb-4 group-hover:scale-110 transition-transform`}>
-                                    <feature.icon size={24} />
+                        <Card className="admin-card admin-card-unified admin-card-hover rounded-[2rem] transition-all min-h-[230px] group">
+                            <CardHeader className="p-6 pb-3 mb-0">
+                                <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5">
+                                    <feature.icon size={24} strokeWidth={2} />
                                 </div>
-                                <CardTitle className="text-xl font-bold">{feature.title}</CardTitle>
+                                <CardTitle className="text-[2rem] leading-tight font-heading font-extrabold text-gray-900 dark:text-white">{feature.title}</CardTitle>
                             </CardHeader>
-                            <CardContent>
-                                <p className="text-gray-500 font-medium leading-relaxed">{feature.desc}</p>
+                            <CardContent className="px-6 pb-6 pt-0">
+                                <p className="text-[1.05rem] text-gray-600 dark:text-gray-300 font-medium leading-relaxed">{feature.desc}</p>
                             </CardContent>
                         </Card>
                     </motion.div>
                 ))}
             </div>
 
-            <Card className="rounded-[3rem] border-dashed border-2 border-gray-100 bg-gray-50/50 p-12 flex flex-col items-center text-center justify-center min-h-[300px]">
+            <Card className="admin-card admin-card-unified admin-card-hover rounded-[3rem] border-dashed border-2 border-gray-100 bg-gray-50/50 p-12 flex flex-col items-center text-center justify-center min-h-[300px]">
                 <div className="w-16 h-16 rounded-full bg-white shadow-sm flex items-center justify-center text-gray-300 mb-6">
                     <MessageSquare size={32} />
                 </div>
@@ -110,24 +102,24 @@ export default function AIAssistantPage() {
             </Card>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <Card className="rounded-[2rem] border-gray-100 bg-white shadow-sm overflow-hidden">
-                    <CardHeader className="pb-3">
-                        <CardTitle className="text-base font-black uppercase tracking-widest text-muted-foreground/60">Prompt Library</CardTitle>
+                <Card className="admin-card admin-card-unified admin-card-hover rounded-[2rem] overflow-hidden">
+                    <CardHeader className="px-6 pt-6 pb-2 mb-0">
+                        <CardTitle className="text-xl font-heading font-extrabold tracking-tight text-gray-900 dark:text-white">Prompt Library</CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="px-6 pb-6 pt-2">
                         {loading ? (
-                            <div className="text-xs font-bold text-muted-foreground/60 uppercase tracking-widest">Loading...</div>
+                            <div className="text-sm font-semibold text-gray-500">Loading...</div>
                         ) : !aiLibrary?.success ? (
-                            <div className="text-xs font-bold text-rose-500 uppercase tracking-widest">
+                            <div className="text-sm font-semibold text-rose-500">
                                 {aiLibrary?.error || "Failed to load"}
                             </div>
                         ) : (
                             <div className="space-y-3">
                                 {Object.entries((aiLibrary.prompts?.prompts || {}) as Record<string, any>).map(([key, p]) => (
-                                    <div key={key} className="p-4 rounded-2xl border border-border bg-secondary/10">
-                                        <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">{key}</div>
-                                        <div className="text-sm font-black mt-1">{p?.name}</div>
-                                        <div className="text-xs text-muted-foreground/70 font-medium mt-1 line-clamp-2">{p?.system_prompt}</div>
+                                    <div key={key} className="p-5 rounded-2xl border border-gray-200/80 dark:border-midnight-700 bg-white/75 dark:bg-midnight-900/40">
+                                        <div className="text-xs font-black uppercase tracking-[0.14em] text-gray-500">{key}</div>
+                                        <div className="text-2xl font-heading font-extrabold tracking-tight mt-1 text-gray-900 dark:text-white">{p?.name}</div>
+                                        <div className="text-sm text-gray-600 dark:text-gray-300 font-medium mt-1.5 leading-relaxed line-clamp-2">{p?.system_prompt}</div>
                                     </div>
                                 ))}
                             </div>
@@ -135,25 +127,25 @@ export default function AIAssistantPage() {
                     </CardContent>
                 </Card>
 
-                <Card className="rounded-[2rem] border-gray-100 bg-white shadow-sm overflow-hidden">
-                    <CardHeader className="pb-3">
-                        <CardTitle className="text-base font-black uppercase tracking-widest text-muted-foreground/60">Workflow Library</CardTitle>
+                <Card className="admin-card admin-card-unified admin-card-hover rounded-[2rem] overflow-hidden">
+                    <CardHeader className="px-6 pt-6 pb-2 mb-0">
+                        <CardTitle className="text-xl font-heading font-extrabold tracking-tight text-gray-900 dark:text-white">Workflow Library</CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="px-6 pb-6 pt-2">
                         {loading ? (
-                            <div className="text-xs font-bold text-muted-foreground/60 uppercase tracking-widest">Loading...</div>
+                            <div className="text-sm font-semibold text-gray-500">Loading...</div>
                         ) : !aiLibrary?.success ? (
-                            <div className="text-xs font-bold text-rose-500 uppercase tracking-widest">
+                            <div className="text-sm font-semibold text-rose-500">
                                 {aiLibrary?.error || "Failed to load"}
                             </div>
                         ) : (
                             <div className="space-y-3">
                                 {Object.entries((aiLibrary.workflows?.workflows || {}) as Record<string, any>).map(([key, wf]) => (
-                                    <div key={key} className="p-4 rounded-2xl border border-border bg-secondary/10">
-                                        <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">{key}</div>
-                                        <div className="text-sm font-black mt-1">{wf?.name}</div>
-                                        <div className="text-xs text-muted-foreground/70 font-medium mt-1 line-clamp-2">{wf?.description}</div>
-                                        <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/50 mt-2">
+                                    <div key={key} className="p-5 rounded-2xl border border-gray-200/80 dark:border-midnight-700 bg-white/75 dark:bg-midnight-900/40">
+                                        <div className="text-xs font-black uppercase tracking-[0.14em] text-gray-500">{key}</div>
+                                        <div className="text-2xl font-heading font-extrabold tracking-tight mt-1 text-gray-900 dark:text-white">{wf?.name}</div>
+                                        <div className="text-sm text-gray-600 dark:text-gray-300 font-medium mt-1.5 leading-relaxed line-clamp-2">{wf?.description}</div>
+                                        <div className="text-xs font-black uppercase tracking-[0.14em] text-gray-500 mt-2.5">
                                             {Array.isArray(wf?.steps) ? `${wf.steps.length} steps` : ""}
                                         </div>
                                     </div>
@@ -164,11 +156,11 @@ export default function AIAssistantPage() {
                 </Card>
             </div>
 
-            <Card className="rounded-[2rem] border-gray-100 bg-white shadow-sm overflow-hidden">
-                <CardHeader className="pb-3">
-                    <CardTitle className="text-base font-black uppercase tracking-widest text-muted-foreground/60">AI Studio: Generate + Save Draft</CardTitle>
+            <Card className="admin-card admin-card-unified admin-card-hover rounded-[2rem] overflow-hidden">
+                <CardHeader className="px-6 pt-6 pb-2 mb-0">
+                    <CardTitle className="text-xl font-heading font-extrabold tracking-tight text-gray-900 dark:text-white">AI Studio: Generate + Save Draft</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 px-6 pb-6 pt-2">
                     {loading ? (
                         <div className="text-xs font-bold text-muted-foreground/60 uppercase tracking-widest">Loading...</div>
                     ) : !aiLibrary?.success ? (
@@ -272,11 +264,11 @@ export default function AIAssistantPage() {
                 </CardContent>
             </Card>
 
-            <Card className="rounded-[2rem] border-gray-100 bg-white shadow-sm overflow-hidden">
-                <CardHeader className="pb-3">
-                    <CardTitle className="text-base font-black uppercase tracking-widest text-muted-foreground/60">Workflow Runner</CardTitle>
+            <Card className="admin-card admin-card-unified admin-card-hover rounded-[2rem] overflow-hidden">
+                <CardHeader className="px-6 pt-6 pb-2 mb-0">
+                    <CardTitle className="text-xl font-heading font-extrabold tracking-tight text-gray-900 dark:text-white">Workflow Runner</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 px-6 pb-6 pt-2">
                     {loading ? (
                         <div className="text-xs font-bold text-muted-foreground/60 uppercase tracking-widest">Loading...</div>
                     ) : !aiLibrary?.success ? (
@@ -389,3 +381,4 @@ export default function AIAssistantPage() {
         </div>
     );
 }
+
