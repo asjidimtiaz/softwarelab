@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
 @import "../admin-dashboard-theme.css";
 @import "tailwindcss";
 @plugin "tailwindcss-animate";
@@ -10,9 +10,9 @@
   --font-sans: var(--font-body);
   --font-mono: var(--font-geist-mono);
 
-  /* Raleway as the site-wide font */
-  --font-body: 'Raleway', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  --font-heading: 'Raleway', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+  /* Temporal-style fonts: Syne for display, DM Sans for body */
+  --font-body: 'DM Sans', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  --font-heading: 'Syne', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
 
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
@@ -116,34 +116,34 @@
   }
 
   .dark {
-    /* Midnight Blue Dark Mode - WCAG 2.1 Compliant */
-    --background: 222 47% 11%; /* #0F172A - Midnight Blue */
-    --foreground: 210 40% 98%; /* #F8FAFC - High contrast white */
+    /* Temporal-style dark mode */
+    --background: 222 50% 5.5%; /* #0A0A0F - Deep navy */
+    --foreground: 210 5% 97%; /* #F8F8FF - Almost white */
     
-    --card: 217 33% 17%; /* #1E293B - Slate for cards */
-    --card-foreground: 210 40% 98%;
+    --card: 217 40% 11%; /* #13131E - Card background */
+    --card-foreground: 210 5% 97%;
     
-    --popover: 222 47% 11%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 222 50% 5.5%;
+    --popover-foreground: 210 5% 97%;
     
-    --primary: 209 97% 29%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 227 100% 62%; /* #6366F1 - Indigo accent */
+    --primary-foreground: 210 5% 97%;
     
-    --secondary: 217 33% 17%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 217 40% 11%;
+    --secondary-foreground: 210 5% 97%;
     
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 217 30% 25%; /* #1E1E2E - Muted border */
+    --muted-foreground: 210 10% 58%; /* #94A3B8 - Muted text */
     
-    --accent: 45 89% 71%;
-    --accent-foreground: 209 97% 29%;
+    --accent: 227 100% 62%; /* #6366F1 - Primary accent */
+    --accent-foreground: 210 5% 97%;
     
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 210 5% 97%;
     
-    --border: 217 33% 17%;
-    --input: 217 33% 17%;
-    --ring: 45 89% 71%;
+    --border: 217 30% 18%; /* #1E1E2E - Subtle border */
+    --input: 217 30% 18%;
+    --ring: 227 100% 62%;
   }
 }
 

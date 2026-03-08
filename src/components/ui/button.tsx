@@ -12,11 +12,11 @@ interface ButtonProps extends HTMLMotionProps<"button"> {
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "primary", size = "md", ...props }, ref) => {
     const variantStyles = {
-      primary: "bg-raly-accent text-raly-primary shadow-md shadow-raly-primary/30 hover:bg-raly-accent/95",
-      secondary: "bg-raly-primary text-white shadow-md shadow-raly-primary/25 hover:bg-raly-primary/95",
+      primary: "bg-[#6366F1] text-white shadow-md shadow-[#6366F1]/30 hover:bg-[#6366F1]/95",
+      secondary: "bg-[#8B5CF6] text-white shadow-md shadow-[#8B5CF6]/25 hover:bg-[#8B5CF6]/95",
       outline: "border border-white/10 bg-transparent hover:bg-white/5",
       ghost: "bg-transparent hover:bg-white/5",
-      glass: "glass border-white/5 hover:bg-white/10 text-foreground",
+      glass: "glass border-white/5 hover:bg-white/10 text-[#F8F8FF]",
     };
 
     const sizeStyles = {
@@ -32,7 +32,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.98 }}
         className={cn(
-          "inline-flex items-center justify-center rounded-xl font-heading font-extrabold uppercase tracking-widest transition-all disabled:opacity-50 disabled:pointer-events-none outline-none focus:ring-2 focus:ring-raly-primary/20",
+          "inline-flex items-center justify-center rounded-xl font-display font-extrabold uppercase tracking-widest transition-all disabled:opacity-50 disabled:pointer-events-none outline-none focus:ring-2 focus:ring-[#6366F1]/20",
           variantStyles[variant],
           sizeStyles[size],
           className

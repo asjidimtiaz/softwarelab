@@ -1,9 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { FaFacebook, FaTwitter, FaLinkedin, FaDribbble } from "react-icons/fa";
-import { ChevronDown, Globe } from "lucide-react";
+import { Globe } from "lucide-react";
+import { FaGithub, FaTwitter, FaLinkedin } from "react-icons/fa";
 
 interface FooterProps {
   dict: any;
@@ -12,63 +11,147 @@ interface FooterProps {
 
 export function Footer({ dict, locale }: FooterProps) {
   return (
-    <footer className="bg-raly-subtle border-t border-raly-accent/20 mt-auto">
-      <div className="container py-12">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-12">
-          {/* Left: Logo + Copyright + Social Icons */}
-          <div className="flex flex-col md:flex-row items-center gap-8">
-            {/* Logo */}
-            <Link href={`/${locale}`} className="flex items-center gap-3 group">
-              <div className="w-10 h-10 bg-gradient-to-br from-raly-deep to-raly-primary rounded-full flex items-center justify-center border border-raly-accent/20 shadow-[0_4px_12px_rgba(2,77,148,0.3)] group-hover:scale-105 transition-all duration-300 relative overflow-hidden">
-                <div className="absolute inset-0 bg-raly-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="w-5 h-5 rounded-full border-[2px] border-raly-accent/90 flex items-center justify-center shadow-[0_0_12px_rgba(248,209,113,0.35)]">
-                  <div className="w-2 h-2 rounded-full bg-raly-accent shadow-[0_0_8px_rgba(248,209,113,0.55)]" />
-                </div>
+    <footer className="bg-[#0A0A0F] border-t border-[#1E1E2E]">
+      <div className="container px-6 md:px-12 py-16">
+        {/* Main Footer Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-12 mb-12 pb-12 border-b border-[#1E1E2E]">
+          {/* Brand Column */}
+          <div className="md:col-span-2">
+            <Link href={`/${locale}`} className="flex items-center gap-2 mb-6">
+              <div className="w-8 h-8 bg-gradient-to-br from-indigo-400 to-violet-400 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">D</span>
               </div>
-              <span className="font-black text-raly-deep uppercase tracking-tighter text-xl">Digi <span className="text-raly-primary">Web Crew</span></span>
+              <span className="text-[#F8F8FF] font-display font-bold">DigiWebCrew</span>
             </Link>
-
-            {/* Copyright */}
-            <span className="text-xs font-bold text-raly-text uppercase tracking-widest">
-              {new Date().getFullYear()} Precision Engineering
-            </span>
-
-            {/* Social Icons */}
-            <div className="flex items-center gap-4">
-              <a href="#" className="text-raly-text hover:text-raly-primary transition-colors">
-                <FaLinkedin size={18} />
-              </a>
-              <a href="https://github.com/toqeer74" target="_blank" className="text-raly-text hover:text-raly-deep transition-colors">
-                <FaTwitter size={18} />
-              </a>
+            <p className="text-[#94A3B8] text-sm font-body leading-relaxed mb-6">
+              Enterprise-grade software development solutions for mission-critical systems. Trusted by global leaders.
+            </p>
+            {/* Newsletter */}
+            <div className="space-y-3">
+              <label className="text-xs text-[#94A3B8] font-body font-semibold uppercase tracking-widest">
+                Stay Updated
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="email"
+                  placeholder="your@email.com"
+                  className="flex-1 px-4 py-2 bg-[#13131E] border border-[#1E1E2E] rounded-lg text-[#F8F8FF] text-sm placeholder-[#494970] focus:outline-none focus:border-[#6366F1]/50"
+                />
+                <button className="px-4 py-2 bg-[#6366F1] hover:bg-[#6366F1]/90 text-white rounded-lg transition-all font-body text-sm font-semibold">
+                  Join
+                </button>
+              </div>
             </div>
           </div>
 
-          {/* Right: Links + Language + CTA */}
-          <div className="flex flex-wrap items-center justify-center gap-8">
-            {/* Links */}
-            <div className="flex items-center gap-8">
-              <Link href={`/${locale}/privacy`} className="text-[10px] font-black uppercase tracking-[0.2em] text-raly-text hover:text-raly-deep transition-colors">
-                Privacy Protocol
-              </Link>
-              <Link href={`/${locale}/terms`} className="text-[10px] font-black uppercase tracking-[0.2em] text-raly-text hover:text-raly-deep transition-colors">
-                Terms of Use
-              </Link>
-            </div>
+          {/* Services Column */}
+          <div>
+            <h4 className="text-[#F8F8FF] font-display font-bold mb-6">Services</h4>
+            <ul className="space-y-3">
+              <li>
+                <Link href={`/${locale}/services`} className="text-[#94A3B8] hover:text-[#F8F8FF] text-sm font-body transition-colors">
+                  Full-Stack Development
+                </Link>
+              </li>
+              <li>
+                <Link href={`/${locale}/services`} className="text-[#94A3B8] hover:text-[#F8F8FF] text-sm font-body transition-colors">
+                  AI/ML Solutions
+                </Link>
+              </li>
+              <li>
+                <Link href={`/${locale}/services`} className="text-[#94A3B8] hover:text-[#F8F8FF] text-sm font-body transition-colors">
+                  DevOps & Infrastructure
+                </Link>
+              </li>
+            </ul>
+          </div>
 
-            {/* Language Selector */}
-            <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-raly-text">
-              <Globe size={14} className="text-raly-primary" />
-              <span>{locale === 'en' ? 'EN-US' : locale === 'ur' ? 'UR-PK' : 'AR-SA'}</span>
-            </div>
+          {/* Company Column */}
+          <div>
+            <h4 className="text-[#F8F8FF] font-display font-bold mb-6">Company</h4>
+            <ul className="space-y-3">
+              <li>
+                <Link href={`/${locale}/about`} className="text-[#94A3B8] hover:text-[#F8F8FF] text-sm font-body transition-colors">
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link href={`/${locale}/blog`} className="text-[#94A3B8] hover:text-[#F8F8FF] text-sm font-body transition-colors">
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link href={`/${locale}/case-studies`} className="text-[#94A3B8] hover:text-[#F8F8FF] text-sm font-body transition-colors">
+                  Case Studies
+                </Link>
+              </li>
+            </ul>
+          </div>
 
-            {/* CTA Button */}
-            <Link
-              href={`/${locale}/quote`}
-              className="px-6 py-2.5 bg-raly-primary text-raly-base text-[10px] font-black uppercase tracking-widest rounded-xl transition-all shadow-xl hover:scale-105 active:scale-95"
+          {/* Legal Column */}
+          <div>
+            <h4 className="text-[#F8F8FF] font-display font-bold mb-6">Legal</h4>
+            <ul className="space-y-3">
+              <li>
+                <Link href={`/${locale}/privacy`} className="text-[#94A3B8] hover:text-[#F8F8FF] text-sm font-body transition-colors">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link href={`/${locale}/terms`} className="text-[#94A3B8] hover:text-[#F8F8FF] text-sm font-body transition-colors">
+                  Terms of Service
+                </Link>
+              </li>
+              <li>
+                <a href="#" className="text-[#94A3B8] hover:text-[#F8F8FF] text-sm font-body transition-colors">
+                  Cookie Policy
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          {/* Left: Copyright */}
+          <div className="text-xs text-[#94A3B8] font-body">
+            © 2024 DigiWebCrew. All rights reserved.
+          </div>
+
+          {/* Center: Language Selector */}
+          <div className="flex items-center gap-2 text-xs text-[#94A3B8] font-body">
+            <Globe size={14} className="text-[#6366F1]" />
+            <span className="uppercase tracking-widest">
+              {locale === 'en' ? 'EN-US' : locale === 'ur' ? 'UR-PK' : 'AR-SA'}
+            </span>
+          </div>
+
+          {/* Right: Social Links */}
+          <div className="flex items-center gap-6">
+            <a
+              href="https://github.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#94A3B8] hover:text-[#6366F1] transition-colors"
             >
-              Initiate Project
-            </Link>
+              <FaGithub size={16} />
+            </a>
+            <a
+              href="https://twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#94A3B8] hover:text-[#6366F1] transition-colors"
+            >
+              <FaTwitter size={16} />
+            </a>
+            <a
+              href="https://linkedin.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#94A3B8] hover:text-[#6366F1] transition-colors"
+            >
+              <FaLinkedin size={16} />
+            </a>
           </div>
         </div>
       </div>

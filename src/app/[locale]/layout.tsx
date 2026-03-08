@@ -86,7 +86,7 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className="font-sans antialiased bg-raly-base dark:bg-midnight-950 text-foreground transition-all duration-300 font-medium">
+      <body className="font-sans antialiased bg-[#0A0A0F] dark:bg-[#0A0A0F] text-[#F8F8FF] transition-all duration-300 font-medium">
         <MotionProvider>
           <PageTransition>
             <Suspense fallback={null}>

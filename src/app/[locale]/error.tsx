@@ -39,12 +39,12 @@ export default function Error({
           <div className="space-y-4">
             <button
               onClick={() => reset()}
-              className="w-full flex items-center justify-center gap-3 h-14 rounded-2xl bg-primary text-primary-foreground font-bold transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-primary/20"
+              className="w-full flex items-center justify-center gap-3 h-14 rounded-2xl bg-[#6366F1] text-[#F8F8FF] font-bold transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-[#6366F1]/20"
             >
               <RefreshCcw size={18} />
               Initialize Reset Sequence
             </button>
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/50">
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#94A3B8]/50">
                 Error ID: {error.digest || 'SWL-CRIT-999'}
             </p>
           </div>

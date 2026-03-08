@@ -5,6 +5,11 @@ import { logAudit } from "@/lib/audit";
 import { NextRequest } from "next/server";
 
 export async function requireAdminSession(request?: NextRequest) {
+  // AUTH DISABLED - Dashboard is now public
+  // Return success without checking session
+  return { success: true };
+
+  /* ORIGINAL CODE - DISABLED FOR PUBLIC ACCESS
   const session = await getServerSession(authOptions);
   if (!session?.user?.email) {
     await logAudit({
@@ -48,6 +53,7 @@ export async function requireAdminSession(request?: NextRequest) {
     userEmail: session.user.email,
     userId: session.user.email, // Use email as ID since NextAuth user doesn't have id by default
   });
+  */
 
   return { session, rateLimitResult };
 }

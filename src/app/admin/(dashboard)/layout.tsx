@@ -1,6 +1,6 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth-options";
-import { redirect } from "next/navigation";
+// import { getServerSession } from "next-auth";
+// import { authOptions } from "@/lib/auth-options";
+// import { redirect } from "next/navigation";
 import { Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PageTransition } from "@/components/ui/page-transition";
@@ -9,11 +9,11 @@ import { SidebarLogo } from "@/components/admin/sidebar-logo";
 import { NotificationPopover } from "@/components/admin/notification-popover";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const session = await getServerSession(authOptions);
+  // const session = await getServerSession(authOptions);
 
-  if (!session) {
-    redirect("/admin/login");
-  }
+  // if (!session) {
+  //   redirect("/admin/login");
+  // }
 
 
   return (

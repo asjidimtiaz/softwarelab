@@ -64,17 +64,17 @@ export function AddLeadModal({ isOpen, onClose }: AddLeadModalProps) {
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-xl bg-white border border-white/50 rounded-2xl shadow-2xl shadow-primary/10 z-[101] overflow-hidden"
+            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-xl bg-[#13131E] border border-[#1E1E2E] rounded-2xl shadow-2xl shadow-[#6366F1]/10 z-[101] overflow-hidden"
           >
             {/* Header */}
-            <div className="px-6 py-4 border-b border-border/50 flex items-center justify-between bg-primary/5">
+            <div className="px-6 py-4 border-b border-[#1E1E2E]/50 flex items-center justify-between bg-[#6366F1]/5">
               <div>
-                <h2 className="text-xl font-black tracking-tighter italic uppercase">New Brief Intake</h2>
-                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-primary/40 mt-0.5">Manual Laboratory Entry</p>
+                <h2 className="text-xl font-black tracking-tighter italic uppercase text-[#F8F8FF]">New Brief Intake</h2>
+                <p className="text-[9px] font-black uppercase tracking-[0.2em] text-[#6366F1]/40 mt-0.5">Manual Laboratory Entry</p>
               </div>
               <button
                 onClick={onClose}
-                className="w-8 h-8 rounded-lg bg-secondary hover:bg-destructive hover:text-white flex items-center justify-center transition-all"
+                className="w-8 h-8 rounded-lg bg-[#1E1E2E] hover:bg-destructive hover:text-white flex items-center justify-center transition-all"
               >
                 <X size={16} />
               </button>
@@ -84,28 +84,28 @@ export function AddLeadModal({ isOpen, onClose }: AddLeadModalProps) {
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-[9px] font-black uppercase tracking-widest text-muted-foreground ml-1">Full Name</label>
+                  <label className="text-[9px] font-black uppercase tracking-widest text-[#94A3B8] ml-1">Full Name</label>
                   <div className="relative">
-                    <User className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/40" size={14} />
+                    <User className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6366F1]/40" size={14} />
                     <input
                       required
                       value={formData.fullName}
                       onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                      className="w-full h-11 pl-11 pr-4 bg-secondary/10 border border-border/50 rounded-xl font-bold text-xs focus:ring-2 focus:ring-primary outline-none transition-all"
+                      className="w-full h-11 pl-11 pr-4 bg-[#1E1E2E]/10 border border-[#1E1E2E]/50 rounded-xl font-bold text-xs focus:ring-2 focus:ring-[#6366F1] outline-none transition-all text-[#F8F8FF]"
                       placeholder="John Doe"
                     />
                   </div>
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[9px] font-black uppercase tracking-widest text-muted-foreground ml-1">Email Address</label>
+                  <label className="text-[9px] font-black uppercase tracking-widest text-[#94A3B8] ml-1">Email Address</label>
                   <div className="relative">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/40" size={14} />
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6366F1]/40" size={14} />
                     <input
                       required
                       type="email"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full h-11 pl-11 pr-4 bg-secondary/10 border border-border/50 rounded-xl font-bold text-xs focus:ring-2 focus:ring-primary outline-none transition-all"
+                      className="w-full h-11 pl-11 pr-4 bg-[#1E1E2E]/10 border border-[#1E1E2E]/50 rounded-xl font-bold text-xs focus:ring-2 focus:ring-[#6366F1] outline-none transition-all text-[#F8F8FF]"
                       placeholder="john@example.com"
                     />
                   </div>
@@ -114,13 +114,13 @@ export function AddLeadModal({ isOpen, onClose }: AddLeadModalProps) {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-[9px] font-black uppercase tracking-widest text-muted-foreground ml-1">Service category</label>
+                  <label className="text-[9px] font-black uppercase tracking-widest text-[#94A3B8] ml-1">Service category</label>
                   <div className="relative">
-                    <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/40" size={14} />
+                    <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6366F1]/40" size={14} />
                     <select
                       value={formData.serviceCategory}
                       onChange={(e) => setFormData({ ...formData, serviceCategory: e.target.value })}
-                      className="w-full h-11 pl-11 pr-4 bg-secondary/10 border border-border/50 rounded-xl font-bold text-xs focus:ring-2 focus:ring-primary outline-none transition-all appearance-none"
+                      className="w-full h-11 pl-11 pr-4 bg-[#1E1E2E]/10 border border-[#1E1E2E]/50 rounded-xl font-bold text-xs focus:ring-2 focus:ring-[#6366F1] outline-none transition-all appearance-none text-[#F8F8FF]"
                     >
                       <option>Software Dev</option>
                       <option>AI Solutions</option>
@@ -130,13 +130,13 @@ export function AddLeadModal({ isOpen, onClose }: AddLeadModalProps) {
                   </div>
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[9px] font-black uppercase tracking-widest text-muted-foreground ml-1">Investment Range</label>
+                  <label className="text-[9px] font-black uppercase tracking-widest text-[#94A3B8] ml-1">Budget Range</label>
                   <div className="relative">
-                    <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/40" size={14} />
+                    <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6366F1]/40" size={14} />
                     <select
                       value={formData.budgetRange}
                       onChange={(e) => setFormData({ ...formData, budgetRange: e.target.value })}
-                      className="w-full h-11 pl-11 pr-4 bg-secondary/10 border border-border/50 rounded-xl font-bold text-xs focus:ring-2 focus:ring-primary outline-none transition-all appearance-none"
+                      className="w-full h-11 pl-11 pr-4 bg-[#1E1E2E]/10 border border-[#1E1E2E]/50 rounded-xl font-bold text-xs focus:ring-2 focus:ring-[#6366F1] outline-none transition-all appearance-none text-[#F8F8FF]"
                     >
                       <option>$5k - $10k</option>
                       <option>$10k - $25k</option>
@@ -148,19 +148,19 @@ export function AddLeadModal({ isOpen, onClose }: AddLeadModalProps) {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[9px] font-black uppercase tracking-widest text-muted-foreground ml-1">Project Brief</label>
+                <label className="text-[9px] font-black uppercase tracking-widest text-[#94A3B8] ml-1">Project Brief</label>
                 <textarea
                   required
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full bg-secondary/10 border border-border/50 rounded-xl p-4 font-bold text-xs focus:ring-2 focus:ring-primary outline-none transition-all resize-none h-24"
+                  className="w-full bg-[#1E1E2E]/10 border border-[#1E1E2E]/50 rounded-xl p-4 font-bold text-xs focus:ring-2 focus:ring-[#6366F1] outline-none transition-all resize-none h-24 text-[#F8F8FF]"
                   placeholder="Outline the core requirements..."
                 />
               </div>
 
               <button
                 disabled={loading}
-                className="w-full h-12 bg-indigo-600 text-white font-black text-[10px] uppercase tracking-[0.2em] rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98] shadow-xl shadow-indigo-600/20 flex items-center justify-center gap-3"
+                className="w-full h-12 bg-[#6366F1] text-[#F8F8FF] font-black text-[10px] uppercase tracking-[0.2em] rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98] shadow-xl shadow-[#6366F1]/20 flex items-center justify-center gap-3"
               >
                 {loading ? <Loader2 className="animate-spin" size={16} /> : (
                   <>

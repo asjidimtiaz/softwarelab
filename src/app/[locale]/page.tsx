@@ -17,7 +17,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
   const isRtl = locale === "ar" || locale === "ur";
 
   return (
-    <div className="flex flex-col min-h-screen bg-background text-foreground" dir={isRtl ? "rtl" : "ltr"}>
+    <div className="flex flex-col min-h-screen bg-[#0A0A0F] text-[#F8F8FF]" dir={isRtl ? "rtl" : "ltr"}>
       <Navbar dict={dict} locale={locale} />
       <main className="flex-1">
         <section className="relative">
@@ -28,21 +28,17 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 
         <ServicesOverview dict={dict} />
 
-        <section className="py-16 md:py-20 border-y border-border bg-background">
-          <Container>
-            <ProcessVisualization />
-          </Container>
-        </section>
+        <ProcessVisualization />
 
-        <section className="py-24 bg-secondary/20 border-y border-border">
+        <section className="py-24 bg-[#6366F1]/5 border-y border-[#1E1E2E]">
           <Container>
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-12 items-start">
               <div className="space-y-8">
                 <div className="space-y-4">
-                  <h2 className="text-4xl font-black text-foreground tracking-tight leading-tight">
-                    Architect Your <span className="text-primary">Enterprise</span> Future
+                  <h2 className="text-4xl font-black text-[#F8F8FF] tracking-tight leading-tight">
+                    Architect Your <span className="text-[#6366F1]">Enterprise</span> Future
                   </h2>
-                  <p className="text-lg text-muted-foreground">
+                  <p className="text-lg text-[#94A3B8]">
                     {dict.hero.description}
                   </p>
                 </div>

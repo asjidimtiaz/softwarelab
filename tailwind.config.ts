@@ -17,10 +17,20 @@ const config: Config = {
     },
     extend: {
       fontFamily: {
-        sans: ["var(--font-body)", "sans-serif"],
-        heading: ["var(--font-heading)", "sans-serif"],
+        display: ["Syne", "sans-serif"],
+        body: ["DM Sans", "sans-serif"],
       },
       colors: {
+        base: "#0A0A0F",
+        surface: "#0F0F18",
+        "surface-card": "#13131E",
+        "border-muted": "#1E1E2E",
+        accent: "#6366F1",
+        "accent-2": "#8B5CF6",
+        "text-primary": "#F8F8FF",
+        "text-muted": "#94A3B8",
+        success: "#22C55E",
+        // Legacy colors for compatibility
         raly: {
           primary: "#024d94",
           accent: "#f8d171",
@@ -29,7 +39,6 @@ const config: Config = {
           subtle: "#fafafa",
           deep: "#02407b",
         },
-        // Digi Web Crew Brand Colors
         midnight: {
           DEFAULT: '#0F172A',
           50: '#F8FAFC',
@@ -118,10 +127,6 @@ const config: Config = {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
         },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
@@ -157,12 +162,27 @@ const config: Config = {
           "0%": { left: "-100%" },
           "100%": { left: "100%" },
         },
+        "gradient-x": {
+          "0%,100%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+        },
+        marquee: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-50%)" },
+        },
+        "fade-up": {
+          from: { opacity: "0", transform: "translateY(20px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         shimmer: "shimmer 8s infinite linear",
         "slide-right": "slide-right 3s linear infinite",
+        "gradient-x": "gradient-x 6s ease infinite",
+        marquee: "marquee 28s linear infinite",
+        "fade-up": "fade-up 0.5s ease forwards",
       },
     },
   },

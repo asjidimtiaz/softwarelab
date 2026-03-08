@@ -47,7 +47,7 @@ export function CaseStudiesLibrary({ studies }: { studies: CaseStudy[] }) {
         : items.filter(cs => cs.category === activeCategory);
 
     return (
-        <section className="py-24 bg-white dark:bg-midnight-950">
+        <section className="py-24 bg-[#0A0A0F] border-b border-[#1E1E2E]">
             <Container>
                 <div className="flex flex-col md:flex-row justify-between items-end gap-8 mb-16">
                     <div className="max-w-2xl">
@@ -55,13 +55,16 @@ export function CaseStudiesLibrary({ studies }: { studies: CaseStudy[] }) {
                             initial={{ opacity: 0, x: -20 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
-                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-raly-accent/20 text-raly-primary text-xs font-bold uppercase tracking-widest mb-4"
+                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#6366F1]/10 border border-[#6366F1]/30 mb-4"
                         >
-                            Industrial Proof
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#6366F1] animate-pulse" />
+                            <span className="text-xs font-body font-semibold uppercase tracking-widest text-[#6366F1]">
+                                Industrial Proof
+                            </span>
                         </motion.div>
-                        <h2 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white tracking-tight leading-tight">
+                        <h2 className="text-4xl md:text-5xl font-display font-black text-[#F8F8FF] tracking-tight leading-tight">
                             Selected Works & <br />
-                            <span className="text-raly-primary">Engineering Outcomes</span>
+                            <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">Engineering Outcomes</span>
                         </h2>
                     </div>
 
@@ -70,9 +73,9 @@ export function CaseStudiesLibrary({ studies }: { studies: CaseStudy[] }) {
                             <button
                                 key={cat}
                                 onClick={() => setActiveCategory(cat)}
-                                className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border ${activeCategory === cat
-                                    ? "bg-gray-900 border-gray-900 text-white dark:bg-white dark:border-white dark:text-gray-900 shadow-xl"
-                                    : "bg-white border-gray-100 text-gray-400 hover:border-gray-200 dark:bg-midnight-900 dark:border-midnight-800 dark:text-gray-500"
+                                className={`px-4 py-2 rounded-lg text-xs font-body font-semibold uppercase tracking-wider transition-all border ${activeCategory === cat
+                                    ? "bg-[#6366F1] border-[#6366F1] text-white shadow-lg"
+                                    : "bg-[#13131E] border-[#1E1E2E] text-[#94A3B8] hover:border-[#6366F1]/30 hover:text-[#F8F8FF]"
                                     }`}
                             >
                                 {cat}
@@ -102,11 +105,11 @@ export function CaseStudiesLibrary({ studies }: { studies: CaseStudy[] }) {
                                 }}
                                 className="block"
                             >
-                            <div className="relative aspect-[16/10] bg-gray-100 dark:bg-midnight-900 rounded-[2.5rem] overflow-hidden border border-gray-100 dark:border-midnight-800 mb-8 transition-all group-hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.2)] dark:group-hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.6)]">
+                            <div className="relative aspect-[16/10] bg-[#13131E] rounded-xl overflow-hidden border border-[#1E1E2E] mb-8 transition-all group-hover:border-[#6366F1]/50 group-hover:shadow-[0_0_30px_rgba(99,102,241,0.1)]">
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10 flex items-end p-12">
                                     <div className="text-white">
-                                        <p className="text-xs font-black uppercase tracking-widest text-raly-accent mb-2">KPI METRIC</p>
-                                        <p className="text-4xl font-black">{cs.metrics}</p>
+                                        <p className="text-xs font-body font-semibold uppercase tracking-widest text-[#6366F1] mb-2">KPI METRIC</p>
+                                        <p className="text-4xl font-display font-bold">{cs.metrics}</p>
                                     </div>
                                 </div>
 
@@ -118,16 +121,16 @@ export function CaseStudiesLibrary({ studies }: { studies: CaseStudy[] }) {
                                         className="object-cover"
                                     />
                                 ) : (
-                                    <div className="absolute inset-0 flex items-center justify-center bg-gray-50 dark:bg-midnight-800 transition-transform duration-700 group-hover:scale-110">
-                                        <div className="flex flex-col items-center gap-4 opacity-20 dark:opacity-40">
-                                            <Search size={64} className="text-gray-400" />
-                                            <p className="font-black uppercase tracking-widest text-sm text-gray-400">Project Snapshot</p>
+                                    <div className="absolute inset-0 flex items-center justify-center bg-[#13131E] transition-transform duration-700 group-hover:scale-110">
+                                        <div className="flex flex-col items-center gap-4 opacity-30">
+                                            <Search size={64} className="text-[#94A3B8]" />
+                                            <p className="font-body font-semibold uppercase tracking-widest text-sm text-[#94A3B8]">Project Snapshot</p>
                                         </div>
                                     </div>
                                 )}
 
                                 <div className="absolute top-8 right-8 z-20">
-                                    <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white scale-0 group-hover:scale-100 transition-transform duration-300">
+                                    <div className="w-12 h-12 rounded-lg bg-[#6366F1]/20 backdrop-blur-md flex items-center justify-center text-white scale-0 group-hover:scale-100 transition-transform duration-300">
                                         <ArrowUpRight size={20} />
                                     </div>
                                 </div>
@@ -136,15 +139,15 @@ export function CaseStudiesLibrary({ studies }: { studies: CaseStudy[] }) {
                             </Link>
 
                             <div className="px-4 space-y-4">
-                                <div className="flex gap-2">
+                                <div className="flex gap-2 flex-wrap">
                                     {cs.tags.map(tag => (
-                                        <span key={tag} className="text-[10px] font-black text-gray-400 uppercase tracking-widest border border-gray-200 dark:border-midnight-800 px-2 py-0.5 rounded">
+                                        <span key={tag} className="text-[10px] font-body font-semibold text-[#94A3B8] uppercase tracking-widest border border-[#1E1E2E] px-2 py-0.5 rounded bg-[#13131E]/50">
                                             {tag}
                                         </span>
                                     ))}
                                 </div>
-                                <h3 className="text-2xl font-black text-gray-900 dark:text-white group-hover:text-raly-primary transition-colors">{cs.title}</h3>
-                                <p className="text-gray-500 dark:text-gray-400 font-medium leading-relaxed max-w-lg">{cs.description}</p>
+                                <h3 className="text-2xl font-display font-black text-[#F8F8FF] group-hover:text-[#6366F1] transition-colors">{cs.title}</h3>
+                                <p className="text-[#94A3B8] font-body leading-relaxed max-w-lg">{cs.description}</p>
                             </div>
                         </motion.div>
                     ))}

@@ -61,7 +61,7 @@ export function ServiceTemplate({
   });
 
   return (
-    <div className="bg-white dark:bg-midnight-950 min-h-screen pt-32 pb-24">
+    <div className="bg-[#0A0A0F] min-h-screen pt-32 pb-24">
       <Container>
         {/* Hero Section */}
         <div className="flex flex-col lg:flex-row gap-16 items-start mb-24">
@@ -69,7 +69,7 @@ export function ServiceTemplate({
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-raly-accent/20 text-raly-primary text-xs font-bold uppercase tracking-widest"
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#6366F1]/20 text-[#6366F1] text-xs font-family font-bold uppercase tracking-widest"
             >
               <IconComponent size={14} />
               Specialized Laboratory

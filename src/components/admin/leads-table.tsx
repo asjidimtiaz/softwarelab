@@ -13,29 +13,29 @@ interface LeadsTableProps {
 export function LeadsTable({ leads }: LeadsTableProps) {
   return (
     <div className="space-y-4">
-      <Card className="admin-card admin-card-hover p-0 overflow-hidden border-border bg-white shadow-xl shadow-primary/5 rounded-2xl">
+      <Card className="admin-card admin-card-hover p-0 overflow-hidden border-[#1E1E2E] bg-[#13131E] shadow-xl shadow-[#6366F1]/5 rounded-2xl">
         <div className="admin-table-wrap overflow-x-auto">
           <table className="admin-table w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-border bg-gray-50/30">
-                <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-muted-foreground/40">Lead Details</th>
-                <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-muted-foreground/40 text-center">Priority</th>
-                <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-muted-foreground/40">Service</th>
-                <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-muted-foreground/40">Entry</th>
-                <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-muted-foreground/40 text-right">Actions</th>
+              <tr className="border-b border-[#1E1E2E] bg-[#1E1E2E]/40">
+                <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-[#94A3B8]/40">Lead Details</th>
+                <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-[#94A3B8]/40 text-center">Priority</th>
+                <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-[#94A3B8]/40">Service</th>
+                <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-[#94A3B8]/40">Entry</th>
+                <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-[#94A3B8]/40 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-50/50">
+            <tbody className="divide-y divide-[#1E1E2E]/50">
               {leads.map((lead) => (
-                <tr key={lead._id} className="group hover:bg-primary/[0.01] transition-all duration-300">
+                <tr key={lead._id} className="group hover:bg-[#6366F1]/[0.01] transition-all duration-300">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-gray-900 border border-white/5 flex items-center justify-center text-white font-black text-sm shadow-md group-hover:scale-105 transition-transform">
+                      <div className="w-10 h-10 rounded-xl bg-[#6366F1] border border-[#6366F1]/20 flex items-center justify-center text-[#F8F8FF] font-black text-sm shadow-md group-hover:scale-105 transition-transform">
                         {lead.fullName.charAt(0)}
                       </div>
                       <div>
-                        <p className="text-[13px] font-black text-gray-900 group-hover:text-indigo-600 transition-colors">{lead.fullName}</p>
-                        <p className="text-[9px] font-bold text-gray-400 mt-0.5 uppercase tracking-wider">{lead.email}</p>
+                        <p className="text-[13px] font-black text-[#F8F8FF] group-hover:text-[#6366F1] transition-colors">{lead.fullName}</p>
+                        <p className="text-[9px] font-bold text-[#94A3B8] mt-0.5 uppercase tracking-wider">{lead.email}</p>
                       </div>
                     </div>
                   </td>

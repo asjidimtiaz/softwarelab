@@ -15,7 +15,7 @@ export default function RootAdminLayout({
 }) {
   return (
     <html lang="en">
-      <body className="font-sans antialiased bg-raly-base dark:bg-midnight-950 text-foreground transition-colors duration-300">
+      <body className="font-sans antialiased bg-[#13131E] dark:bg-[#13131E] text-[#F8F8FF] transition-colors duration-300">
         <MotionProvider>
           <PageTransition>
             {children}

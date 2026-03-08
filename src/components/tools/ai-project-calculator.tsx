@@ -64,20 +64,20 @@ export function AIProjectCalculator() {
   };
 
   return (
-    <div className="relative bg-card rounded-3xl p-8 md:p-10 border border-border shadow-lg">
+    <div className="relative bg-[#13131E] rounded-3xl p-8 md:p-10 border border-[#1E1E2E] shadow-lg">
       <div className="flex items-center gap-4 mb-8">
-        <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
-          <Calculator size={24} className="text-primary" />
+        <div className="w-12 h-12 rounded-2xl bg-[#6366F1]/10 flex items-center justify-center">
+          <Calculator size={24} className="text-[#6366F1]" />
         </div>
         <div>
-          <h3 className="text-2xl font-black text-foreground tracking-tight">AI Project Calculator</h3>
-          <p className="text-sm text-muted-foreground font-medium">Get an instant scope estimate</p>
+          <h3 className="text-2xl font-display font-black text-[#F8F8FF] tracking-tight">AI Project Calculator</h3>
+          <p className="text-sm text-[#94A3B8] font-body font-medium">Get an instant scope estimate</p>
         </div>
       </div>
 
       <div className="space-y-8">
         <div className="space-y-3">
-          <label className="text-sm font-bold text-foreground uppercase tracking-wider">Platform</label>
+          <label className="text-sm font-body font-bold text-[#F8F8FF] uppercase tracking-wider">Platform</label>
           <div className="grid grid-cols-3 gap-3">
             {(["Web", "Mobile", "Both"] as const).map((platform) => (
               <button
@@ -86,8 +86,8 @@ export function AIProjectCalculator() {
                 className={cn(
                   "px-4 py-3 rounded-xl font-bold text-sm transition-all border-2",
                   inputs.platform === platform
-                    ? "bg-primary text-primary-foreground border-primary shadow-sm"
-                    : "bg-secondary text-muted-foreground border-border hover:border-primary/50"
+                    ? "bg-[#6366F1] text-white border-[#6366F1] shadow-sm"
+                    : "bg-[#13131E]/30 text-[#94A3B8] border-[#1E1E2E] hover:border-[#6366F1]/50"
                 )}
               >
                 {platform}
@@ -98,8 +98,8 @@ export function AIProjectCalculator() {
 
         <div className="space-y-3">
           <div className="flex justify-between items-center">
-            <label className="text-sm font-bold text-foreground uppercase tracking-wider">Number of Pages/Views</label>
-            <span className="text-2xl font-black text-primary">{inputs.pages}</span>
+            <label className="text-sm font-body font-bold text-[#F8F8FF] uppercase tracking-wider">Number of Pages/Views</label>
+            <span className="text-2xl font-black text-[#6366F1]">{inputs.pages}</span>
           </div>
           <input
             type="range"
@@ -107,16 +107,16 @@ export function AIProjectCalculator() {
             max="100"
             value={inputs.pages}
             onChange={(e) => setInputs({ ...inputs, pages: parseInt(e.target.value) })}
-            className="w-full h-3 bg-secondary rounded-full appearance-none cursor-pointer slider"
-            style={{ background: `linear-gradient(to right, #024d94 0%, #024d94 ${inputs.pages}%, #E5E7EB ${inputs.pages}%, #E5E7EB 100%)` }}
+            className="w-full h-3 bg-[#13131E]/30 rounded-full appearance-none cursor-pointer slider"
+            style={{ background: `linear-gradient(to right, #6366F1 0%, #6366F1 ${inputs.pages}%, #1E1E2E ${inputs.pages}%, #1E1E2E 100%)` }}
           />
-          <div className="flex justify-between text-xs text-muted-foreground"><span>1</span><span>50</span><span>100</span></div>
+          <div className="flex justify-between text-xs text-[#94A3B8] font-body"><span>1</span><span>50</span><span>100</span></div>
         </div>
 
         <div className="space-y-3">
           <div className="flex justify-between items-center">
-            <label className="text-sm font-bold text-foreground uppercase tracking-wider">Complexity</label>
-            <span className="text-sm font-black text-primary">{complexityLabels[inputs.complexity]}</span>
+            <label className="text-sm font-body font-bold text-[#F8F8FF] uppercase tracking-wider">Complexity</label>
+            <span className="text-sm font-black text-[#6366F1]">{complexityLabels[inputs.complexity]}</span>
           </div>
           <input
             type="range"
@@ -125,16 +125,16 @@ export function AIProjectCalculator() {
             step="0.3"
             value={inputs.complexity}
             onChange={(e) => setInputs({ ...inputs, complexity: parseFloat(e.target.value) })}
-            className="w-full h-3 bg-secondary rounded-full appearance-none cursor-pointer slider"
-            style={{ background: `linear-gradient(to right, #024d94 0%, #024d94 ${((inputs.complexity - 1) / 1.5) * 100}%, #E5E7EB ${((inputs.complexity - 1) / 1.5) * 100}%, #E5E7EB 100%)` }}
+            className="w-full h-3 bg-[#13131E]/30 rounded-full appearance-none cursor-pointer slider"
+            style={{ background: `linear-gradient(to right, #6366F1 0%, #6366F1 ${((inputs.complexity - 1) / 1.5) * 100}%, #1E1E2E ${((inputs.complexity - 1) / 1.5) * 100}%, #1E1E2E 100%)` }}
           />
-          <div className="flex justify-between text-xs text-muted-foreground"><span>Simple</span><span>Standard</span><span>Enterprise</span></div>
+          <div className="flex justify-between text-xs text-[#94A3B8] font-body"><span>Simple</span><span>Standard</span><span>Enterprise</span></div>
         </div>
 
         <div className="space-y-3">
           <div className="flex justify-between items-center">
-            <label className="text-sm font-bold text-foreground uppercase tracking-wider">API Integrations</label>
-            <span className="text-2xl font-black text-primary">{inputs.apiIntegrations}</span>
+            <label className="text-sm font-body font-bold text-[#F8F8FF] uppercase tracking-wider">API Integrations</label>
+            <span className="text-2xl font-black text-[#6366F1]">{inputs.apiIntegrations}</span>
           </div>
           <input
             type="range"
@@ -142,10 +142,10 @@ export function AIProjectCalculator() {
             max="20"
             value={inputs.apiIntegrations}
             onChange={(e) => setInputs({ ...inputs, apiIntegrations: parseInt(e.target.value) })}
-            className="w-full h-3 bg-secondary rounded-full appearance-none cursor-pointer slider"
-            style={{ background: `linear-gradient(to right, #024d94 0%, #024d94 ${(inputs.apiIntegrations / 20) * 100}%, #E5E7EB ${(inputs.apiIntegrations / 20) * 100}%, #E5E7EB 100%)` }}
+            className="w-full h-3 bg-[#13131E]/30 rounded-full appearance-none cursor-pointer slider"
+            style={{ background: `linear-gradient(to right, #6366F1 0%, #6366F1 ${(inputs.apiIntegrations / 20) * 100}%, #1E1E2E ${(inputs.apiIntegrations / 20) * 100}%, #1E1E2E 100%)` }}
           />
-          <div className="flex justify-between text-xs text-muted-foreground"><span>0</span><span>10</span><span>20</span></div>
+          <div className="flex justify-between text-xs text-[#94A3B8] font-body"><span>0</span><span>10</span><span>20</span></div>
         </div>
 
         <button
@@ -156,7 +156,7 @@ export function AIProjectCalculator() {
               trackCalculatorComplete({ estimatedHours: hours, platform: inputs.platform, complexity: inputs.complexity });
             }
           }}
-          className="w-full py-4 bg-primary hover:bg-primary/90 text-primary-foreground font-black text-sm uppercase tracking-wider rounded-xl transition-all shadow-sm hover:shadow-lg hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3"
+          className="w-full py-4 bg-[#6366F1] hover:bg-[#6366F1]/90 text-white font-display font-black text-sm uppercase tracking-wider rounded-xl transition-all shadow-sm hover:shadow-lg hover:shadow-[#6366F1]/30 hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3"
         >
           <Zap size={18} />
           {showResults ? "Update Estimate" : "Calculate Project Scope"}
@@ -164,38 +164,38 @@ export function AIProjectCalculator() {
       </div>
 
       {showResults && (
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mt-8 pt-8 border-t border-border space-y-6">
-          <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl p-6 border border-primary/20">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mt-8 pt-8 border-t border-[#1E1E2E] space-y-6">
+          <div className="bg-gradient-to-br from-[#6366F1]/10 to-[#6366F1]/5 rounded-2xl p-6 border border-[#6366F1]/20">
             <div className="text-center mb-6">
-              <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-2">Estimated Build Time</p>
-              <div className="flex items-baseline justify-center gap-2"><span className="text-5xl font-black text-primary">{hours}</span><span className="text-2xl font-bold text-foreground">hours</span></div>
-              <p className="text-lg font-bold text-muted-foreground mt-2">~ {weeks} weeks at 40h/week</p>
+              <p className="text-sm font-body font-bold text-[#94A3B8] uppercase tracking-widest mb-2">Estimated Build Time</p>
+              <div className="flex items-baseline justify-center gap-2"><span className="text-5xl font-black text-[#6366F1]">{hours}</span><span className="text-2xl font-display font-bold text-[#F8F8FF]">hours</span></div>
+              <p className="text-lg font-display font-bold text-[#94A3B8] mt-2">~ {weeks} weeks at 40h/week</p>
             </div>
 
             <div className="grid grid-cols-3 gap-4 mb-6">
-              <div className="text-center p-3 bg-card/70 rounded-xl"><Code size={20} className="text-primary mx-auto mb-2" /><p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1">Pages</p><p className="text-lg font-black text-foreground">{inputs.pages * 12}h</p></div>
-              <div className="text-center p-3 bg-card/70 rounded-xl"><Zap size={20} className="text-primary mx-auto mb-2" /><p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1">Complexity</p><p className="text-lg font-black text-foreground">{Math.round(inputs.complexity * 40)}h</p></div>
-              <div className="text-center p-3 bg-card/70 rounded-xl"><Server size={20} className="text-primary mx-auto mb-2" /><p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1">APIs</p><p className="text-lg font-black text-foreground">{inputs.apiIntegrations * 15}h</p></div>
+              <div className="text-center p-3 bg-[#13131E]/70 rounded-xl"><Code size={20} className="text-[#6366F1] mx-auto mb-2" /><p className="text-xs font-body font-bold text-[#94A3B8] uppercase tracking-wider mb-1">Pages</p><p className="text-lg font-black text-[#F8F8FF]">{inputs.pages * 12}h</p></div>
+              <div className="text-center p-3 bg-[#13131E]/70 rounded-xl"><Zap size={20} className="text-[#6366F1] mx-auto mb-2" /><p className="text-xs font-body font-bold text-[#94A3B8] uppercase tracking-wider mb-1">Complexity</p><p className="text-lg font-black text-[#F8F8FF]">{Math.round(inputs.complexity * 40)}h</p></div>
+              <div className="text-center p-3 bg-[#13131E]/70 rounded-xl"><Server size={20} className="text-[#6366F1] mx-auto mb-2" /><p className="text-xs font-body font-bold text-[#94A3B8] uppercase tracking-wider mb-1">APIs</p><p className="text-lg font-black text-[#F8F8FF]">{inputs.apiIntegrations * 15}h</p></div>
             </div>
 
-            <div className="text-center py-4 bg-card rounded-xl border border-border">
-              <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-1">Estimated Investment</p>
-              <p className="text-3xl font-black text-foreground">${estimatedCost.toLocaleString()}</p>
-              <p className="text-xs text-muted-foreground mt-1">Based on $75/hour average rate</p>
+            <div className="text-center py-4 bg-[#13131E] rounded-xl border border-[#1E1E2E]">
+              <p className="text-xs font-body font-bold text-[#94A3B8] uppercase tracking-widest mb-1">Estimated Investment</p>
+              <p className="text-3xl font-black text-[#F8F8FF]">${estimatedCost.toLocaleString()}</p>
+              <p className="text-xs text-[#94A3B8] font-body mt-1">Based on $75/hour average rate</p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 gap-3">
-            <button onClick={handleDownloadPDF} className="w-full py-4 bg-secondary border border-border text-foreground font-black text-sm uppercase tracking-wider rounded-xl transition-all hover:bg-card flex items-center justify-center gap-3">
+            <button onClick={handleDownloadPDF} className="w-full py-4 bg-[#13131E] border border-[#1E1E2E] text-[#F8F8FF] font-display font-black text-sm uppercase tracking-wider rounded-xl transition-all hover:bg-[#1E1E2E]/70 flex items-center justify-center gap-3">
               <Download size={18} /> Download Tech Breakdown
             </button>
 
-            <Link href={`/${locale}/quote`} className="w-full py-4 bg-primary text-primary-foreground font-black text-sm uppercase tracking-wider rounded-xl transition-all shadow-sm hover:shadow-lg hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3">
+            <Link href={`/${locale}/quote`} className="w-full py-4 bg-[#6366F1] text-white font-display font-black text-sm uppercase tracking-wider rounded-xl transition-all shadow-sm hover:shadow-lg hover:shadow-[#6366F1]/30 hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-3">
               <Zap size={18} /> Request Industrial Quote
             </Link>
           </div>
 
-          <p className="text-xs text-center text-muted-foreground">This is an AI-generated estimate. Actual scope may vary based on specific requirements.</p>
+          <p className="text-xs text-center text-[#94A3B8] font-body">This is an AI-generated estimate. Actual scope may vary based on specific requirements.</p>
         </motion.div>
       )}
 

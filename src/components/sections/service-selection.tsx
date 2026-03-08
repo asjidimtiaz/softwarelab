@@ -75,10 +75,10 @@ export function ServiceSelection({ dict, isRtl, locale }: ServiceSelectionProps)
   return (
     <div className="w-full max-w-4xl mx-auto">
       <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold tracking-tight mb-4">
+        <h2 className="text-3xl font-display font-bold tracking-tight mb-4 text-[#F8F8FF]">
           What service are you interested in?
         </h2>
-        <p className="text-lg text-muted-foreground">
+        <p className="text-lg text-[#94A3B8] font-body">
           Select a service to get a detailed quote tailored to your needs
         </p>
       </div>
@@ -100,8 +100,8 @@ export function ServiceSelection({ dict, isRtl, locale }: ServiceSelectionProps)
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className={cn(
                   "relative p-6 rounded-2xl border transition-all duration-300",
-                  "bg-background hover:shadow-xl hover:scale-105",
-                  "border-border hover:border-primary/50",
+                  "bg-[#13131E] hover:shadow-xl hover:shadow-[#6366F1]/10 hover:scale-105",
+                  "border-[#1E1E2E] hover:border-[#6366F1]/50",
                   "cursor-pointer"
                 )}
               >
@@ -121,18 +121,18 @@ export function ServiceSelection({ dict, isRtl, locale }: ServiceSelectionProps)
                 </div>
 
                 {/* Content */}
-                <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">
+                <h3 className="text-lg font-display font-semibold mb-2 group-hover:text-[#6366F1] text-[#F8F8FF] transition-colors">
                   {service.title}
                 </h3>
-                <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                <p className="text-sm text-[#94A3B8] font-body mb-4 line-clamp-2">
                   {service.description}
                 </p>
 
                 {/* Features */}
                 <div className="space-y-2 mb-4">
                   {service.features.slice(0, 2).map((feature, idx) => (
-                    <div key={idx} className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <div className="w-1 h-1 rounded-full bg-primary" />
+                    <div key={idx} className="flex items-center gap-2 text-xs text-[#94A3B8] font-body">
+                      <div className="w-1 h-1 rounded-full bg-[#6366F1]" />
                       {feature}
                     </div>
                   ))}
@@ -140,12 +140,12 @@ export function ServiceSelection({ dict, isRtl, locale }: ServiceSelectionProps)
 
                 {/* Arrow */}
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-primary group-hover:translate-x-1 transition-transform">
+                  <span className="text-sm font-body font-medium text-[#6366F1] group-hover:translate-x-1 transition-transform">
                     Get Quote
                   </span>
                   <ChevronRight 
                     size={16} 
-                    className="text-primary group-hover:translate-x-1 transition-transform" 
+                    className="text-[#6366F1] group-hover:translate-x-1 transition-transform" 
                   />
                 </div>
 
@@ -153,7 +153,7 @@ export function ServiceSelection({ dict, isRtl, locale }: ServiceSelectionProps)
                 {hoveredService === service.id && (
                   <motion.div
                     layoutId="serviceHover"
-                    className="absolute inset-0 rounded-2xl border-2 border-primary/20 pointer-events-none"
+                    className="absolute inset-0 rounded-2xl border-2 border-[#6366F1]/20 pointer-events-none"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -176,7 +176,7 @@ export function ServiceSelection({ dict, isRtl, locale }: ServiceSelectionProps)
         </p>
         <Link
           href={`/${locale}/contact`}
-          className="inline-flex items-center gap-2 px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+          className="inline-flex items-center gap-2 px-6 py-2 bg-[#6366F1] text-[#F8F8FF] rounded-lg hover:bg-[#6366F1]/90 transition-colors"
         >
           Get Consultation
           <ChevronRight size={16} />
