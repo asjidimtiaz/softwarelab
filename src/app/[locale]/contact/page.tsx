@@ -6,6 +6,7 @@ import { Footer } from "@/components/layout/footer";
 import { getDictionary } from "@/lib/get-dictionary";
 import { AnimatedSection } from "@/components/AnimatedSection";
 import { Accordion } from "@/components/ui/accordion";
+import { createLead } from "@/lib/actions/lead-actions";
 
 const whatToInclude = [
   "what type of business you run",
@@ -75,8 +76,37 @@ export default async function ContactPage({
   const dict = await getDictionary(locale);
   const isRtl = locale === "ar" || locale === "ur";
 
-  async function sendInquiry() {
+  async function sendInquiry(formData: FormData) {
     "use server";
+
+    const fullName = String(formData.get("name") || "").trim();
+    const email = String(formData.get("email") || "").trim();
+    const company = String(formData.get("company") || "").trim();
+    const phone = String(formData.get("phone") || "").trim();
+    const website = String(formData.get("website") || "").trim();
+    const serviceInterest = String(formData.get("serviceInterest") || "").trim();
+    const message = String(formData.get("message") || "").trim();
+
+    if (!fullName || !email || !message) {
+      return;
+    }
+
+    await createLead({
+      fullName,
+      email,
+      company,
+      serviceCategory: "contact",
+      serviceInterest: serviceInterest || "General Inquiry",
+      projectType: "contact-form",
+      budgetRange: "Not specified",
+      timeline: "Not specified",
+      message: [message, phone ? `Phone: ${phone}` : "", website ? `Website: ${website}` : ""]
+        .filter(Boolean)
+        .join("\n"),
+      source: "contact-form",
+      status: "NEW",
+    });
+
     redirect(`/${locale}/thank-you`);
   }
 

@@ -115,6 +115,13 @@
     
     /* Grid Background */
     --grid-color: rgba(59, 130, 246, 0.1);
+
+    /* Admin dashboard indigo token set */
+    --admin-text-muted: #64748b;
+    --admin-success: #22c55e;
+    --admin-warning: #f59e0b;
+    --admin-danger: #ef4444;
+    --admin-accent-hover: #7c3aed;
   }
 
   .dark {

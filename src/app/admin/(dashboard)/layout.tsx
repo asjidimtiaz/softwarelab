@@ -7,6 +7,12 @@ import { SidebarNav } from "@/components/admin/sidebar-nav";
 import { SidebarLogo } from "@/components/admin/sidebar-logo";
 import { NotificationPopover } from "@/components/admin/notification-popover";
 import { Toaster } from "sonner";
+import { Geist } from "next/font/google";
+
+const geist = Geist({
+  subsets: ["latin"],
+  variable: "--font-geist",
+});
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerSession(authOptions);
@@ -25,7 +31,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     .toUpperCase();
 
   return (
-    <div className="admin-dashboard-shell flex h-screen overflow-hidden bg-slate-50 text-foreground font-[--font-geist]">
+    <div className={`${geist.variable} admin-dashboard-shell flex h-screen overflow-hidden bg-slate-50 text-foreground font-[--font-geist]`}>
       <aside className="z-20 flex w-56 shrink-0 flex-col gap-4 border-r border-slate-200 bg-white px-3 py-4">
         <SidebarLogo />
         <SidebarNav isCompressed={false} userName={userName} userEmail={userEmail} />

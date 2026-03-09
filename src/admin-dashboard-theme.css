@@ -1,12 +1,17 @@
 @layer components {
   :root {
-    --admin-primary: #024d94;
-    --admin-primary-strong: #033a70;
-    --admin-accent: #f8d171;
+    --admin-primary: #6366f1;
+    --admin-primary-strong: #4f46e5;
+    --admin-accent: #8b5cf6;
+    --admin-accent-hover: #7c3aed;
     --admin-bg: #f9fafb;
     --admin-surface: #ffffff;
     --admin-border: #e5e7eb;
     --admin-text: #1f2937;
+    --admin-text-muted: #64748b;
+    --admin-success: #22c55e;
+    --admin-warning: #f59e0b;
+    --admin-danger: #ef4444;
     --admin-muted: #6b7280;
     --admin-radius-lg: 0.75rem;
     --admin-radius-xl: 1rem;
@@ -31,7 +36,7 @@
     padding: 1.5rem;
     background: var(--admin-primary);
     color: #fff;
-    box-shadow: 0 10px 25px -10px rgba(2, 77, 148, 0.45);
+    box-shadow: 0 10px 25px -10px rgba(99, 102, 241, 0.45);
   }
 
   .admin-hero::after {
@@ -43,7 +48,7 @@
     height: 14rem;
     border-radius: 999px;
     background: var(--admin-accent);
-    opacity: 0.2;
+    opacity: 0.24;
     filter: blur(36px);
     pointer-events: none;
   }
@@ -112,8 +117,8 @@
   }
 
   .admin-card-hover:hover {
-    border-color: rgba(2, 77, 148, 0.25);
-    box-shadow: 0 10px 25px -16px rgba(2, 77, 148, 0.45);
+    border-color: rgba(99, 102, 241, 0.28);
+    box-shadow: 0 10px 25px -16px rgba(99, 102, 241, 0.45);
     transform: translateY(-2px);
   }
 
@@ -126,7 +131,7 @@
     box-shadow:
       0 1px 0 rgba(255, 255, 255, 0.9) inset,
       0 12px 30px -22px rgba(15, 23, 42, 0.35),
-      0 24px 40px -32px rgba(2, 77, 148, 0.24) !important;
+      0 24px 40px -32px rgba(99, 102, 241, 0.24) !important;
     backdrop-filter: none !important;
   }
 
@@ -144,11 +149,11 @@
   }
 
   .admin-card-unified.admin-card-hover:hover {
-    border-color: rgba(2, 77, 148, 0.34) !important;
+    border-color: rgba(99, 102, 241, 0.34) !important;
     box-shadow:
       0 1px 0 rgba(255, 255, 255, 0.95) inset,
       0 18px 34px -22px rgba(15, 23, 42, 0.38),
-      0 30px 48px -30px rgba(2, 77, 148, 0.28) !important;
+      0 30px 48px -30px rgba(99, 102, 241, 0.28) !important;
     transform: translateY(-2px);
   }
 
@@ -177,11 +182,11 @@
     isolation: isolate;
     background:
       linear-gradient(165deg, rgba(255, 255, 255, 0.96) 0%, rgba(247, 251, 255, 0.95) 100%);
-    border: 1px solid rgba(2, 77, 148, 0.14);
+    border: 1px solid rgba(99, 102, 241, 0.14);
     box-shadow:
       0 1px 0 rgba(255, 255, 255, 0.8) inset,
-      0 20px 35px -26px rgba(2, 77, 148, 0.5),
-      0 30px 60px -40px rgba(2, 77, 148, 0.3);
+      0 20px 35px -26px rgba(99, 102, 241, 0.5),
+      0 30px 60px -40px rgba(99, 102, 241, 0.3);
     backdrop-filter: blur(8px);
   }
 
@@ -191,7 +196,7 @@
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    background: linear-gradient(120deg, rgba(248, 209, 113, 0.12) 0%, rgba(2, 77, 148, 0.08) 45%, transparent 80%);
+    background: linear-gradient(120deg, rgba(139, 92, 246, 0.14) 0%, rgba(99, 102, 241, 0.1) 45%, transparent 80%);
     opacity: 0.9;
   }
 
@@ -207,11 +212,11 @@
   }
 
   .admin-card-premium:hover {
-    border-color: rgba(2, 77, 148, 0.3);
+    border-color: rgba(99, 102, 241, 0.3);
     box-shadow:
       0 1px 0 rgba(255, 255, 255, 0.85) inset,
-      0 25px 40px -25px rgba(2, 77, 148, 0.55),
-      0 35px 80px -45px rgba(2, 77, 148, 0.4);
+      0 25px 40px -25px rgba(99, 102, 241, 0.55),
+      0 35px 80px -45px rgba(99, 102, 241, 0.4);
   }
 
   .admin-card-premium-inverse {
@@ -268,7 +273,8 @@
   }
 
   .admin-btn-accent:hover {
-    filter: brightness(1.04);
+    background: var(--admin-accent-hover);
+    filter: none;
   }
 
   .admin-btn-ghost {
@@ -287,7 +293,7 @@
 
   .admin-btn-ghost:hover {
     color: var(--admin-primary);
-    border-color: rgba(2, 77, 148, 0.25);
+    border-color: rgba(99, 102, 241, 0.25);
     background: #fff;
   }
 
@@ -304,8 +310,8 @@
 
   .admin-input:focus {
     background: #fff;
-    border-color: rgba(2, 77, 148, 0.4);
-    box-shadow: 0 0 0 3px rgba(2, 77, 148, 0.08);
+    border-color: rgba(99, 102, 241, 0.4);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.08);
   }
 
   .admin-table-wrap {

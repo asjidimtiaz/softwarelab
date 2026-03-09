@@ -194,7 +194,8 @@ export async function updateLeadScore(id: string, newScore: number, reason?: str
 
 export async function createLead(data: any) {
   const session = await getServerSession(authOptions);
-  if (!session) throw new Error("Unauthorized");
+  const isPublicContactForm = data?.source === "contact-form";
+  if (!session && !isPublicContactForm) throw new Error("Unauthorized");
 
   await connectToDatabase();
 
@@ -204,9 +205,15 @@ export async function createLead(data: any) {
     ...data,
     leadScore: scored.score,
     leadTier: scored.tier,
-    source: data.source || "admin",
+    source: data.source || (session ? "admin" : "contact-form"),
     events: [
-      { type: "LeadCreated", meta: { source: "Admin Dashboard", creator: session.user?.email } }
+      {
+        type: "LeadCreated",
+        meta: {
+          source: isPublicContactForm ? "Contact Form" : "Admin Dashboard",
+          creator: session?.user?.email || "public",
+        }
+      }
     ]
   });
 
