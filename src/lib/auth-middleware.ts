@@ -53,7 +53,8 @@ export async function requireAdminSession(request?: NextRequest) {
     userEmail: session.user.email,
     userId: session.user.email, // Use email as ID since NextAuth user doesn't have id by default
   });
-  */
-
+  
   return { session, rateLimitResult };
+  */
 }
+

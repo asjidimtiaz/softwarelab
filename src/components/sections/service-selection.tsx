@@ -14,58 +14,40 @@ interface ServiceSelectionProps {
 
 const services = [
   {
-    id: "custom-web-apps",
-    title: "Custom Web Applications",
-    description: "Bespoke web applications tailored to your unique business requirements",
+    id: "custom-development",
+    title: "Custom Software Development",
+    description: "Enterprise-grade web applications built with modern technology stack",
     icon: Code2,
-    color: "from-blue-500 to-cyan-500",
-    features: ["Custom-tailored solutions", "Scalable architecture", "Modern tech stack"],
-    href: "/services/custom-web-apps"
-  },
-  {
-    id: "ecommerce",
-    title: "E-commerce Solutions",
-    description: "Complete online stores with payment processing and inventory management",
-    icon: ShoppingCart,
-    color: "from-purple-500 to-pink-500",
-    features: ["Payment integration", "Inventory management", "Mobile commerce"],
-    href: "/services/ecommerce"
-  },
-  {
-    id: "full-stack-websites",
-    title: "Full-Stack Websites",
-    description: "Complete web solutions from frontend to backend with CMS integration",
-    icon: Globe,
-    color: "from-green-500 to-emerald-500",
-    features: ["CMS integration", "API development", "Database design"],
-    href: "/services/full-stack-websites"
-  },
-  {
-    id: "automation-tools",
-    title: "Automation Tools",
-    description: "Internal tools and automation to streamline your business processes",
-    icon: Settings,
-    color: "from-orange-500 to-red-500",
-    features: ["Process automation", "Workflow optimization", "Custom dashboards"],
-    href: "/services/automation-internal-tools"
-  },
-  {
-    id: "mobile-apps",
-    title: "Mobile Applications",
-    description: "Native and cross-platform mobile applications for iOS and Android",
-    icon: Smartphone,
     color: "from-indigo-500 to-purple-500",
-    features: ["Cross-platform", "Native performance", "App store deployment"],
+    features: ["Full-Stack Next.js", "Custom Architecture", "Scalable Design"],
     href: "/services/custom-software"
   },
   {
-    id: "devops-cloud",
-    title: "DevOps & Cloud",
-    description: "Cloud infrastructure setup, CI/CD pipelines, and deployment automation",
+    id: "conversion-funnels",
+    title: "Conversion Funnels",
+    description: "High-converting landing pages and sales funnels optimized for ROI",
+    icon: Globe,
+    color: "from-amber-500 to-orange-500",
+    features: ["Landing Page Design", "Payment Integration", "Lead Capture"],
+    href: "/services/conversion-funnels"
+  },
+  {
+    id: "ai-automation",
+    title: "AI & Automation",
+    description: "AI-powered solutions and intelligent process automation",
     icon: Zap,
-    color: "from-yellow-500 to-orange-500",
-    features: ["CI/CD pipelines", "Cloud deployment", "Monitoring setup"],
-    href: "/services/devops-cloud"
+    color: "from-emerald-500 to-teal-500",
+    features: ["AI Chatbots", "Process Automation", "LLM Integration"],
+    href: "/services/ai-chatbots-automation"
+  },
+  {
+    id: "seo-retainer",
+    title: "SEO & Growth",
+    description: "Comprehensive SEO strategy and ongoing growth optimization",
+    icon: Settings,
+    color: "from-rose-500 to-pink-500",
+    features: ["SEO Optimization", "Content Strategy", "Monthly Analysis"],
+    href: "/services/seo-growth-retainers"
   }
 ];
 

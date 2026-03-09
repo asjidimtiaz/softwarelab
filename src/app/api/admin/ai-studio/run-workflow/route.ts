@@ -32,8 +32,8 @@ function getOpenAIClient() {
 
 export async function POST(req: NextRequest) {
   const auth = await requireAdminSession(req);
-  if (auth.error) {
-    return NextResponse.json({ success: false, error: auth.error }, { status: auth.status });
+  if (!auth.success) {
+    return NextResponse.json({ success: false, error: (auth as any).error }, { status: (auth as any).status });
   }
 
   try {
@@ -48,7 +48,6 @@ export async function POST(req: NextRequest) {
       resource: "ai-studio",
       resourceId: body.workflowKey,
       metadata: { variables: body.variables },
-      userEmail: auth.session?.user?.email || undefined,
     });
 
     const promptsPath = path.join(process.cwd(), "digi", "ai-prompts.json");
@@ -63,6 +62,11 @@ export async function POST(req: NextRequest) {
     const steps = Array.isArray(workflow.steps) ? workflow.steps : [];
     if (steps.length === 0) {
       return NextResponse.json({ success: false, error: "Workflow has no steps" }, { status: 400 });
+    }
+
+    const db = await connectToDatabase();
+    if (!db) {
+      return NextResponse.json({ success: false, error: "Database unavailable" }, { status: 503 });
     }
 
     const workflowRunId = uuidv4();
@@ -120,7 +124,6 @@ export async function POST(req: NextRequest) {
       const outputKey = step.output ? String(step.output) : `step_${idx + 1}`;
       outputs[outputKey] = content;
 
-      await connectToDatabase();
       const draft = await ContentDraft.create({
         type: "other",
         promptKey,
@@ -148,7 +151,6 @@ export async function POST(req: NextRequest) {
       action: "RUN_AI_WORKFLOW",
       error: detail,
       success: false,
-      userEmail: auth.session?.user?.email || undefined,
     });
     return NextResponse.json(
       {

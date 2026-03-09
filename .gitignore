@@ -1,5 +1,6 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+
 # dependencies
 /node_modules
 /.pnp
@@ -40,3 +41,20 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local throwaway files
+/local-trash/
+
+# local temp/cache artifacts
+/.npm-cache/
+/All Documents-20260308T083346Z-3-001/
+/docx-text/
+/temp_admin_prompt_extract/
+/temp_docx_extract/
+/temp_admin_prompt.zip
+/temp_doc.zip
+/DigiWebCrew_Admin_Dashboard_System_Prompt.docx
+/DigiWebCrew_Admin_Dashboard_System_Prompt.txt
+/DigiWebCrew_Advanced_System_Prompt.docx
+/DigiWebCrew_Advanced_System_Prompt.txt
+/build-output.txt

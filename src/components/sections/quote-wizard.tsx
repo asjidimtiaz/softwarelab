@@ -1,12 +1,30 @@
-"use client";
+﻿"use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight, ChevronLeft, Send, CheckCircle2, Loader2, Sparkles } from "lucide-react";
+import { CheckCircle2, ChevronLeft, ChevronRight, Loader2, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { serviceCatalog } from "@/lib/services-data";
 import { submitQuote } from "@/lib/actions/quote-actions";
-import { QuoteFormData } from "@/types/quote";
+import type { QuoteFormData } from "@/types/quote";
+
+type ScopeFormData = {
+  needHelp: string;
+  businessType: string;
+  mainGoal: string;
+  servicesNeeded: string[];
+  projectStage: string;
+  timeline: string;
+  budget: string;
+  fullName: string;
+  company: string;
+  email: string;
+  phone: string;
+  website: string;
+  country: string;
+  preferredContact: string;
+  message: string;
+  honeypot: string;
+};
 
 interface QuoteWizardProps {
   dict: any;
@@ -15,145 +33,275 @@ interface QuoteWizardProps {
   preselectedService?: string;
 }
 
-const STORAGE_KEY = "quote_wizard_draft";
+const STORAGE_KEY = "quote_wizard_draft_v2";
 
-export function QuoteWizard({ dict, isRtl, locale, preselectedService }: QuoteWizardProps) {
+const HELP_OPTIONS = [
+  "Website Design or Redesign",
+  "Custom Website Development",
+  "Funnel or Landing Pages",
+  "SEO",
+  "AI Chatbot",
+  "Automation or Workflows",
+  "E-commerce",
+  "Web App",
+  "Mobile App",
+  "DevOps or Cloud",
+  "Maintenance or Support",
+  "Not Sure Yet",
+];
+
+const BUSINESS_OPTIONS = [
+  "Law Firm",
+  "Medical, Dental, or Clinic",
+  "Med Spa",
+  "Home Services",
+  "Consultant or Coach",
+  "Agency",
+  "SaaS or Tech",
+  "Education or Training",
+  "E-commerce",
+  "Other",
+];
+
+const GOAL_OPTIONS = [
+  "Generate more leads",
+  "Improve conversions",
+  "Launch a new website",
+  "Redesign an existing website",
+  "Automate follow-up",
+  "Improve SEO",
+  "Build a custom system",
+  "Streamline operations",
+  "Need expert guidance",
+];
+
+const SERVICE_OPTIONS = [
+  "Design",
+  "Development",
+  "SEO",
+  "Funnel Pages",
+  "AI Chatbot",
+  "Workflows",
+  "CRM Integration",
+  "Booking System",
+  "Analytics or Tracking",
+  "Hosting or Deployment",
+  "Ongoing Support",
+];
+
+const PROJECT_STAGE_OPTIONS = [
+  "Starting from scratch",
+  "Existing website needs redesign",
+  "Existing system needs improvement",
+  "Need migration",
+  "Need support for an existing build",
+];
+
+const TIMELINE_OPTIONS = ["ASAP", "2 to 4 weeks", "1 to 2 months", "2 to 3 months", "Flexible"];
+const BUDGET_OPTIONS = ["Under $3,500", "$3,500 to $7,500", "$7,500 to $15,000", "$15,000+", "Not sure yet"];
+const CONTACT_OPTIONS = ["Email", "Phone", "WhatsApp", "Zoom"];
+
+const steps = [
+  "What do you need help with?",
+  "What type of business are you?",
+  "What is your main goal?",
+  "Which services do you think you may need?",
+  "What stage is your project in?",
+  "What timeline are you working with?",
+  "What budget range are you working with?",
+  "How can we reach you?",
+  "Anything else we should know?",
+];
+
+const defaultData: ScopeFormData = {
+  needHelp: "",
+  businessType: "",
+  mainGoal: "",
+  servicesNeeded: [],
+  projectStage: "",
+  timeline: "",
+  budget: "",
+  fullName: "",
+  company: "",
+  email: "",
+  phone: "",
+  website: "",
+  country: "",
+  preferredContact: "",
+  message: "",
+  honeypot: "",
+};
+
+function mapServiceCategory(value: string): string {
+  const v = value.toLowerCase();
+  if (v.includes("funnel") || v.includes("landing")) return "conversion-funnels";
+  if (v.includes("seo")) return "seo-growth-retainers";
+  if (v.includes("ai") || v.includes("automation")) return "ai-chatbots-automation";
+  return "custom-software";
+}
+
+function mapTimeline(value: string): string {
+  if (value === "ASAP") return "urgent";
+  if (value === "1 to 2 months" || value === "2 to 3 months") return "1-3-months";
+  return "flexible";
+}
+
+function mapBudget(value: string): string {
+  if (value === "Under $3,500") return "<10k";
+  if (value === "$3,500 to $7,500") return "10k-25k";
+  if (value === "$7,500 to $15,000") return "10k-25k";
+  if (value === "$15,000+") return "25k-50k";
+  return "<10k";
+}
+
+function mapProjectType(value: string): "new build" | "redesign" | "improvement" {
+  if (value.toLowerCase().includes("redesign")) return "redesign";
+  if (value.toLowerCase().includes("improvement") || value.toLowerCase().includes("support")) return "improvement";
+  return "new build";
+}
+
+export function QuoteWizard({ isRtl, locale, preselectedService }: QuoteWizardProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDone, setIsDone] = useState(false);
+  const [formData, setFormData] = useState<ScopeFormData>(defaultData);
 
-  const steps = [
-    { id: "category", title: "Laboratory Selection" },
-    { id: "subservice", title: "Specific Solution" },
-    { id: "project", title: dict.quote.wizard.steps.project },
-    { id: "scope", title: dict.quote.wizard.steps.details },
-    { id: "contact", title: dict.quote.wizard.steps.contact },
-  ];
-
-  const [formData, setFormData] = useState<Partial<QuoteFormData>>({
-    serviceCategory: preselectedService || "",
-    serviceInterest: "",
-    projectType: "new build",
-    budgetRange: "",
-    timeline: "",
-    fullName: "",
-    email: "",
-    message: "",
-    honeypot: "",
-  });
-
-  // Set initial step based on preselection
-  useEffect(() => {
-    if (preselectedService) {
-      setCurrentStep(1); // Skip to subservice step if category is preselected
-    }
-  }, [preselectedService]);
-
-  // Load Draft
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        setFormData(prev => ({ ...prev, ...parsed }));
-      } catch (e) {
-        console.error("Failed to parse draft", e);
+    if (!saved) {
+      // If preselectedService is provided, use it to initialize the form
+      if (preselectedService) {
+        setFormData((prev) => ({
+          ...prev,
+          servicesNeeded: [preselectedService]
+        }));
       }
+      return;
+    }
+
+    try {
+      const parsed = JSON.parse(saved) as ScopeFormData;
+      setFormData((prev) => ({ ...prev, ...parsed }));
+    } catch {
+      localStorage.removeItem(STORAGE_KEY);
     }
   }, []);
 
-  // Save Draft
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
   }, [formData]);
 
-  const handleNext = () => {
-    if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1);
-    }
+  const progress = useMemo(() => Math.round(((currentStep + 1) / steps.length) * 100), [currentStep]);
+
+  const toggleService = (service: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      servicesNeeded: prev.servicesNeeded.includes(service)
+        ? prev.servicesNeeded.filter((s) => s !== service)
+        : [...prev.servicesNeeded, service],
+    }));
   };
 
-  const handleBack = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
-    }
+  const canNext = () => {
+    if (currentStep === 0) return Boolean(formData.needHelp);
+    if (currentStep === 1) return Boolean(formData.businessType);
+    if (currentStep === 2) return Boolean(formData.mainGoal);
+    if (currentStep === 3) return formData.servicesNeeded.length > 0;
+    if (currentStep === 4) return Boolean(formData.projectStage);
+    if (currentStep === 5) return Boolean(formData.timeline);
+    if (currentStep === 6) return Boolean(formData.budget);
+    if (currentStep === 7) return Boolean(formData.fullName && formData.email && formData.preferredContact);
+    return true;
   };
 
-  const handleSubmit = async () => {
+  const submit = async () => {
+    if (isSubmitting) return;
+
     setIsSubmitting(true);
-    const result = await submitQuote({ ...formData, locale } as QuoteFormData);
+
+    const payload: QuoteFormData = {
+      fullName: formData.fullName,
+      email: formData.email,
+      company: formData.company,
+      serviceCategory: mapServiceCategory(formData.needHelp),
+      serviceInterest: formData.servicesNeeded.length > 0 ? formData.servicesNeeded.join(", ") : formData.needHelp,
+      projectType: mapProjectType(formData.projectStage),
+      budgetRange: mapBudget(formData.budget),
+      timeline: mapTimeline(formData.timeline),
+      message:
+        `Need help with: ${formData.needHelp}\n` +
+        `Business type: ${formData.businessType}\n` +
+        `Main goal: ${formData.mainGoal}\n` +
+        `Services needed: ${formData.servicesNeeded.join(", ")}\n` +
+        `Project stage: ${formData.projectStage}\n` +
+        `Timeline: ${formData.timeline}\n` +
+        `Budget: ${formData.budget}\n` +
+        `Phone: ${formData.phone || "N/A"}\n` +
+        `Website: ${formData.website || "N/A"}\n` +
+        `Country: ${formData.country || "N/A"}\n` +
+        `Preferred contact: ${formData.preferredContact}\n\n` +
+        (formData.message || "No additional details provided."),
+      locale,
+      honeypot: formData.honeypot,
+    };
+
+    const result = await submitQuote(payload);
     setIsSubmitting(false);
-    if (result.success) {
-      setIsDone(true);
-      localStorage.removeItem(STORAGE_KEY);
-    } else {
+
+    if (!result.success) {
       alert(result.message);
+      return;
     }
-  };
 
-  const updateForm = (field: keyof QuoteFormData, value: any) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setIsDone(true);
+    localStorage.removeItem(STORAGE_KEY);
   };
-
-  const activeCategory = serviceCatalog.find(c => c.slug === formData.serviceCategory);
 
   if (isDone) {
     return (
       <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
+        initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="text-center py-20 bg-[#13131E] border border-[#1E1E2E] rounded-[3rem] p-12 shadow-2xl relative overflow-hidden"
+        className="rounded-3xl border border-[#1E1E2E] bg-[#13131E] p-10 text-center"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-[#6366F1]/5 to-transparent -z-10" />
-        <div className="w-24 h-24 bg-[#6366F1]/10 text-[#6366F1] rounded-full flex items-center justify-center mx-auto mb-8">
-          <CheckCircle2 size={48} />
+        <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[#6366F1]/10 text-[#6366F1]">
+          <CheckCircle2 size={36} />
         </div>
-        <h2 className="text-4xl font-display font-extrabold tracking-tighter mb-6 text-[#F8F8FF]">{dict.quote.wizard.successTitle}</h2>
-        <p className="text-xl text-[#94A3B8] font-body mb-10 max-w-md mx-auto leading-relaxed">
-          {dict.quote.wizard.successDesc}
-        </p>
+        <h3 className="mb-3 text-3xl font-display font-bold text-[#F8F8FF]">Your Submission Is In</h3>
+        <p className="mb-7 text-[#94A3B8]">Thank you. Your project scope details have been received.</p>
         <button
-          onClick={() => window.location.href = `/${locale}`}
-          className="group inline-flex h-16 items-center justify-center rounded-xl bg-white border border-white px-10 font-display font-extrabold text-[13px] text-[#0A0A0F] uppercase tracking-widest transition-all hover:bg-gray-50 hover:scale-[1.02] active:scale-95 shadow-sm"
+          onClick={() => {
+            window.location.href = `/${locale}/thank-you`;
+          }}
+          className="inline-flex items-center gap-2 rounded-lg bg-[#6366F1] px-6 py-3 font-semibold text-white"
         >
-          <span>{dict.quote.wizard.backHome}</span>
-          <ChevronRight size={18} strokeWidth={2.5} className="ml-2 group-hover:translate-x-1 transition-transform" />
+          Continue
+          <ChevronRight size={16} />
         </button>
       </motion.div>
     );
   }
 
   return (
-    <div className="w-full max-w-3xl mx-auto">
-      {/* Progress Stepper */}
-      <div className="mb-12">
-        <div className="flex justify-between items-end mb-6">
+    <div className="mx-auto w-full max-w-4xl">
+      <div className="mb-6">
+        <div className="mb-3 flex items-end justify-between">
           <div>
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#6366F1] mb-1">Step 0{currentStep + 1}</p>
-            <h4 className="text-xl font-display font-bold tracking-tight text-[#F8F8FF]">{steps[currentStep].title}</h4>
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#6366F1]">Step {currentStep + 1} of {steps.length}</p>
+            <h3 className="text-2xl font-display font-bold text-[#F8F8FF]">{steps[currentStep]}</h3>
           </div>
-          <span className="text-[10px] font-body font-black uppercase tracking-widest text-[#94A3B8]">
-            {Math.round(((currentStep + 1) / steps.length) * 100)}% Complete
-          </span>
+          <p className="text-xs font-semibold uppercase tracking-widest text-[#94A3B8]">{progress}% Complete</p>
         </div>
-        <div className="h-1.5 w-full bg-[#13131E] rounded-full overflow-hidden">
-          <motion.div
-            className="h-full bg-[#6366F1]"
-            initial={false}
-            animate={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
-            transition={{ type: "spring", stiffness: 100, damping: 20 }}
-          />
+        <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#13131E]">
+          <motion.div className="h-full bg-[#6366F1]" initial={false} animate={{ width: `${progress}%` }} />
         </div>
       </div>
 
-      <div className="bg-[#13131E] border border-[#1E1E2E]/50 rounded-[2.5rem] p-8 md:p-12 min-h-[500px] flex flex-col shadow-2xl relative overflow-hidden">
-        {/* Honeypot field - hidden */}
+      <div className="rounded-3xl border border-[#1E1E2E] bg-[#13131E] p-6 md:p-8">
         <div className="hidden">
           <input
-            type="text"
-            name="honeypot"
             value={formData.honeypot}
-            onChange={(e) => updateForm("honeypot", e.target.value)}
+            onChange={(e) => setFormData((prev) => ({ ...prev, honeypot: e.target.value }))}
             tabIndex={-1}
             autoComplete="off"
           />
@@ -162,257 +310,244 @@ export function QuoteWizard({ dict, isRtl, locale, preselectedService }: QuoteWi
         <AnimatePresence mode="wait">
           <motion.div
             key={currentStep}
-            initial={{ opacity: 0, x: isRtl ? -20 : 20 }}
+            initial={{ opacity: 0, x: isRtl ? -16 : 16 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: isRtl ? 20 : -20 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="flex-1"
+            exit={{ opacity: 0, x: isRtl ? 16 : -16 }}
+            className="min-h-[280px]"
           >
-            {/* Step 1: Category */}
             {currentStep === 0 && (
-              <div className="space-y-8">
-                <div className="space-y-2">
-                  <h3 className="text-3xl font-display font-black tracking-tight text-[#F8F8FF]">{dict.quote.wizard.questions.service}</h3>
-                  <p className="text-[#94A3B8] font-body font-medium">Select the primary laboratory for your project.</p>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {serviceCatalog.map((cat) => (
-                    <button
-                      key={cat.slug}
-                      onClick={() => {
-                        updateForm("serviceCategory", cat.slug);
-                        handleNext();
-                      }}
-                      className={cn(
-                        "p-6 rounded-2xl border text-left transition-all hover:shadow-lg hover:shadow-[#6366F1]/10 group relative overflow-hidden",
-                        formData.serviceCategory === cat.slug
-                          ? "border-[#6366F1] bg-[#6366F1]/[0.03] ring-1 ring-[#6366F1]"
-                          : "border-[#1E1E2E]/50 bg-[#6366F1]/5 hover:bg-[#6366F1]/10"
-                      )}
-                    >
-                      <span className="block font-display font-bold text-lg mb-2 group-hover:text-[#6366F1] text-[#F8F8FF] transition-colors">{cat.title}</span>
-                      <span className="text-xs text-[#94A3B8] font-body leading-relaxed block pr-6">{cat.description}</span>
-                      <div className={cn(
-                        "absolute top-4 right-4 w-6 h-6 rounded-full border flex items-center justify-center transition-all",
-                        formData.serviceCategory === cat.slug ? "bg-[#6366F1] border-[#6366F1] text-white" : "border-[#1E1E2E]"
-                      )}>
-                        {formData.serviceCategory === cat.slug && <CheckCircle2 size={12} />}
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Step 2: Sub-service */}
-            {currentStep === 1 && (
-              <div className="space-y-8">
-                <div className="space-y-2">
-                  <h3 className="text-3xl font-display font-black tracking-tight text-[#F8F8FF]">Specific Solution</h3>
-                  <p className="text-[#94A3B8] font-body font-medium">Refine your project scope within {activeCategory?.title}.</p>
-                </div>
-                <div className="grid grid-cols-1 gap-3">
-                  {activeCategory?.subServices.map((sub) => (
-                    <button
-                      key={sub.slug}
-                      onClick={() => {
-                        updateForm("serviceInterest", sub.slug);
-                        handleNext();
-                      }}
-                      className={cn(
-                        "p-6 rounded-2xl border text-left transition-all flex items-center justify-between group",
-                        formData.serviceInterest === sub.slug
-                          ? "border-[#6366F1] bg-[#6366F1]/[0.03] ring-1 ring-[#6366F1]"
-                          : "border-[#1E1E2E]/50 bg-[#6366F1]/5 hover:bg-[#6366F1]/10"
-                      )}
-                    >
-                      <div>
-                        <span className="block font-display font-bold text-[#F8F8FF] group-hover:text-[#6366F1] transition-colors">{sub.title}</span>
-                        <span className="text-xs text-[#94A3B8] font-body">{sub.techStack.join(" • ")}</span>
-                      </div>
-                      <ChevronRight size={18} className={cn("transition-transform", formData.serviceInterest === sub.slug ? "text-[#6366F1]" : "text-[#94A3B8] group-hover:translate-x-1")} />
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Step 3: Project Type */}
-            {currentStep === 2 && (
-              <div className="space-y-8">
-                <div className="space-y-2">
-                  <h3 className="text-3xl font-display font-black tracking-tight text-[#F8F8FF]">{dict.quote.wizard.questions.project}</h3>
-                  <p className="text-[#94A3B8] font-body font-medium">Are we building from scratch or evolving an existing system?</p>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  {["new build", "redesign", "improvement"].map((type) => (
-                    <button
-                      key={type}
-                      onClick={() => {
-                        updateForm("projectType", type);
-                        handleNext();
-                      }}
-                      className={cn(
-                        "p-8 rounded-2xl border text-center transition-all flex flex-col items-center gap-4",
-                        formData.projectType === type
-                          ? "border-[#6366F1] bg-[#6366F1]/[0.03] ring-1 ring-[#6366F1]"
-                          : "border-[#1E1E2E]/50 bg-[#6366F1]/5 hover:bg-[#6366F1]/10"
-                      )}
-                    >
-                      <div className={cn(
-                        "w-12 h-12 rounded-full flex items-center justify-center transition-colors",
-                        formData.projectType === type ? "bg-[#6366F1] text-white" : "bg-[#13131E]"
-                      )}>
-                        {type === "new build" && <Sparkles size={24} />}
-                        {type === "redesign" && <ChevronRight size={24} className="rotate-90" />}
-                        {type === "improvement" && <ChevronRight size={24} />}
-                      </div>
-                      <span className="font-display font-bold capitalize text-[#F8F8FF]">{type}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Step 4: Details & Budget */}
-            {currentStep === 3 && (
-              <div className="space-y-6">
-                <div className="space-y-2">
-                  <h3 className="text-3xl font-display font-black tracking-tight text-[#F8F8FF]">{dict.quote.wizard.questions.scope}</h3>
-                  <p className="text-xs text-[#94A3B8] font-body font-medium uppercase tracking-widest">Provide investment and timeline specifications.</p>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <label htmlFor="budget" className="text-[10px] font-black uppercase tracking-widest text-[#6366F1] flex items-center gap-2">
-                      {dict.quote.wizard.fields.budget}
-                      {!formData.budgetRange && <span className="w-1 h-1 rounded-full bg-red-500 animate-pulse" />}
-                    </label>
-                    <select
-                      id="budget"
-                      className={cn(
-                        "w-full bg-[#13131E] border rounded-2xl p-4 font-body font-bold outline-none transition-all text-[#F8F8FF]",
-                        !formData.budgetRange ? "border-red-500/30" : "border-[#1E1E2E] focus:ring-2 focus:ring-[#6366F1]"
-                      )}
-                      value={formData.budgetRange}
-                      onChange={(e) => updateForm("budgetRange", e.target.value)}
-                    >
-                      <option value="">Select range</option>
-                      <option value="<10k">$5k - $10k</option>
-                      <option value="10k-25k">$10k - $25k</option>
-                      <option value="25k-50k">$25k - $50k</option>
-                      <option value="50k+">$50k+</option>
-                    </select>
-                  </div>
-                  <div className="space-y-2">
-                    <label htmlFor="timeline" className="text-[10px] font-black uppercase tracking-widest text-[#6366F1] flex items-center gap-2">
-                      {dict.quote.wizard.fields.timeline}
-                      {!formData.timeline && <span className="w-1 h-1 rounded-full bg-red-500 animate-pulse" />}
-                    </label>
-                    <select
-                      id="timeline"
-                      className={cn(
-                        "w-full bg-[#13131E] border rounded-2xl p-4 font-body font-bold outline-none transition-all text-[#F8F8FF]",
-                        !formData.timeline ? "border-red-500/30" : "border-[#1E1E2E] focus:ring-2 focus:ring-[#6366F1]"
-                      )}
-                      value={formData.timeline}
-                      onChange={(e) => updateForm("timeline", e.target.value)}
-                    >
-                      <option value="">Timeline</option>
-                      <option value="urgent">Urgent (&lt; 1 month)</option>
-                      <option value="1-3-months">Standard (1-3 months)</option>
-                      <option value="flexible">Flexible</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <label htmlFor="brief" className="text-[10px] font-black uppercase tracking-widest text-[#6366F1] flex items-center gap-2">
-                    {dict.quote.wizard.fields.brief}
-                    {!formData.message && <span className="w-1 h-1 rounded-full bg-red-500 animate-pulse" />}
-                  </label>
-                  <textarea
-                    id="brief"
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                {HELP_OPTIONS.map((option) => (
+                  <button
+                    key={option}
+                    onClick={() => setFormData((prev) => ({ ...prev, needHelp: option }))}
                     className={cn(
-                      "w-full bg-[#13131E] border rounded-2xl p-6 min-h-[120px] font-body font-medium outline-none transition-all resize-none text-[#F8F8FF]",
-                      !formData.message ? "border-red-500/30" : "border-[#1E1E2E] focus:ring-2 focus:ring-[#6366F1]"
+                      "rounded-xl border px-4 py-3 text-left text-sm transition-colors",
+                      formData.needHelp === option
+                        ? "border-[#6366F1] bg-[#6366F1]/10 text-[#F8F8FF]"
+                        : "border-[#1E1E2E] bg-[#0F0F18] text-[#94A3B8] hover:text-[#F8F8FF]"
                     )}
-                    placeholder={dict.quote.wizard.fields.briefPlaceholder}
-                    value={formData.message}
-                    onChange={(e) => updateForm("message", e.target.value)}
-                  />
-                </div>
+                  >
+                    {option}
+                  </button>
+                ))}
               </div>
             )}
 
-            {/* Step 5: Contact */}
+            {currentStep === 1 && (
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                {BUSINESS_OPTIONS.map((option) => (
+                  <button
+                    key={option}
+                    onClick={() => setFormData((prev) => ({ ...prev, businessType: option }))}
+                    className={cn(
+                      "rounded-xl border px-4 py-3 text-left text-sm transition-colors",
+                      formData.businessType === option
+                        ? "border-[#6366F1] bg-[#6366F1]/10 text-[#F8F8FF]"
+                        : "border-[#1E1E2E] bg-[#0F0F18] text-[#94A3B8] hover:text-[#F8F8FF]"
+                    )}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {currentStep === 2 && (
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                {GOAL_OPTIONS.map((option) => (
+                  <button
+                    key={option}
+                    onClick={() => setFormData((prev) => ({ ...prev, mainGoal: option }))}
+                    className={cn(
+                      "rounded-xl border px-4 py-3 text-left text-sm transition-colors",
+                      formData.mainGoal === option
+                        ? "border-[#6366F1] bg-[#6366F1]/10 text-[#F8F8FF]"
+                        : "border-[#1E1E2E] bg-[#0F0F18] text-[#94A3B8] hover:text-[#F8F8FF]"
+                    )}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {currentStep === 3 && (
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                {SERVICE_OPTIONS.map((option) => {
+                  const active = formData.servicesNeeded.includes(option);
+                  return (
+                    <button
+                      key={option}
+                      onClick={() => toggleService(option)}
+                      className={cn(
+                        "rounded-xl border px-4 py-3 text-left text-sm transition-colors",
+                        active
+                          ? "border-[#6366F1] bg-[#6366F1]/10 text-[#F8F8FF]"
+                          : "border-[#1E1E2E] bg-[#0F0F18] text-[#94A3B8] hover:text-[#F8F8FF]"
+                      )}
+                    >
+                      {option}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+
             {currentStep === 4 && (
-              <div className="space-y-8">
-                <h3 className="text-3xl font-display font-black tracking-tight text-[#F8F8FF]">{dict.quote.wizard.questions.connect}</h3>
-                <div className="space-y-6">
-                  <div className="space-y-2">
-                    <label className="text-xs font-body font-black uppercase tracking-widest text-[#94A3B8]">{dict.quote.wizard.fields.name}</label>
-                    <input
-                      type="text"
-                      className="w-full bg-[#13131E] border border-[#1E1E2E] rounded-2xl p-4 font-body font-bold focus:ring-2 focus:ring-[#6366F1] outline-none transition-all text-[#F8F8FF]"
-                      placeholder="John Doe"
-                      value={formData.fullName}
-                      onChange={(e) => updateForm("fullName", e.target.value)}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-xs font-body font-black uppercase tracking-widest text-[#94A3B8]">{dict.quote.wizard.fields.email}</label>
-                    <input
-                      type="email"
-                      className="w-full bg-[#13131E] border border-[#1E1E2E] rounded-2xl p-4 font-body font-bold focus:ring-2 focus:ring-[#6366F1] outline-none transition-all text-[#F8F8FF]"
-                      placeholder="john@company.com"
-                      value={formData.email}
-                      onChange={(e) => updateForm("email", e.target.value)}
-                    />
-                  </div>
-                </div>
-                <div className="p-6 rounded-2xl bg-[#6366F1]/5 border border-[#6366F1]/10">
-                  <p className="text-xs text-[#94A3B8] font-body leading-relaxed">
-                    {dict.quote.wizard.fields.privacyNotice}
-                  </p>
-                </div>
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                {PROJECT_STAGE_OPTIONS.map((option) => (
+                  <button
+                    key={option}
+                    onClick={() => setFormData((prev) => ({ ...prev, projectStage: option }))}
+                    className={cn(
+                      "rounded-xl border px-4 py-3 text-left text-sm transition-colors",
+                      formData.projectStage === option
+                        ? "border-[#6366F1] bg-[#6366F1]/10 text-[#F8F8FF]"
+                        : "border-[#1E1E2E] bg-[#0F0F18] text-[#94A3B8] hover:text-[#F8F8FF]"
+                    )}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {currentStep === 5 && (
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                {TIMELINE_OPTIONS.map((option) => (
+                  <button
+                    key={option}
+                    onClick={() => setFormData((prev) => ({ ...prev, timeline: option }))}
+                    className={cn(
+                      "rounded-xl border px-4 py-3 text-left text-sm transition-colors",
+                      formData.timeline === option
+                        ? "border-[#6366F1] bg-[#6366F1]/10 text-[#F8F8FF]"
+                        : "border-[#1E1E2E] bg-[#0F0F18] text-[#94A3B8] hover:text-[#F8F8FF]"
+                    )}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {currentStep === 6 && (
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                {BUDGET_OPTIONS.map((option) => (
+                  <button
+                    key={option}
+                    onClick={() => setFormData((prev) => ({ ...prev, budget: option }))}
+                    className={cn(
+                      "rounded-xl border px-4 py-3 text-left text-sm transition-colors",
+                      formData.budget === option
+                        ? "border-[#6366F1] bg-[#6366F1]/10 text-[#F8F8FF]"
+                        : "border-[#1E1E2E] bg-[#0F0F18] text-[#94A3B8] hover:text-[#F8F8FF]"
+                    )}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {currentStep === 7 && (
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <input
+                  className="rounded-lg border border-[#1E1E2E] bg-[#0F0F18] p-3 text-[#F8F8FF]"
+                  placeholder="Name"
+                  value={formData.fullName}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, fullName: e.target.value }))}
+                />
+                <input
+                  className="rounded-lg border border-[#1E1E2E] bg-[#0F0F18] p-3 text-[#F8F8FF]"
+                  placeholder="Company"
+                  value={formData.company}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, company: e.target.value }))}
+                />
+                <input
+                  className="rounded-lg border border-[#1E1E2E] bg-[#0F0F18] p-3 text-[#F8F8FF]"
+                  placeholder="Email"
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))}
+                />
+                <input
+                  className="rounded-lg border border-[#1E1E2E] bg-[#0F0F18] p-3 text-[#F8F8FF]"
+                  placeholder="Phone"
+                  value={formData.phone}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, phone: e.target.value }))}
+                />
+                <input
+                  className="rounded-lg border border-[#1E1E2E] bg-[#0F0F18] p-3 text-[#F8F8FF]"
+                  placeholder="Website"
+                  value={formData.website}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, website: e.target.value }))}
+                />
+                <input
+                  className="rounded-lg border border-[#1E1E2E] bg-[#0F0F18] p-3 text-[#F8F8FF]"
+                  placeholder="Country"
+                  value={formData.country}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, country: e.target.value }))}
+                />
+
+                <select
+                  className="rounded-lg border border-[#1E1E2E] bg-[#0F0F18] p-3 text-[#F8F8FF] md:col-span-2"
+                  value={formData.preferredContact}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, preferredContact: e.target.value }))}
+                >
+                  <option value="">Preferred contact method</option>
+                  {CONTACT_OPTIONS.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+            {currentStep === 8 && (
+              <div>
+                <textarea
+                  className="min-h-[200px] w-full rounded-lg border border-[#1E1E2E] bg-[#0F0F18] p-4 text-[#F8F8FF]"
+                  placeholder="Share any challenges, goals, feature needs, integrations, references, examples, or details that would help us understand the project better."
+                  value={formData.message}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, message: e.target.value }))}
+                />
               </div>
             )}
           </motion.div>
         </AnimatePresence>
 
-        {/* Footer Actions */}
-        <div className="mt-12 pt-8 border-t border-[#1E1E2E]/50 flex flex-col sm:flex-row justify-between gap-4">
+        <div className="mt-6 flex flex-col gap-3 border-t border-[#1E1E2E] pt-6 sm:flex-row sm:items-center sm:justify-between">
           <button
-            onClick={handleBack}
+            onClick={() => setCurrentStep((prev) => Math.max(prev - 1, 0))}
             className={cn(
-              "flex items-center justify-center gap-2 h-14 px-8 text-[11px] font-display font-extrabold uppercase tracking-widest transition-all bg-[#13131E] border border-[#1E1E2E] rounded-xl hover:border-[#6366F1]/50 text-[#F8F8FF] shadow-sm",
-              currentStep === 0 ? "opacity-0 pointer-events-none" : "opacity-100"
+              "inline-flex items-center justify-center gap-2 rounded-lg border border-[#1E1E2E] bg-[#0F0F18] px-5 py-3 text-sm font-semibold text-[#F8F8FF]",
+              currentStep === 0 ? "pointer-events-none opacity-0" : "opacity-100"
             )}
           >
-            <ChevronLeft size={18} strokeWidth={2.5} className={isRtl ? "rotate-180" : ""} />
-            {dict.quote.wizard.back}
+            <ChevronLeft size={16} className={isRtl ? "rotate-180" : ""} />
+            Back
           </button>
 
-          {currentStep === steps.length - 1 ? (
+          {currentStep < steps.length - 1 ? (
             <button
-              onClick={handleSubmit}
-              disabled={isSubmitting || !formData.email || !formData.fullName || !formData.message}
-              className="flex items-center justify-center gap-3 h-14 px-10 rounded-xl bg-[#6366F1] text-white font-display font-extrabold text-[11px] uppercase tracking-[0.2em] shadow-lg shadow-[#6366F1]/30 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:hover:scale-100 transition-all border border-[#6366F1]"
+              onClick={() => setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1))}
+              disabled={!canNext()}
+              className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#6366F1] px-6 py-3 text-sm font-semibold text-white disabled:opacity-50"
             >
-              {isSubmitting ? <Loader2 className="animate-spin" size={18} /> : <Send size={18} strokeWidth={2.5} />}
-              {isSubmitting ? dict.quote.wizard.submitting : dict.quote.wizard.submit}
+              Next
+              <ChevronRight size={16} className={isRtl ? "rotate-180" : ""} />
             </button>
           ) : (
             <button
-              onClick={handleNext}
-              disabled={
-                (currentStep === 0 && !formData.serviceCategory) ||
-                (currentStep === 1 && !formData.serviceInterest) ||
-                (currentStep === 3 && (!formData.budgetRange || !formData.timeline || !formData.message))
-              }
-              className="flex items-center justify-center gap-2 h-14 px-10 rounded-xl bg-[#6366F1] text-white font-display font-extrabold text-[11px] uppercase tracking-[0.2em] shadow-lg shadow-[#6366F1]/30 hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:hover:scale-100 transition-all border border-[#6366F1]"
+              onClick={submit}
+              disabled={isSubmitting || !canNext()}
+              className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#6366F1] px-6 py-3 text-sm font-semibold text-white disabled:opacity-50"
             >
-              <span>{dict.quote.wizard.next}</span>
-              <ChevronRight size={18} strokeWidth={2.5} className={isRtl ? "rotate-180" : ""} />
+              {isSubmitting ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
+              {isSubmitting ? "Submitting" : "Submit Project Scope"}
             </button>
           )}
         </div>
@@ -420,3 +555,4 @@ export function QuoteWizard({ dict, isRtl, locale, preselectedService }: QuoteWi
     </div>
   );
 }
+

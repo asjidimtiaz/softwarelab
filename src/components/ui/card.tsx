@@ -12,11 +12,10 @@ interface CardProps {
 
 export function Card({ children, className, animate = true }: CardProps) {
   const cardClasses = cn(
-    "relative w-full h-full transition-all duration-500",
-    "rounded-3xl overflow-hidden",
+    "relative w-full h-full transition-all duration-300",
+    "rounded-xl overflow-hidden",
     // Only apply default bg/border if not provided in className
-    !className?.includes("bg-") && "bg-[#13131E] dark:bg-[#13131E] border border-[#1E1E2E] shadow-[0_10px_25px_-5px_rgba(99,102,241,0.05),0_8px_10px_-6px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_35px_-10px_rgba(99,102,241,0.10),0_10px_15px_-6px_rgba(0,0,0,0.05)]",
-    "hover:-translate-y-1",
+    !className?.includes("bg-") && "bg-white border border-slate-200 shadow-sm hover:shadow-md",
     className
   );
 

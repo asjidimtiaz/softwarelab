@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef } from "react";
 import { useEffect } from "react";
@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Upload, Image, Trash2, Check, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PageHeader } from "@/components/admin/page-header";
+import { toast } from "sonner";
 
 type BrandingConfig = {
     siteName: string;
@@ -23,6 +25,7 @@ export default function BrandingPage() {
     const [isSaving, setIsSaving] = useState(false);
     const [saved, setSaved] = useState(false);
     const [loadError, setLoadError] = useState<string | null>(null);
+    const [saveError, setSaveError] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
@@ -63,16 +66,24 @@ export default function BrandingPage() {
         }
     };
 
-    const handleSave = async () => {
+    const handleSave = async (logoOverride?: string | null) => {
+        const trimmedName = siteName.trim();
+        if (!trimmedName) {
+            setSaveError("Site name is required");
+            toast.error("Site name is required");
+            return;
+        }
+
+        setSaveError(null);
         setIsSaving(true);
         try {
             const res = await fetch("/api/admin/branding", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    siteName,
+                    siteName: trimmedName,
                     primaryColor,
-                    logoDataUrl: logo || "",
+                    logoDataUrl: logoOverride !== undefined ? (logoOverride || "") : (logo || ""),
                 } satisfies BrandingConfig),
             });
 
@@ -81,9 +92,12 @@ export default function BrandingPage() {
             }
 
             setSaved(true);
+            toast.success("Branding saved!");
             setTimeout(() => setSaved(false), 2000);
         } catch (e) {
             setSaved(false);
+            setSaveError("Failed to save branding");
+            toast.error("Failed to save branding");
         } finally {
             setIsSaving(false);
         }
@@ -96,19 +110,26 @@ export default function BrandingPage() {
         }
     };
 
+    const handleRemoveLogoAndSave = async () => {
+        setLogo(null);
+        if (fileInputRef.current) fileInputRef.current.value = "";
+        await handleSave("");
+    };
+
     return (
         <div className="admin-page-stack space-y-8 pb-10 w-full">
-            {/* Header */}
-            <div className="flex flex-col gap-3 mb-4">
-                <div>
-                    <p className="text-xs font-black text-gray-500 mb-1 uppercase tracking-[0.14em]">Customization Suite</p>
-                    <h1 className="text-3xl font-heading font-extrabold tracking-tight text-gray-900 dark:text-white">Branding Configuration</h1>
-                    <p className="text-sm text-gray-600 dark:text-gray-300 mt-1 font-medium">Manage site identity and visual appearance.</p>
-                </div>
-            </div>
+            <PageHeader
+                label="Customization Suite"
+                title="Branding"
+                highlight="Configuration"
+                description="Manage site identity and visual appearance."
+            />
 
             {loadError && (
                 <div className="text-xs font-bold text-rose-500 uppercase tracking-widest">{loadError}</div>
+            )}
+            {saveError && (
+                <div className="text-xs font-bold text-rose-500 uppercase tracking-widest">{saveError}</div>
             )}
 
             {/* Logo Upload Section */}
@@ -178,6 +199,16 @@ export default function BrandingPage() {
                                         Remove
                                     </Button>
                                 )}
+                                {logo && (
+                                    <Button
+                                        variant="outline"
+                                        className="rounded-xl h-10 px-4 text-sm font-semibold border-rose-200 text-rose-700 hover:bg-rose-50"
+                                        onClick={handleRemoveLogoAndSave}
+                                    >
+                                        <Trash2 size={16} className="mr-2" />
+                                        Delete + Save
+                                    </Button>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -223,10 +254,40 @@ export default function BrandingPage() {
                 </CardContent>
             </Card>
 
+            <Card className="admin-card admin-card-unified admin-card-hover rounded-2xl">
+                <CardHeader className="px-6 pt-6 pb-2 mb-0">
+                    <CardTitle className="text-2xl font-heading font-extrabold tracking-tight text-gray-900 dark:text-white">Live Preview</CardTitle>
+                </CardHeader>
+                <CardContent className="px-6 pb-6 pt-2">
+                    <div className="rounded-2xl border border-slate-200 overflow-hidden bg-white">
+                        <div className="h-12 px-4 flex items-center gap-3 border-b border-slate-200" style={{ backgroundColor: `${primaryColor}14` }}>
+                            <div className="h-7 w-7 rounded-lg flex items-center justify-center text-white text-xs font-bold" style={{ backgroundColor: primaryColor }}>
+                                {logo ? <img src={logo} alt="logo preview" className="h-full w-full object-cover rounded-lg" /> : "DWC"}
+                            </div>
+                            <p className="text-sm font-semibold text-slate-800">{siteName || "Site Name"}</p>
+                        </div>
+                        <div className="p-4 grid grid-cols-12 gap-3 min-h-[140px] bg-slate-50">
+                            <div className="col-span-4 rounded-lg border border-slate-200 bg-white p-2 space-y-2">
+                                <div className="h-2.5 rounded" style={{ backgroundColor: `${primaryColor}33` }} />
+                                <div className="h-2.5 rounded bg-slate-200" />
+                                <div className="h-2.5 rounded bg-slate-200" />
+                            </div>
+                            <div className="col-span-8 rounded-lg border border-slate-200 bg-white p-3">
+                                <div className="h-3 rounded w-2/3" style={{ backgroundColor: `${primaryColor}66` }} />
+                                <div className="h-2.5 rounded bg-slate-200 mt-3" />
+                                <div className="h-2.5 rounded bg-slate-200 mt-2 w-4/5" />
+                            </div>
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+
             {/* Save Button */}
             <div className="flex justify-end">
                 <Button
-                    onClick={handleSave}
+                    onClick={() => {
+                        void handleSave();
+                    }}
                     disabled={isSaving}
                     className={cn(
                         "rounded-xl h-11 px-8 text-sm font-semibold transition-all border border-gray-200 dark:border-midnight-700 bg-white dark:bg-midnight-900 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-midnight-800",
@@ -251,4 +312,5 @@ export default function BrandingPage() {
         </div>
     );
 }
+
 

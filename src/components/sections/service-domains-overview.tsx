@@ -28,10 +28,7 @@ export default function ServiceDomainsOverview({ dict, locale }: { dict: any; lo
             </span>
           </div>
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold tracking-tight mb-8 leading-tight text-[#F8F8FF]">
-            Service<br />
-            <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">
-              Domains
-            </span>
+            Services Built to Strengthen Growth, Conversion, and Digital Performance
           </h1>
           <p className="text-lg md:text-xl text-[#94A3B8] font-body leading-relaxed max-w-2xl mx-auto">
             {dict.services.hubDesc}

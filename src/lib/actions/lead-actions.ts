@@ -3,6 +3,8 @@
 import { connectToDatabase } from "@/lib/db";
 import { Lead } from "@/lib/models/lead";
 import { revalidatePath } from "next/cache";
+import { calculateLeadScore } from "@/lib/lead-scoring";
+import { ChatSession } from "@/lib/models/chat";
 
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth-options";
@@ -141,17 +143,25 @@ export async function addTask(id: string, task: { title: string; dueAt: Date; pr
   return JSON.parse(JSON.stringify(lead));
 }
 
-export async function completeTask(leadId: string, taskIndex: number) {
+export async function completeTask(leadId: string, taskRef: number | string) {
   const session = await getServerSession(authOptions);
   if (!session) throw new Error("Unauthorized");
 
   await connectToDatabase();
   const lead = await Lead.findById(leadId);
-  if (lead?.tasks[taskIndex]) {
-    lead.tasks[taskIndex].done = true;
-    await lead.save();
+  if (!lead) throw new Error("Lead not found");
+
+  if (typeof taskRef === "number" && lead.tasks[taskRef]) {
+    lead.tasks[taskRef].done = true;
+  } else {
+    const task = lead.tasks.find((item: any) => String(item._id) === String(taskRef));
+    if (!task) throw new Error("Task not found");
+    task.done = true;
   }
+
+  await lead.save();
   revalidatePath(`/admin/leads/${leadId}`);
+  revalidatePath("/admin/tasks");
   return JSON.parse(JSON.stringify(lead));
 }
 
@@ -188,17 +198,13 @@ export async function createLead(data: any) {
 
   await connectToDatabase();
 
-  // Calculate score & tier
-  let score = 0;
-  if (data.budgetRange?.includes("25k") || data.budgetRange?.includes("50k")) score += 40;
-  else if (data.budgetRange?.includes("10k")) score += 20;
-
-  const tier = score >= 60 ? "HOT" : score >= 30 ? "WARM" : "COLD";
+  const scored = calculateLeadScore(data);
 
   const lead = await Lead.create({
     ...data,
-    leadScore: score,
-    leadTier: tier,
+    leadScore: scored.score,
+    leadTier: scored.tier,
+    source: data.source || "admin",
     events: [
       { type: "LeadCreated", meta: { source: "Admin Dashboard", creator: session.user?.email } }
     ]
@@ -206,5 +212,84 @@ export async function createLead(data: any) {
 
   revalidatePath("/admin/leads");
   revalidatePath("/admin/analytics");
+  return JSON.parse(JSON.stringify(lead));
+}
+
+export async function deleteLead(id: string) {
+  const session = await getServerSession(authOptions);
+  if (!session) throw new Error("Unauthorized");
+
+  await connectToDatabase();
+  await Lead.findByIdAndDelete(id);
+  revalidatePath("/admin/leads");
+  revalidatePath("/admin/analytics");
+  return { ok: true };
+}
+
+export async function convertChatToLead(sessionId: string) {
+  const session = await getServerSession(authOptions);
+  if (!session) throw new Error("Unauthorized");
+
+  await connectToDatabase();
+
+  const chat = await ChatSession.findOne({ sessionId }).lean();
+  if (!chat) throw new Error("Chat session not found");
+
+  if ((chat as any).isConverted) {
+    const existing = await Lead.findOne({ source: `chat:${sessionId}` }).lean();
+    return existing ? JSON.parse(JSON.stringify(existing)) : { alreadyConverted: true };
+  }
+
+  const meta = (chat as any).metadata || {};
+  const contact = meta.contactInfo || {};
+  const service = meta.service || "consulting";
+  const intent = meta.intent || "inquiry";
+  const budget = meta.budget || "Flexible";
+
+  const transcript = ((chat as any).messages || [])
+    .slice(-6)
+    .map((m: any) => `${m.role}: ${m.content}`)
+    .join("\n")
+    .slice(0, 2000);
+
+  const leadPayload = {
+    fullName: contact.name || "Chat Visitor",
+    email: contact.email || `${sessionId}@chat.local`,
+    company: "",
+    serviceCategory: String(service),
+    serviceInterest: String(intent),
+    projectType: "chat-conversion",
+    budgetRange: String(budget),
+    timeline: "TBD",
+    message: transcript || "Converted from chat session",
+    source: `chat:${sessionId}`,
+    status: "NEW",
+  };
+
+  const scored = calculateLeadScore(leadPayload);
+  const lead = await Lead.create({
+    ...leadPayload,
+    leadScore: scored.score,
+    leadTier: scored.tier,
+    events: [
+      {
+        type: "LeadCreated",
+        at: new Date(),
+        meta: { source: "chat-conversion", sessionId, convertedBy: session.user?.email },
+      },
+    ],
+  });
+
+  await ChatSession.updateOne(
+    { sessionId },
+    {
+      $set: { isConverted: true },
+    }
+  );
+
+  revalidatePath("/admin/chats");
+  revalidatePath("/admin/leads");
+  revalidatePath("/admin/analytics");
+
   return JSON.parse(JSON.stringify(lead));
 }

@@ -7,6 +7,7 @@ import { MotionProvider } from "@/components/MotionProvider";
 import { PageTransition } from "@/components/ui/page-transition";
 import { ChatbotUI } from "@/components/chatbot/chatbot-ui";
 import { ConsentBanner } from "@/components/ui/consent-banner";
+import { ThemeProvider } from "@/providers/theme-provider";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -86,15 +87,17 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className="font-sans antialiased bg-[#0A0A0F] dark:bg-[#0A0A0F] text-[#F8F8FF] transition-all duration-300 font-medium">
-        <MotionProvider>
-          <PageTransition>
-            <Suspense fallback={null}>
-              {children}
-            </Suspense>
-          </PageTransition>
-          <ChatbotUI />
-        </MotionProvider>
+      <body className="font-sans antialiased bg-[#0A0A0F] dark:bg-white text-[#F8F8FF] dark:text-[#1E293B] transition-all duration-300 font-medium">
+        <ThemeProvider>
+          <MotionProvider>
+            <PageTransition>
+              <Suspense fallback={null}>
+                {children}
+              </Suspense>
+            </PageTransition>
+            <ChatbotUI />
+          </MotionProvider>
+        </ThemeProvider>
         <ConsentBanner />
       </body>
     </html>

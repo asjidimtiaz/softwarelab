@@ -1,45 +1,156 @@
+﻿import Link from "next/link";
 import { Container } from "@/components/layout/layout-primitives";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import ServiceDomainsOverview from "@/components/sections/service-domains-overview";
 import { getDictionary } from "@/lib/get-dictionary";
+import { AnimatedSection } from "@/components/AnimatedSection";
+import { Accordion } from "@/components/ui/accordion";
+
+const coreServices = [
+  { name: "Custom Website Development", desc: "Premium websites built for credibility, performance, and long-term business growth.", cta: "Explore Website Development", href: "/services/custom-software", price: "Starting at $3,500" },
+  { name: "Conversion Funnels & Landing Pages", desc: "Focused page systems built to turn traffic into inquiries, bookings, and qualified leads.", cta: "Explore Funnels & Landing Pages", href: "/services/conversion-funnels", price: "Starting at $2,000" },
+  { name: "AI Chatbots & Automation", desc: "AI-powered systems that improve lead capture, response speed, and operational efficiency.", cta: "Explore AI Automation", href: "/services/ai-chatbots-automation", price: "Starting at $2,500" },
+  { name: "SEO & Growth Retainers", desc: "Ongoing SEO, optimization, and support designed to improve visibility and digital performance over time.", cta: "Explore SEO & Growth", href: "/services/seo-growth-retainers", price: "Starting at $1,000/month" },
+];
+
+const related = [
+  "WordPress Development",
+  "Next.js Development",
+  "E-commerce Development",
+  "Web Application Development",
+  "Mobile Application Development",
+  "DevOps & Cloud",
+  "AI Workflows & Agents",
+  "Local SEO",
+  "Technical SEO",
+  "Website Maintenance & Support",
+];
+
+const faq = [
+  { value: "1", title: "Can I hire you for one service only?", content: "Yes. Some clients come to us for a single website, a landing page system, SEO support, or automation setup. Others need a broader multi-service engagement." },
+  { value: "2", title: "Do you only work with service businesses?", content: "Service businesses are our strongest fit, but we also work with selected SaaS, B2B, and education-related businesses." },
+  { value: "3", title: "Can you combine website, funnel, SEO, and automation work in one project?", content: "Yes. In many cases, that creates the strongest outcome because the system is planned together rather than built in disconnected parts." },
+  { value: "4", title: "Do you offer ongoing support?", content: "Yes. We can provide maintenance, SEO, optimization, and ongoing improvement support after launch." },
+];
 
 export default async function ServicesHub({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const dict = await getDictionary(locale);
-  const isRtl = locale === 'ar' || locale === 'ur';
+  const isRtl = locale === "ar" || locale === "ur";
 
   return (
-    <div className="flex flex-col min-h-screen" dir={isRtl ? 'rtl' : 'ltr'}>
+    <div className="flex flex-col min-h-screen bg-[#0A0A0F]" dir={isRtl ? "rtl" : "ltr"}>
       <Navbar dict={dict} locale={locale} />
-
-      {/* Service Schema for machine understanding */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Service",
-            "serviceType": "Enterprise Web Development & SEO Architecture",
-            "provider": { "@type": "Organization", "name": "Digi Web Crew" },
-            "description": "Premium full-stack development and technical SEO solutions designed for high-scale enterprise environments.",
-            "areaServed": "Global",
-            "hasOfferCatalog": {
-              "@type": "OfferCatalog",
-              "name": "Technical Services",
-              "itemListElement": [
-                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Full-Stack Development" } },
-                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Technical SEO & GEO" } },
-                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "AI Automation" } }
-              ]
-            }
-          })
-        }}
-      />
-
-      <main className="flex-1 pt-60 pb-20">
+      <main className="flex-1 pt-32 pb-24">
         <Container>
-          <ServiceDomainsOverview dict={dict} locale={locale} />
+          <div className="max-w-5xl mx-auto space-y-8">
+            <AnimatedSection className="text-center">
+              <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-4 text-[#F8F8FF]">
+                Services Built to Strengthen Growth, Conversion, and Digital Performance
+              </h1>
+              <p className="text-lg text-[#94A3B8] mb-6">
+                Digital Web Crew helps growth-focused businesses build custom websites, funnels, SEO systems, and AI automation designed to improve credibility, generate qualified leads, and support smarter customer acquisition.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link href={`/${locale}/book-consultation`} className="px-8 py-4 bg-[#6366F1] text-white font-bold rounded-lg">Book Consultation</Link>
+                <Link href={`/${locale}/quote`} className="px-8 py-4 border border-[#1E1E2E] bg-[#13131E] text-[#F8F8FF] font-bold rounded-lg">Get Custom Project Scope</Link>
+              </div>
+            </AnimatedSection>
+
+            <AnimatedSection className="bg-[#13131E] border border-[#1E1E2E] rounded-xl p-8">
+              <h2 className="text-2xl font-bold text-[#F8F8FF] mb-3">More Than a Website. A Smarter Digital System.</h2>
+              <p className="text-[#94A3B8]">Most businesses do not just need a nicer design. They need a stronger digital system that helps them attract attention, convert traffic, improve visibility, and handle leads more efficiently.</p>
+            </AnimatedSection>
+
+            <AnimatedSection>
+              <h2 className="text-2xl font-bold text-[#F8F8FF] mb-4">Core Services</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {coreServices.map((s) => (
+                  <div key={s.name} className="bg-[#13131E] border border-[#1E1E2E] rounded-xl p-6">
+                    <h3 className="text-xl font-semibold text-[#F8F8FF] mb-2">{s.name}</h3>
+                    <p className="text-[#94A3B8] mb-3">{s.desc}</p>
+                    <p className="text-sm text-[#94A3B8] mb-4">{s.price}</p>
+                    <Link href={`/${locale}${s.href}`} className="text-[#6366F1] font-semibold">{s.cta}</Link>
+                  </div>
+                ))}
+              </div>
+            </AnimatedSection>
+
+            <AnimatedSection className="bg-[#13131E] border border-[#1E1E2E] rounded-xl p-8">
+              <h2 className="text-2xl font-bold text-[#F8F8FF] mb-3">Related Capabilities</h2>
+              <div className="flex flex-wrap gap-2">
+                {related.map((r) => (
+                  <span key={r} className="px-3 py-2 rounded-full border border-[#1E1E2E] text-sm text-[#94A3B8]">{r}</span>
+                ))}
+              </div>
+            </AnimatedSection>
+
+            <AnimatedSection className="bg-[#13131E] border border-[#1E1E2E] rounded-xl p-8">
+              <h2 className="text-2xl font-bold text-[#F8F8FF] mb-3">A Service Structure Built Around Real Business Needs</h2>
+              <p className="text-[#94A3B8] mb-3">
+                Many agencies separate design, development, SEO, and automation into disconnected services. That often creates inconsistency, weak execution, and missed growth opportunities.
+              </p>
+              <p className="text-[#94A3B8] mb-3">
+                Digital Web Crew uses a more connected approach. We help businesses build digital systems where website structure, conversion flow, search visibility, and lead handling work together more effectively.
+              </p>
+              <p className="text-[#94A3B8]">
+                That means you can start with the service you need now and expand into the right support over time without rebuilding everything from scratch.
+              </p>
+            </AnimatedSection>
+
+            <AnimatedSection className="bg-[#13131E] border border-[#1E1E2E] rounded-xl p-8">
+              <h2 className="text-2xl font-bold text-[#F8F8FF] mb-3">Best Fit Clients</h2>
+              <p className="text-[#94A3B8] mb-3">
+                Our services are best suited for businesses that depend on trust, inquiries, consultations, calls, bookings, or ongoing lead flow.
+              </p>
+              <p className="text-[#94A3B8] mb-3">We are especially well aligned with:</p>
+              <ul className="list-disc list-inside space-y-2 text-[#94A3B8] mb-4">
+                <li>law firms</li>
+                <li>clinics, dental practices, and med spas</li>
+                <li>home service businesses</li>
+                <li>consultants, coaches, and agencies</li>
+                <li>SaaS and B2B service companies</li>
+                <li>education and training businesses</li>
+              </ul>
+              <p className="text-[#94A3B8]">
+                These are the kinds of businesses that benefit most from stronger digital presentation, better conversion systems, clearer SEO foundations, and smarter automation.
+              </p>
+            </AnimatedSection>
+
+            <AnimatedSection className="bg-[#13131E] border border-[#1E1E2E] rounded-xl p-8">
+              <h2 className="text-2xl font-bold text-[#F8F8FF] mb-3">How We Work</h2>
+              <p className="text-[#94A3B8] mb-4">Discover - Scope - Build - Launch & Grow</p>
+              <Link href={`/${locale}/process`} className="text-[#6366F1] font-semibold">View Full Process</Link>
+            </AnimatedSection>
+
+            <AnimatedSection className="bg-[#13131E] border border-[#1E1E2E] rounded-xl p-8">
+              <h2 className="text-2xl font-bold text-[#F8F8FF] mb-3">Starting Investment Levels</h2>
+              <ul className="space-y-2 text-[#94A3B8] mb-4">
+                <li>Custom Website Development - Starting at $3,500</li>
+                <li>Conversion Funnels & Landing Pages - Starting at $2,000</li>
+                <li>AI Chatbots & Automation - Starting at $2,500</li>
+                <li>SEO & Growth Retainers - Starting at $1,000/month</li>
+              </ul>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link href={`/${locale}/pricing`} className="px-8 py-4 bg-[#6366F1] text-white font-bold rounded-lg text-center">View Pricing</Link>
+                <Link href={`/${locale}/quote`} className="px-8 py-4 border border-[#1E1E2E] text-[#F8F8FF] font-bold rounded-lg text-center">Get Custom Project Scope</Link>
+              </div>
+            </AnimatedSection>
+
+            <AnimatedSection>
+              <h2 className="text-2xl font-bold text-[#F8F8FF] mb-4">Common Questions</h2>
+              <Accordion items={faq} />
+            </AnimatedSection>
+
+            <AnimatedSection className="bg-[#13131E] border border-[#1E1E2E] rounded-xl p-8 text-center">
+              <h2 className="text-2xl font-bold text-[#F8F8FF] mb-3">Need Help Choosing the Right Service Mix?</h2>
+              <p className="text-[#94A3B8] mb-6">Whether you already know what you need or want help defining the right direction, we can help you map out the next step.</p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link href={`/${locale}/book-consultation`} className="px-8 py-4 bg-[#6366F1] text-white font-bold rounded-lg">Book Consultation</Link>
+                <Link href={`/${locale}/quote`} className="px-8 py-4 border border-[#1E1E2E] text-[#F8F8FF] font-bold rounded-lg">Get Custom Project Scope</Link>
+              </div>
+            </AnimatedSection>
+          </div>
         </Container>
       </main>
       <Footer dict={dict} locale={locale} />

@@ -11,26 +11,34 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import type { CaseStudy } from "@/lib/content-engine";
 
-const categories = ["All", "Fintech", "AI & Automation", "E-commerce", "SaaS"];
+const categories = [
+    "Websites",
+    "Funnels",
+    "SEO",
+    "Automation",
+    "Development Systems",
+    "Technical and Infrastructure Support"
+];
 
 function toCategory(industry?: string) {
     const ind = (industry || "").toLowerCase();
-    if (ind.includes("fintech")) return "Fintech";
-    if (ind.includes("e-commerce") || ind.includes("ecommerce") || ind.includes("shop")) return "E-commerce";
-    if (ind.includes("saas")) return "SaaS";
-    if (ind.includes("ai") || ind.includes("automation")) return "AI & Automation";
-    return "All";
+    if (ind.includes("automation") || ind.includes("ai")) return "Automation";
+    if (ind.includes("seo")) return "SEO";
+    if (ind.includes("funnel") || ind.includes("landing")) return "Funnels";
+    if (ind.includes("devops") || ind.includes("cloud") || ind.includes("infrastructure")) return "Technical and Infrastructure Support";
+    if (ind.includes("saas") || ind.includes("fintech")) return "Development Systems";
+    return "Websites";
 }
 
 export function CaseStudiesLibrary({ studies }: { studies: CaseStudy[] }) {
     const params = useParams();
     const locale = (params as any)?.locale || "en";
 
-    const [activeCategory, setActiveCategory] = useState("All");
+    const [activeCategory, setActiveCategory] = useState("Websites");
     const { trackPortfolioProjectInteraction } = useToolTracking();
 
     const items = (studies || []).map((s) => {
-        const category = toCategory(s.industry);
+        const category = toCategory(`${s.industry} ${s.title} ${(s.techStack || []).join(" ")}`);
         return {
             slug: s.slug,
             title: s.title,
@@ -42,9 +50,7 @@ export function CaseStudiesLibrary({ studies }: { studies: CaseStudy[] }) {
         };
     });
 
-    const filtered = activeCategory === "All"
-        ? items
-        : items.filter(cs => cs.category === activeCategory);
+    const filtered = items.filter(cs => cs.category === activeCategory);
 
     return (
         <section className="py-24 bg-[#0A0A0F] border-b border-[#1E1E2E]">

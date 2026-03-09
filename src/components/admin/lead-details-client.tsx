@@ -1,231 +1,253 @@
-"use client";
+﻿"use client";
 
-import { useState } from "react";
-import { addLeadNote, updateLeadStatus, addTask } from "@/lib/actions/lead-actions";
-import { MessageSquare, Plus, CheckCircle2, Loader2, X } from "lucide-react";
+import { useMemo, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { addLeadNote, addTask, completeTask, deleteLead, updateLeadStatus } from "@/lib/actions/lead-actions";
 import { Button } from "@/components/ui/button";
+import { ConfirmModal } from "@/components/admin/confirm-modal";
+import { toast } from "sonner";
 
 interface LeadDetailsClientProps {
   leadId: string;
+  initialStatus: string;
   initialNotes: any[];
   initialTasks: any[];
-  initialStatus: string;
+  initialEvents: any[];
 }
 
-export function LeadDetailsClient({ leadId, initialNotes, initialTasks, initialStatus }: LeadDetailsClientProps) {
+const STATUS_OPTIONS = ["NEW", "CONTACTED", "QUALIFIED", "PROPOSAL", "WON", "LOST"];
+
+export function LeadDetailsClient({
+  leadId,
+  initialStatus,
+  initialNotes,
+  initialTasks,
+  initialEvents,
+}: LeadDetailsClientProps) {
+  const router = useRouter();
+
+  const [status, setStatus] = useState(initialStatus || "NEW");
   const [notes, setNotes] = useState(initialNotes || []);
   const [tasks, setTasks] = useState(initialTasks || []);
-  const [status, setStatus] = useState(initialStatus);
+  const [events, setEvents] = useState(initialEvents || []);
+
   const [noteText, setNoteText] = useState("");
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDueDate, setTaskDueDate] = useState("");
-  const [isLoadingNote, setIsLoadingNote] = useState(false);
-  const [isLoadingTask, setIsLoadingTask] = useState(false);
-  const [isLoadingStatus, setIsLoadingStatus] = useState(false);
+  const [taskPriority, setTaskPriority] = useState("medium");
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
-  const handleAddNote = async () => {
+  const [isPending, startTransition] = useTransition();
+
+  const sortedEvents = useMemo(
+    () => [...events].sort((a: any, b: any) => +new Date(b.at || 0) - +new Date(a.at || 0)),
+    [events]
+  );
+
+  const onStatusChange = (nextStatus: string) => {
+    setStatus(nextStatus);
+    startTransition(async () => {
+      try {
+        const updated = await updateLeadStatus(leadId, nextStatus);
+        if (updated?.events) setEvents(updated.events);
+        toast.success("Lead status updated");
+      } catch {
+        toast.error("Failed to update status");
+      }
+    });
+  };
+
+  const onAddNote = () => {
     if (!noteText.trim()) return;
-    setIsLoadingNote(true);
-    try {
-      await addLeadNote(leadId, noteText);
-      setNotes([...notes, { content: noteText, author: "You", createdAt: new Date(), type: "note" }]);
-      setNoteText("");
-    } catch (err) {
-      console.error(err);
-      alert("Failed to add note");
-    } finally {
-      setIsLoadingNote(false);
-    }
+    startTransition(async () => {
+      try {
+        const updated = await addLeadNote(leadId, noteText.trim());
+        setNotes(updated?.notes || notes);
+        setEvents(updated?.events || events);
+        setNoteText("");
+        toast.success("Note added");
+      } catch {
+        toast.error("Failed to add note");
+      }
+    });
   };
 
-  const handleAddTask = async () => {
+  const onAddTask = () => {
     if (!taskTitle.trim() || !taskDueDate) return;
-    setIsLoadingTask(true);
-    try {
-      await addTask(leadId, {
-        title: taskTitle,
-        dueAt: new Date(taskDueDate),
-        priority: "medium",
-      });
-      setTasks([
-        ...tasks,
-        {
-          title: taskTitle,
+    startTransition(async () => {
+      try {
+        const updated = await addTask(leadId, {
+          title: taskTitle.trim(),
           dueAt: new Date(taskDueDate),
-          done: false,
-          priority: "medium",
-          createdAt: new Date(),
-        },
-      ]);
-      setTaskTitle("");
-      setTaskDueDate("");
-    } catch (err) {
-      console.error(err);
-      alert("Failed to create task");
-    } finally {
-      setIsLoadingTask(false);
-    }
+          priority: taskPriority as "low" | "medium" | "high",
+        });
+        setTasks(updated?.tasks || tasks);
+        setTaskTitle("");
+        setTaskDueDate("");
+        toast.success("Task created");
+      } catch {
+        toast.error("Failed to create task");
+      }
+    });
   };
 
-  const handleStatusChange = async (newStatus: string) => {
-    setIsLoadingStatus(true);
-    try {
-      await updateLeadStatus(leadId, newStatus);
-      setStatus(newStatus);
-    } catch (err) {
-      console.error(err);
-      alert("Failed to update status");
-    } finally {
-      setIsLoadingStatus(false);
-    }
+  const onCompleteTask = (taskId: string) => {
+    startTransition(async () => {
+      try {
+        const updated = await completeTask(leadId, taskId);
+        setTasks(updated?.tasks || tasks);
+        toast.success("Task completed");
+      } catch {
+        toast.error("Failed to complete task");
+      }
+    });
   };
 
-  const statusOptions = ["NEW", "CONTACTED", "QUALIFIED", "PROPOSAL", "WON", "LOST"];
+  const onDeleteLead = () => {
+    startTransition(async () => {
+      try {
+        await deleteLead(leadId);
+        toast.success("Lead deleted");
+        router.push("/admin/leads");
+      } catch {
+        toast.error("Failed to delete lead");
+      }
+    });
+  };
 
   return (
-    <div className="space-y-12">
-      {/* Status Management */}
-      <div className="bg-white rounded-[2.5rem] p-12 shadow-lg border border-gray-100">
-        <h3 className="text-2xl font-[900] text-gray-900 mb-6 flex items-center gap-3">
-          <CheckCircle2 size={28} className="text-electric" /> Pipeline Status
-        </h3>
-        <div className="flex flex-wrap gap-3">
-          {statusOptions.map((s) => (
-            <button
-              key={s}
-              disabled={isLoadingStatus}
-              onClick={() => handleStatusChange(s)}
-              className={`px-6 py-3 rounded-full font-bold text-sm transition-all ${
-                status === s
-                  ? "bg-electric text-white shadow-lg shadow-electric/30"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-              } ${isLoadingStatus ? "opacity-50 cursor-not-allowed" : ""}`}
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+      <div className="lg:col-span-8 space-y-4">
+        <section className="rounded-xl border border-slate-200 bg-white p-4">
+          <div className="flex items-center justify-between gap-4">
+            <h3 className="text-base font-semibold text-slate-900">Status</h3>
+            <select
+              value={status}
+              onChange={(e) => onStatusChange(e.target.value)}
+              className="h-10 rounded-lg border border-slate-200 bg-white px-3 text-sm"
+              disabled={isPending}
             >
-              {isLoadingStatus ? <Loader2 size={16} className="inline mr-2 animate-spin" /> : null}
-              {s}
-            </button>
-          ))}
-        </div>
-      </div>
+              {STATUS_OPTIONS.map((opt) => (
+                <option key={opt} value={opt}>{opt}</option>
+              ))}
+            </select>
+          </div>
+        </section>
 
-      {/* Notes Section */}
-      <div className="bg-white rounded-[2.5rem] p-12 shadow-lg border border-gray-100">
-        <h3 className="text-2xl font-[900] text-gray-900 mb-8 flex items-center gap-3">
-          <MessageSquare size={28} className="text-electric" /> Notes & Comments ({notes.length})
-        </h3>
-
-        <div className="space-y-6 mb-10">
-          {notes.length > 0 ? (
-            notes.map((note, idx) => (
-              <div key={idx} className="bg-gray-50 rounded-2xl p-6 border border-gray-200 hover:bg-gray-100 transition-colors">
-                <div className="flex justify-between items-start gap-4">
-                  <div className="flex-1">
-                    <p className="text-sm font-bold text-gray-600 mb-2">
-                      {note.author} • {new Date(note.createdAt).toLocaleDateString()}
-                    </p>
-                    <p className="text-gray-900 font-medium">{note.content}</p>
+        <section className="rounded-xl border border-slate-200 bg-white p-4 space-y-3">
+          <h3 className="text-base font-semibold text-slate-900">Notes</h3>
+          <div className="space-y-2">
+            {notes.length === 0 && <p className="text-sm text-slate-500">No notes yet.</p>}
+            {notes.map((note: any, idx: number) => (
+              <div key={idx} className="rounded-lg border border-slate-200 p-3">
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-sm font-medium text-slate-800">{note.author || "Admin"}</p>
+                  <div className="flex items-center gap-2">
+                    <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-600">{note.type || "note"}</span>
+                    <span className="text-xs text-slate-500">{note.createdAt ? new Date(note.createdAt).toLocaleString() : ""}</span>
                   </div>
-                  <span className="text-xs bg-electric/10 text-electric px-3 py-1 rounded-full font-bold">
-                    {note.type || "note"}
-                  </span>
                 </div>
+                <p className="mt-2 text-sm text-slate-700">{note.content}</p>
               </div>
-            ))
-          ) : (
-            <p className="text-gray-500 text-center py-8 opacity-60">No notes yet. Add one to get started.</p>
-          )}
-        </div>
+            ))}
+          </div>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={noteText}
+              onChange={(e) => setNoteText(e.target.value)}
+              placeholder="Add a note"
+              className="h-10 flex-1 rounded-lg border border-slate-200 px-3 text-sm"
+            />
+            <Button onClick={onAddNote} disabled={isPending || !noteText.trim()}>Add</Button>
+          </div>
+        </section>
 
-        <div className="flex gap-3">
-          <input
-            type="text"
-            value={noteText}
-            onChange={(e) => setNoteText(e.target.value)}
-            placeholder="Add a note..."
-            className="flex-1 px-6 py-4 rounded-2xl border border-gray-200 focus:border-electric focus:outline-none bg-gray-50 font-medium"
-          />
-          <Button
-            onClick={handleAddNote}
-            disabled={isLoadingNote || !noteText.trim()}
-            className="bg-electric hover:bg-electric/90 text-white px-8 rounded-2xl font-bold"
-          >
-            {isLoadingNote ? <Loader2 size={18} className="animate-spin" /> : <Plus size={18} />}
-          </Button>
-        </div>
-      </div>
-
-      {/* Tasks Section */}
-      <div className="bg-white rounded-[2.5rem] p-12 shadow-lg border border-gray-100">
-        <h3 className="text-2xl font-[900] text-gray-900 mb-8 flex items-center gap-3">
-          <CheckCircle2 size={28} className="text-electric" /> Tasks ({tasks.filter((t) => !t.done).length} pending)
-        </h3>
-
-        <div className="space-y-4 mb-10">
-          {tasks.length > 0 ? (
-            tasks.map((task, idx) => (
-              <div
-                key={idx}
-                className={`p-4 rounded-2xl border-2 flex items-center gap-4 transition-all ${
-                  task.done ? "bg-emerald-50 border-emerald-200 opacity-60" : "bg-gray-50 border-gray-200"
-                }`}
-              >
-                <input
-                  type="checkbox"
-                  checked={task.done}
-                  onChange={() => {
-                    const newTasks = [...tasks];
-                    newTasks[idx].done = !newTasks[idx].done;
-                    setTasks(newTasks);
-                  }}
-                  className="w-5 h-5 rounded cursor-pointer"
-                />
-                <div className="flex-1">
-                  <p className={`font-bold ${task.done ? "line-through text-gray-400" : "text-gray-900"}`}>
-                    {task.title}
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    Due: {new Date(task.dueAt).toLocaleDateString()} •{" "}
-                    <span
-                      className={`font-bold ${
-                        task.priority === "high" ? "text-rose-600" : task.priority === "medium" ? "text-amber-600" : "text-gray-600"
-                      }`}
-                    >
-                      {task.priority?.toUpperCase()}
-                    </span>
-                  </p>
+        <section className="rounded-xl border border-slate-200 bg-white p-4 space-y-3">
+          <h3 className="text-base font-semibold text-slate-900">Tasks</h3>
+          <div className="space-y-2">
+            {tasks.length === 0 && <p className="text-sm text-slate-500">No tasks yet.</p>}
+            {tasks.map((task: any, idx: number) => {
+              const taskId = String(task._id || idx);
+              return (
+                <div key={taskId} className="rounded-lg border border-slate-200 p-3 flex items-start gap-3">
+                  <input type="checkbox" checked={!!task.done} onChange={() => onCompleteTask(taskId)} disabled={!!task.done || isPending} />
+                  <div className="flex-1">
+                    <p className={`text-sm font-medium ${task.done ? "line-through text-slate-400" : "text-slate-900"}`}>{task.title}</p>
+                    <p className="text-xs text-slate-500 mt-1">
+                      Due: {task.dueAt ? new Date(task.dueAt).toLocaleDateString() : "-"} · 
+                      <span className={`ml-1 ${task.priority === "high" ? "text-red-700" : task.priority === "medium" ? "text-amber-700" : "text-slate-600"}`}>
+                        {(task.priority || "medium").toUpperCase()}
+                      </span>
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-gray-500 text-center py-8 opacity-60">No tasks yet. Create one to stay organized.</p>
-          )}
-        </div>
-
-        <div className="space-y-3">
-          <div className="flex gap-3">
+              );
+            })}
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
             <input
               type="text"
               value={taskTitle}
               onChange={(e) => setTaskTitle(e.target.value)}
-              placeholder="Task title..."
-              className="flex-1 px-6 py-4 rounded-2xl border border-gray-200 focus:border-electric focus:outline-none bg-gray-50 font-medium"
+              placeholder="Task title"
+              className="h-10 rounded-lg border border-slate-200 px-3 text-sm md:col-span-2"
             />
             <input
               type="date"
               value={taskDueDate}
               onChange={(e) => setTaskDueDate(e.target.value)}
-              className="px-6 py-4 rounded-2xl border border-gray-200 focus:border-electric focus:outline-none bg-gray-50 font-medium"
+              className="h-10 rounded-lg border border-slate-200 px-3 text-sm"
             />
-            <Button
-              onClick={handleAddTask}
-              disabled={isLoadingTask || !taskTitle.trim() || !taskDueDate}
-              className="bg-electric hover:bg-electric/90 text-white px-8 rounded-2xl font-bold"
+            <select
+              value={taskPriority}
+              onChange={(e) => setTaskPriority(e.target.value)}
+              className="h-10 rounded-lg border border-slate-200 px-3 text-sm"
             >
-              {isLoadingTask ? <Loader2 size={18} className="animate-spin" /> : <Plus size={18} />}
-            </Button>
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
           </div>
-        </div>
+          <Button onClick={onAddTask} disabled={isPending || !taskTitle.trim() || !taskDueDate}>Create Task</Button>
+        </section>
       </div>
+
+      <div className="lg:col-span-4 space-y-4">
+        <section className="rounded-xl border border-slate-200 bg-white p-4">
+          <h3 className="text-base font-semibold text-slate-900 mb-3">Timeline</h3>
+          <div className="space-y-3">
+            {sortedEvents.length === 0 && <p className="text-sm text-slate-500">No events yet.</p>}
+            {sortedEvents.map((event: any, idx: number) => (
+              <div key={idx} className="border-l-2 border-slate-200 pl-3">
+                <p className="text-sm font-medium text-slate-900">{event.type || "Event"}</p>
+                <p className="text-xs text-slate-500">{event.at ? new Date(event.at).toLocaleString() : ""}</p>
+                {event.meta ? <p className="text-xs text-slate-600 mt-1">{typeof event.meta === "string" ? event.meta : JSON.stringify(event.meta)}</p> : null}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="rounded-xl border border-red-200 bg-red-50 p-4">
+          <h3 className="text-base font-semibold text-red-800">Danger Zone</h3>
+          <p className="mt-2 text-sm text-red-700">Delete this lead permanently.</p>
+          <Button className="mt-3 bg-red-600 hover:bg-red-700 text-white" onClick={() => setConfirmDelete(true)}>
+            Delete Lead
+          </Button>
+        </section>
+      </div>
+
+      <ConfirmModal
+        open={confirmDelete}
+        title="Delete this lead?"
+        description="This action cannot be undone."
+        confirmLabel="Delete"
+        isLoading={isPending}
+        onCancel={() => setConfirmDelete(false)}
+        onConfirm={onDeleteLead}
+      />
     </div>
   );
 }
+
+

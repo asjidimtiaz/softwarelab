@@ -1,128 +1,198 @@
-import { Container, Section } from "@/components/layout/layout-primitives";
+import Link from "next/link";
+import { Container } from "@/components/layout/layout-primitives";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { Award, Code2, Users2, ShieldCheck, Microscope, Zap, Target, Github, Globe, ExternalLink } from "lucide-react";
 import { getDictionary } from "@/lib/get-dictionary";
 import { AnimatedSection } from "@/components/AnimatedSection";
-import { cn } from "@/lib/utils";
+import { Accordion } from "@/components/ui/accordion";
 
-import { HowItWorks } from "@/components/sections/how-it-works";
+const supportingPoints = [
+  "Built for businesses that need more than a basic website",
+  "Focused on clarity, performance, and growth",
+  "Structured for real business use, not just visual presentation",
+  "Designed to support both launch and long-term improvement",
+];
+
+const values = [
+  ["Clarity over confusion", "A website or digital system should make the business easier to understand, not harder."],
+  ["Quality over shortcuts", "Good work needs structure, thought, and proper execution. Quick fixes usually create bigger problems later."],
+  ["Strategy over guesswork", "The build should reflect real goals, real priorities, and the actual needs of the business."],
+  ["Custom work over generic setups", "Different businesses need different solutions. One-size-fits-all work rarely supports growth well."],
+  ["Modern systems over outdated approaches", "Businesses need digital tools and structures that match how people search, browse, decide, and contact today."],
+];
+
+const builds = [
+  "custom websites",
+  "landing pages and funnels",
+  "SEO improvements and growth support",
+  "chatbot and automation systems",
+  "technical support and connected digital infrastructure",
+];
+
+const fit = [
+  "law firms",
+  "clinics, dental practices, and med spas",
+  "home service businesses",
+  "consultants, coaches, and agencies",
+  "SaaS and B2B service companies",
+  "education and training businesses",
+];
+
+const reasons = [
+  "they have outgrown a basic website",
+  "their current site does not reflect the quality of the business",
+  "they need better conversion paths",
+  "they want one partner who understands both build and growth",
+  "they need support that goes beyond design alone",
+  "they want cleaner systems for leads, content, and next steps",
+];
+
+const faqItems = [
+  {
+    value: "faq-1",
+    title: "What kind of agency is Digital Web Crew?",
+    content: "Digital Web Crew is a web, funnels, SEO, and automation agency focused on helping businesses build stronger digital systems for growth.",
+  },
+  {
+    value: "faq-2",
+    title: "Do you only work on websites?",
+    content: "No. We also work on landing pages, SEO support, chatbot systems, automation, and broader digital infrastructure depending on the project.",
+  },
+  {
+    value: "faq-3",
+    title: "Do you work with businesses in the US and Canada?",
+    content: "Yes. Those are the primary target markets, with room to work with other strong-fit clients as well.",
+  },
+  {
+    value: "faq-4",
+    title: "Are you focused on certain industries?",
+    content: "Yes. We are especially well aligned with law firms, clinics, home services, consultants, SaaS, and education-related businesses.",
+  },
+  {
+    value: "faq-5",
+    title: "Can I start with one service and expand later?",
+    content: "Yes. Many projects begin with one focused service and grow into a broader digital system over time.",
+  },
+];
 
 export default async function AboutPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const dict = await getDictionary(locale);
-  const isRtl = locale === 'ar' || locale === 'ur';
+  const isRtl = locale === "ar" || locale === "ur";
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#0A0A0F] dark:bg-[#0A0A0F]" dir={isRtl ? 'rtl' : 'ltr'}>
+    <div className="flex flex-col min-h-screen bg-[#0A0A0F]" dir={isRtl ? "rtl" : "ltr"}>
       <Navbar dict={dict} locale={locale} />
-      <main className="flex-1 pt-32 pb-20">
-        <Section>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-            <AnimatedSection direction="right">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#6366F1]/20 text-[#6366F1] text-xs font-bold uppercase tracking-widest mb-8">
-                <Microscope size={14} />
-                The Laboratory Brief
-              </div>
-              <h1 className="text-6xl md:text-8xl font-black tracking-tighter mb-10 leading-[0.9] text-[#F8F8FF]">
-                Expert-Led <br />
-                <span className="text-[#6366F1]">Digital Scaling</span>
+      <main className="flex-1 pt-32 pb-24">
+        <Container>
+          <div className="max-w-5xl mx-auto space-y-8">
+            <AnimatedSection className="text-center">
+              <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-4 text-[#F8F8FF]">
+                A Modern Digital Partner for Growth-Focused Businesses
               </h1>
-              <p className="text-xl md:text-2xl text-[#94A3B8] leading-relaxed font-medium max-w-xl">
-                Digi Web Crew is a specialized engineering lab founded by Toqeer Shafique, dedicated to building high-performance systems for the next generation of industry leaders.
+              <p className="text-lg text-[#94A3B8] mb-6">
+                Digital Web Crew helps businesses build stronger websites, sharper conversion systems, better search visibility, and more efficient lead handling through custom development, funnels, SEO, and automation.
               </p>
-
-              <div className="flex gap-4 mt-12">
-                <a href="https://github.com/toqeer74" target="_blank" className="p-4 bg-[#13131E] rounded-2xl border border-[#1E1E2E] hover:border-[#6366F1] transition-colors group">
-                  <Github className="text-[#94A3B8] group-hover:text-[#6366F1] transition-colors" size={24} />
-                </a>
-                <div className="flex-1 p-4 bg-[#13131E] rounded-2xl border border-[#1E1E2E] flex items-center justify-between group hover:border-[#6366F1]">
-                  <div>
-                    <p className="text-[10px] font-black text-[#94A3B8] uppercase tracking-widest">Engineering Lead</p>
-                    <p className="font-bold text-[#F8F8FF]">Toqeer Shafique</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+                {supportingPoints.map((point) => (
+                  <div key={point} className="rounded-lg border border-[#1E1E2E] bg-[#13131E] px-4 py-3 text-sm text-[#94A3B8]">
+                    {point}
                   </div>
-                  <div className="flex gap-2">
-                    <span className="w-2 h-2 rounded-full bg-[#6366F1] animate-pulse" />
-                    <span className="text-[10px] font-black text-[#6366F1] uppercase tracking-widest">Active</span>
-                  </div>
-                </div>
+                ))}
+              </div>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link href={`/${locale}/book-consultation`} className="px-8 py-4 bg-[#6366F1] text-white font-bold rounded-lg">Book Consultation</Link>
+                <Link href={`/${locale}/quote`} className="px-8 py-4 border border-[#1E1E2E] bg-[#13131E] text-[#F8F8FF] font-bold rounded-lg">Get Custom Project Scope</Link>
               </div>
             </AnimatedSection>
 
-            <AnimatedSection direction="left" className="relative">
-              <div className="aspect-square bg-[#13131E] rounded-[4rem] border border-[#1E1E2E] flex items-center justify-center relative overflow-hidden shadow-2xl group">
-                <div className="absolute inset-0 bg-gradient-to-tr from-[#6366F1]/10 via-transparent to-transparent group-hover:scale-110 transition-transform duration-1000" />
-                <Code2 size={200} className="text-[#6366F1]/5 group-hover:text-[#6366F1]/10 transition-colors duration-700" strokeWidth={0.5} />
+            <AnimatedSection className="bg-[#13131E] border border-[#1E1E2E] rounded-xl p-8">
+              <h2 className="text-2xl font-bold text-[#F8F8FF] mb-4">Built for Businesses That Need Stronger Digital Infrastructure</h2>
+              <p className="text-[#94A3B8] mb-3">Digital Web Crew was created for businesses that want more than a website that simply looks modern.</p>
+              <p className="text-[#94A3B8] mb-3">Many businesses need a stronger system behind their online presence. They need better presentation, clearer service structure, stronger lead paths, improved visibility, and more practical support for how inquiries and customers are handled.</p>
+              <p className="text-[#94A3B8]">That is where Digital Web Crew fits. We combine custom website development, landing pages, SEO support, and automation into digital systems designed to help businesses present themselves better and operate more effectively.</p>
+            </AnimatedSection>
 
-                {/* Visual Trust Stack */}
-                <div className="absolute top-12 left-12 grid grid-cols-2 gap-4">
-                  <div className="px-4 py-2 bg-[#1E1E2E] rounded-xl shadow-lg border border-[#1E1E2E]">
-                    <p className="text-[10px] font-black text-[#94A3B8] uppercase tracking-widest">UPWORK</p>
-                    <p className="text-xs font-bold text-[#F8F8FF]">TOP RATED</p>
+            <AnimatedSection className="bg-[#13131E] border border-[#1E1E2E] rounded-xl p-8">
+              <h2 className="text-2xl font-bold text-[#F8F8FF] mb-4">What We Value</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {values.map(([title, desc]) => (
+                  <div key={title} className="rounded-lg border border-[#1E1E2E] bg-[#0F0F18] p-4">
+                    <h3 className="font-semibold text-[#F8F8FF] mb-2">{title}</h3>
+                    <p className="text-sm text-[#94A3B8]">{desc}</p>
                   </div>
-                  <div className="px-4 py-2 bg-[#1E1E2E] rounded-xl shadow-lg border border-[#1E1E2E]">
-                    <p className="text-[10px] font-black text-[#94A3B8] uppercase tracking-widest">FIVERR</p>
-                    <p className="text-xs font-bold text-[#F8F8FF]">EXPERT PRO</p>
-                  </div>
-                </div>
+                ))}
+              </div>
+            </AnimatedSection>
 
-                <div className="absolute bottom-12 right-12 w-32 h-32 rounded-3xl bg-[#6366F1] flex items-center justify-center shadow-[0_20px_40px_rgba(99,102,241,0.3)] animate-float">
-                  <Zap size={48} className="text-[#0A0A0F]" />
-                </div>
+            <AnimatedSection className="bg-[#13131E] border border-[#1E1E2E] rounded-xl p-8">
+              <h2 className="text-2xl font-bold text-[#F8F8FF] mb-4">What We Build</h2>
+              <p className="text-[#94A3B8] mb-3">Digital Web Crew helps businesses build digital systems that support both presentation and performance.</p>
+              <ul className="list-disc list-inside space-y-2 text-[#94A3B8] mb-4">
+                {builds.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+              <p className="text-[#94A3B8]">Some clients need one focused service. Others need a broader setup that combines multiple parts into one clearer system.</p>
+            </AnimatedSection>
+
+            <AnimatedSection className="bg-[#13131E] border border-[#1E1E2E] rounded-xl p-8">
+              <h2 className="text-2xl font-bold text-[#F8F8FF] mb-4">Who We Work Best With</h2>
+              <p className="text-[#94A3B8] mb-3">We work best with businesses that depend on trust, inquiries, bookings, consultations, or ongoing lead flow.</p>
+              <ul className="list-disc list-inside space-y-2 text-[#94A3B8] mb-4">
+                {fit.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+              <p className="text-[#94A3B8]">These are the kinds of businesses where stronger digital presentation, better conversion, and cleaner systems can make a direct difference.</p>
+            </AnimatedSection>
+
+            <AnimatedSection className="bg-[#13131E] border border-[#1E1E2E] rounded-xl p-8">
+              <h2 className="text-2xl font-bold text-[#F8F8FF] mb-4">More Than Design. More Than Traffic.</h2>
+              <p className="text-[#94A3B8] mb-3">Some providers focus only on building websites. Others focus only on traffic. Others talk about automation without connecting it to how the business actually works.</p>
+              <p className="text-[#94A3B8] mb-3">Digital Web Crew takes a more connected approach.</p>
+              <p className="text-[#94A3B8]">We look at how the website presents the business, how the pages guide action, how visibility improves over time, and how lead handling can become more efficient. That creates better alignment between design, structure, search, and follow-up.</p>
+            </AnimatedSection>
+
+            <AnimatedSection className="bg-[#13131E] border border-[#1E1E2E] rounded-xl p-8">
+              <h2 className="text-2xl font-bold text-[#F8F8FF] mb-4">Why Businesses Choose to Work With Us</h2>
+              <p className="text-[#94A3B8] mb-3">Businesses usually come to us because they want a stronger digital setup with more clarity and better execution.</p>
+              <ul className="list-disc list-inside space-y-2 text-[#94A3B8] mb-4">
+                {reasons.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+              <p className="text-[#94A3B8]">The value is not just in making things look better. It is in building digital systems that support the business more effectively.</p>
+            </AnimatedSection>
+
+            <AnimatedSection className="bg-[#13131E] border border-[#1E1E2E] rounded-xl p-8">
+              <h2 className="text-2xl font-bold text-[#F8F8FF] mb-4">A Clear and Practical Approach</h2>
+              <p className="text-[#94A3B8] mb-4">We keep the process structured so projects stay aligned with business goals and actual priorities.</p>
+              <p className="text-[#94A3B8] mb-5">We start by understanding the business and the problem that needs to be solved. From there, we define the right scope, build the system carefully, and support the next stage after launch where needed.</p>
+              <Link href={`/${locale}/process`} className="text-[#6366F1] font-semibold">View Full Process</Link>
+            </AnimatedSection>
+
+            <AnimatedSection className="bg-[#13131E] border border-[#1E1E2E] rounded-xl p-8">
+              <h2 className="text-2xl font-bold text-[#F8F8FF] mb-4">A Better Fit for Businesses That Want Something More Thoughtful</h2>
+              <p className="text-[#94A3B8] mb-3">Digital Web Crew is not positioned as a low-cost website service or a generic all-in-one vendor.</p>
+              <p className="text-[#94A3B8]">We are built for businesses that want a more thoughtful level of design, development, structure, and support. That includes businesses that care about how they present themselves, how they generate inquiries, and how their digital system supports growth over time.</p>
+            </AnimatedSection>
+
+            <AnimatedSection>
+              <h2 className="text-2xl font-bold text-[#F8F8FF] mb-4">Questions About Digital Web Crew</h2>
+              <Accordion items={faqItems} />
+            </AnimatedSection>
+
+            <AnimatedSection className="bg-[#13131E] border border-[#1E1E2E] rounded-xl p-8 text-center">
+              <h2 className="text-2xl font-bold text-[#F8F8FF] mb-3">Looking for a Stronger Digital Partner?</h2>
+              <p className="text-[#94A3B8] mb-6">If your business needs more than a basic website and you want a clearer, more capable digital system, we can help define the right next step.</p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link href={`/${locale}/book-consultation`} className="px-8 py-4 bg-[#6366F1] text-white font-bold rounded-lg">Book Consultation</Link>
+                <Link href={`/${locale}/quote`} className="px-8 py-4 border border-[#1E1E2E] bg-[#0F0F18] text-[#F8F8FF] font-bold rounded-lg">Get Custom Project Scope</Link>
               </div>
             </AnimatedSection>
           </div>
-        </Section>
-
-        {/* Philosophy / Values */}
-        <Section className="bg-[#13131E] border-y border-[#1E1E2E]">
-          <AnimatedSection className="mb-24 text-center max-w-3xl mx-auto">
-            <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-6 text-[#F8F8FF]">{dict.about.philosophy}</h2>
-            <p className="text-xl text-[#94A3B8] font-medium">{dict.about.philosophyDesc}</p>
-          </AnimatedSection>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { id: "quality", icon: Award, color: "text-[#6366F1]", bg: "bg-[#13131E]" },
-              { id: "partner", icon: Users2, color: "text-[#6366F1]", bg: "bg-[#13131E]" },
-              { id: "agile", icon: Zap, color: "text-[#6366F1]", bg: "bg-[#13131E]" },
-              { id: "security", icon: ShieldCheck, color: "text-[#6366F1]", bg: "bg-[#13131E]" }
-            ].map((val, i) => (
-              <AnimatedSection key={val.id} delay={i * 0.1} className="p-10 rounded-[2.5rem] bg-[#1E1E2E] border border-[#1E1E2E] group hover:border-[#6366F1]/50 transition-all shadow-sm hover:shadow-[0_20px_40px_rgba(99,102,241,0.1)]">
-                <div className={cn("w-16 h-16 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 border border-[#6366F1]/20 bg-[#6366F1]/10", val.color)}>
-                  <val.icon size={32} />
-                </div>
-                <h4 className="text-2xl font-bold mb-4 tracking-tight text-[#F8F8FF]">{(dict.about.values as any)[val.id].title}</h4>
-                <p className="text-[#94A3B8] leading-relaxed font-medium text-sm">{(dict.about.values as any)[val.id].desc}</p>
-              </AnimatedSection>
-            ))}
-          </div>
-        </Section>
-
-        <HowItWorks dict={dict} />
-
-        {/* Global Impact */}
-
-        <Section>
-          <AnimatedSection className="grid grid-cols-1 md:grid-cols-3 gap-10 p-16 rounded-[4rem] bg-[#0A0A0F] text-[#F8F8FF] shadow-2xl relative overflow-hidden group border border-[#6366F1]/10">
-            <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-br from-[#6366F1]/20 via-transparent to-transparent opacity-50 group-hover:scale-110 transition-transform duration-1000" />
-
-            <div className="relative z-10 text-center">
-              <p className="text-7xl font-black mb-3 tracking-tighter">50+</p>
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-[#6366F1]">{dict.about.stats.launched}</p>
-            </div>
-
-            <div className="relative z-10 text-center border-y md:border-y-0 md:border-x border-[#6366F1]/10 py-10 md:py-0">
-              <p className="text-7xl font-black mb-3 tracking-tighter">99.9%</p>
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-[#6366F1]">{dict.about.stats.uptime}</p>
-            </div>
-
-            <div className="relative z-10 text-center">
-              <p className="text-7xl font-black mb-3 tracking-tighter">15k+</p>
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-[#6366F1]">{dict.about.stats.hours}</p>
-            </div>
-          </AnimatedSection>
-        </Section>
+        </Container>
       </main>
       <Footer dict={dict} locale={locale} />
     </div>

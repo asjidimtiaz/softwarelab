@@ -1,160 +1,84 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
-import { Globe } from "lucide-react";
-import { FaGithub, FaTwitter, FaLinkedin } from "react-icons/fa";
+import { FaLinkedin, FaFacebook, FaInstagram, FaXTwitter, FaGithub } from "react-icons/fa6";
 
 interface FooterProps {
   dict: any;
   locale: string;
 }
 
-export function Footer({ dict, locale }: FooterProps) {
+export function Footer({ locale }: FooterProps) {
   return (
     <footer className="bg-[#0A0A0F] border-t border-[#1E1E2E]">
       <div className="container px-6 md:px-12 py-16">
-        {/* Main Footer Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-12 mb-12 pb-12 border-b border-[#1E1E2E]">
-          {/* Brand Column */}
-          <div className="md:col-span-2">
-            <Link href={`/${locale}`} className="flex items-center gap-2 mb-6">
-              <div className="w-8 h-8 bg-gradient-to-br from-indigo-400 to-violet-400 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">D</span>
-              </div>
-              <span className="text-[#F8F8FF] font-display font-bold">DigiWebCrew</span>
-            </Link>
-            <p className="text-[#94A3B8] text-sm font-body leading-relaxed mb-6">
-              Enterprise-grade software development solutions for mission-critical systems. Trusted by global leaders.
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-10">
+          <div>
+            <h4 className="text-[#F8F8FF] font-display font-bold mb-3">Digital Web Crew</h4>
+            <p className="text-sm text-[#94A3B8] mb-4">
+              Custom websites, funnels, SEO systems, and automation for growth-focused businesses.
             </p>
-            {/* Newsletter */}
+          </div>
+
+          <div>
+            <h4 className="text-[#F8F8FF] font-display font-bold mb-4">Company</h4>
+            <ul className="space-y-2 text-sm">
+              <li><Link href={`/${locale}/about`} className="text-[#94A3B8] hover:text-[#F8F8FF]">About</Link></li>
+              <li><Link href={`/${locale}/process`} className="text-[#94A3B8] hover:text-[#F8F8FF]">Process</Link></li>
+              <li><Link href={`/${locale}/case-studies`} className="text-[#94A3B8] hover:text-[#F8F8FF]">Case Studies</Link></li>
+              <li><Link href={`/${locale}/blog`} className="text-[#94A3B8] hover:text-[#F8F8FF]">Blog</Link></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-[#F8F8FF] font-display font-bold mb-4">Services</h4>
+            <ul className="space-y-2 text-sm">
+              <li><Link href={`/${locale}/services/custom-software`} className="text-[#94A3B8] hover:text-[#F8F8FF]">Custom Website Development</Link></li>
+              <li><Link href={`/${locale}/services/conversion-funnels`} className="text-[#94A3B8] hover:text-[#F8F8FF]">Conversion Funnels and Landing Pages</Link></li>
+              <li><Link href={`/${locale}/services/ai-chatbots-automation`} className="text-[#94A3B8] hover:text-[#F8F8FF]">AI Chatbots and Automation</Link></li>
+              <li><Link href={`/${locale}/services/seo-growth-retainers`} className="text-[#94A3B8] hover:text-[#F8F8FF]">SEO and Growth Retainers</Link></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-[#F8F8FF] font-display font-bold mb-4">Resources</h4>
+            <ul className="space-y-2 text-sm">
+              <li><Link href={`/${locale}/pricing`} className="text-[#94A3B8] hover:text-[#F8F8FF]">Pricing</Link></li>
+              <li><Link href={`/${locale}/industries`} className="text-[#94A3B8] hover:text-[#F8F8FF]">Industries We Serve</Link></li>
+              <li><Link href={`/${locale}/faqs`} className="text-[#94A3B8] hover:text-[#F8F8FF]">FAQs</Link></li>
+              <li><Link href={`/${locale}/contact`} className="text-[#94A3B8] hover:text-[#F8F8FF]">Contact</Link></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-[#F8F8FF] font-display font-bold mb-4">Get Started</h4>
             <div className="space-y-3">
-              <label className="text-xs text-[#94A3B8] font-body font-semibold uppercase tracking-widest">
-                Stay Updated
-              </label>
-              <div className="flex gap-2">
-                <input
-                  type="email"
-                  placeholder="your@email.com"
-                  className="flex-1 px-4 py-2 bg-[#13131E] border border-[#1E1E2E] rounded-lg text-[#F8F8FF] text-sm placeholder-[#494970] focus:outline-none focus:border-[#6366F1]/50"
-                />
-                <button className="px-4 py-2 bg-[#6366F1] hover:bg-[#6366F1]/90 text-white rounded-lg transition-all font-body text-sm font-semibold">
-                  Join
-                </button>
-              </div>
+              <Link href={`/${locale}/quote`} className="block text-sm text-center px-4 py-2 rounded-md bg-[#6366F1] text-white hover:bg-[#6366F1]/90">Get Custom Project Scope</Link>
+              <Link href={`/${locale}/book-consultation`} className="block text-sm text-center px-4 py-2 rounded-md border border-[#1E1E2E] text-[#F8F8FF] hover:border-[#6366F1]/50">Book Consultation</Link>
             </div>
           </div>
 
-          {/* Services Column */}
           <div>
-            <h4 className="text-[#F8F8FF] font-display font-bold mb-6">Services</h4>
-            <ul className="space-y-3">
-              <li>
-                <Link href={`/${locale}/services`} className="text-[#94A3B8] hover:text-[#F8F8FF] text-sm font-body transition-colors">
-                  Full-Stack Development
-                </Link>
-              </li>
-              <li>
-                <Link href={`/${locale}/services`} className="text-[#94A3B8] hover:text-[#F8F8FF] text-sm font-body transition-colors">
-                  AI/ML Solutions
-                </Link>
-              </li>
-              <li>
-                <Link href={`/${locale}/services`} className="text-[#94A3B8] hover:text-[#F8F8FF] text-sm font-body transition-colors">
-                  DevOps & Infrastructure
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Company Column */}
-          <div>
-            <h4 className="text-[#F8F8FF] font-display font-bold mb-6">Company</h4>
-            <ul className="space-y-3">
-              <li>
-                <Link href={`/${locale}/about`} className="text-[#94A3B8] hover:text-[#F8F8FF] text-sm font-body transition-colors">
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link href={`/${locale}/blog`} className="text-[#94A3B8] hover:text-[#F8F8FF] text-sm font-body transition-colors">
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link href={`/${locale}/case-studies`} className="text-[#94A3B8] hover:text-[#F8F8FF] text-sm font-body transition-colors">
-                  Case Studies
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Legal Column */}
-          <div>
-            <h4 className="text-[#F8F8FF] font-display font-bold mb-6">Legal</h4>
-            <ul className="space-y-3">
-              <li>
-                <Link href={`/${locale}/privacy`} className="text-[#94A3B8] hover:text-[#F8F8FF] text-sm font-body transition-colors">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link href={`/${locale}/terms`} className="text-[#94A3B8] hover:text-[#F8F8FF] text-sm font-body transition-colors">
-                  Terms of Service
-                </Link>
-              </li>
-              <li>
-                <a href="#" className="text-[#94A3B8] hover:text-[#F8F8FF] text-sm font-body transition-colors">
-                  Cookie Policy
-                </a>
-              </li>
-            </ul>
+            <h4 className="text-[#F8F8FF] font-display font-bold mb-4">Social</h4>
+            <div className="flex items-center gap-3 text-[#94A3B8]">
+              <a href="#" className="hover:text-[#F8F8FF]"><FaLinkedin size={16} /></a>
+              <a href="#" className="hover:text-[#F8F8FF]"><FaFacebook size={16} /></a>
+              <a href="#" className="hover:text-[#F8F8FF]"><FaInstagram size={16} /></a>
+              <a href="#" className="hover:text-[#F8F8FF]"><FaXTwitter size={16} /></a>
+              <a href="#" className="hover:text-[#F8F8FF]"><FaGithub size={16} /></a>
+            </div>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          {/* Left: Copyright */}
-          <div className="text-xs text-[#94A3B8] font-body">
-            © 2024 DigiWebCrew. All rights reserved.
-          </div>
-
-          {/* Center: Language Selector */}
-          <div className="flex items-center gap-2 text-xs text-[#94A3B8] font-body">
-            <Globe size={14} className="text-[#6366F1]" />
-            <span className="uppercase tracking-widest">
-              {locale === 'en' ? 'EN-US' : locale === 'ur' ? 'UR-PK' : 'AR-SA'}
-            </span>
-          </div>
-
-          {/* Right: Social Links */}
-          <div className="flex items-center gap-6">
-            <a
-              href="https://github.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#94A3B8] hover:text-[#6366F1] transition-colors"
-            >
-              <FaGithub size={16} />
-            </a>
-            <a
-              href="https://twitter.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#94A3B8] hover:text-[#6366F1] transition-colors"
-            >
-              <FaTwitter size={16} />
-            </a>
-            <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#94A3B8] hover:text-[#6366F1] transition-colors"
-            >
-              <FaLinkedin size={16} />
-            </a>
+        <div className="border-t border-[#1E1E2E] pt-6 text-xs text-[#94A3B8] flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
+          <span>© Digital Web Crew. All rights reserved.</span>
+          <div className="flex items-center gap-4">
+            <Link href={`/${locale}/privacy`} className="hover:text-[#F8F8FF]">Privacy Policy</Link>
+            <Link href={`/${locale}/terms`} className="hover:text-[#F8F8FF]">Terms and Conditions</Link>
           </div>
         </div>
       </div>
     </footer>
   );
 }
+

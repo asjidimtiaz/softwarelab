@@ -12,6 +12,9 @@ if (!cached) {
   cached = (global as any).mongoose = { conn: null, promise: null };
 }
 
+// Avoid query buffering when a connection is unavailable.
+mongoose.set("bufferCommands", false);
+
 /**
  * Standard Database Connection Utility
  * Gracefully handles connection failures in development
@@ -26,15 +29,21 @@ export async function connectToDatabase() {
     throw new Error("Please define the MONGODB_URI environment variable");
   }
 
-  // Return cached connection if available
-  if (cached.conn) {
+  // Return cached connection only when it is actually connected.
+  if (cached.conn && cached.conn.readyState === 1) {
     return cached.conn;
+  }
+
+  // Drop stale/disconnected cached connection and reconnect.
+  if (cached.conn && cached.conn.readyState !== 1) {
+    cached.conn = null;
+    cached.promise = null;
   }
 
   // Create new connection promise if not exists
   if (!cached.promise) {
     const opts = {
-      bufferCommands: true, // Enable command buffering to prevent timing issues
+      bufferCommands: false,
       serverSelectionTimeoutMS: 10000, // 10 second timeout
       connectTimeoutMS: 10000,
     };
@@ -60,6 +69,14 @@ export async function connectToDatabase() {
       return null;
     }
     throw e;
+  }
+
+  if (!cached.conn || cached.conn.readyState !== 1) {
+    if (isDevelopment) {
+      console.warn("⚠️ MongoDB not connected. Running in database-less mode.");
+      return null;
+    }
+    throw new Error("MongoDB connection is not ready");
   }
 
   return cached.conn;

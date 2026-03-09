@@ -5,172 +5,139 @@ import { connectToDatabase } from "@/lib/db";
 import { ContentDraft } from "@/lib/models/content-draft";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DraftDeleteButton } from "@/components/admin/draft-delete-button";
+import { PageHeader } from "@/components/admin/page-header";
 
-export default async function DraftsPage() {
+type SearchParams = Promise<{ q?: string; type?: string }>;
+
+const TYPE_BADGES: Record<string, string> = {
+  blog: "bg-blue-100 text-blue-700",
+  landing: "bg-violet-100 text-violet-700",
+  seo: "bg-emerald-100 text-emerald-700",
+  email: "bg-amber-100 text-amber-700",
+  social: "bg-pink-100 text-pink-700",
+  other: "bg-slate-100 text-slate-700",
+};
+
+const TYPE_OPTIONS = ["all", "blog", "landing", "seo", "email", "social", "other"];
+
+export default async function DraftsPage({ searchParams }: { searchParams: SearchParams }) {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/admin/login");
 
-  // Quick development mode check
-  if (!process.env.MONGODB_URI) {
-    return (
-      <div className="admin-page-stack space-y-6 pb-10 w-full">
-        <div className="text-center py-12">
-          <p className="text-muted-foreground">No drafts available in development mode</p>
-        </div>
-      </div>
-    );
-  }
+  const { q, type } = await searchParams;
 
   const db = await connectToDatabase();
-  if (!db) {
-    return (
-      <div className="admin-page-stack space-y-6 pb-10 w-full">
-        <div className="text-center py-12">
-          <p className="text-muted-foreground">Unable to connect to database</p>
-        </div>
-      </div>
-    );
+  const query: Record<string, any> = {};
+  if (q) {
+    query.$or = [
+      { title: { $regex: q, $options: "i" } },
+      { promptKey: { $regex: q, $options: "i" } },
+      { modelName: { $regex: q, $options: "i" } },
+    ];
+  }
+  if (type && type !== "all") {
+    query.type = type;
   }
 
-  const drafts = await ContentDraft.find({})
-    .sort({ createdAt: -1 })
-    .limit(100)
-    .select({
-      type: 1,
-      promptKey: 1,
-      title: 1,
-      modelName: 1,
-      createdAt: 1,
-      workflowRunId: 1,
-      workflowKey: 1,
-      workflowStepIndex: 1,
-    })
-    .lean();
-
-  const workflowDrafts = drafts.filter((d: any) => Boolean(d.workflowRunId));
-  const standaloneDrafts = drafts.filter((d: any) => !d.workflowRunId);
-
-  const workflowRunsMap = new Map<
-    string,
-    {
-      workflowRunId: string;
-      workflowKey: string;
-      createdAt: Date | null;
-      drafts: any[];
-    }
-  >();
-
-  for (const d of workflowDrafts as any[]) {
-    const runId = String(d.workflowRunId);
-    const existing = workflowRunsMap.get(runId);
-
-    const workflowKey = String(d.workflowKey || "");
-    const createdAt = d.createdAt ? new Date(d.createdAt) : null;
-
-    if (!existing) {
-      workflowRunsMap.set(runId, {
-        workflowRunId: runId,
-        workflowKey,
-        createdAt,
-        drafts: [d],
-      });
-    } else {
-      existing.drafts.push(d);
-      if (!existing.createdAt || (createdAt && createdAt < existing.createdAt)) {
-        existing.createdAt = createdAt;
-      }
-      if (!existing.workflowKey && workflowKey) {
-        existing.workflowKey = workflowKey;
-      }
-    }
-  }
-
-  const workflowRuns = Array.from(workflowRunsMap.values())
-    .map((r) => {
-      r.drafts.sort((a, b) => (a.workflowStepIndex || 0) - (b.workflowStepIndex || 0));
-      return r;
-    })
-    .sort((a, b) => {
-      const at = a.createdAt ? a.createdAt.getTime() : 0;
-      const bt = b.createdAt ? b.createdAt.getTime() : 0;
-      return bt - at;
-    });
+  const drafts = db
+    ? await ContentDraft.find(query)
+        .sort({ createdAt: -1 })
+        .limit(100)
+        .select({
+          type: 1,
+          promptKey: 1,
+          title: 1,
+          modelName: 1,
+          createdAt: 1,
+          workflowRunId: 1,
+          workflowStepIndex: 1,
+        })
+        .lean()
+    : [];
 
   return (
-    <div className="admin-page-stack space-y-6 pb-10 w-full">
-      <Card className="admin-card admin-card-unified admin-card-hover rounded-[2rem] border-border bg-white shadow-sm overflow-hidden">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-base font-black uppercase tracking-widest text-muted-foreground/60">Workflow Runs</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {workflowRuns.length === 0 ? (
-            <div className="text-xs font-bold text-muted-foreground/60 uppercase tracking-widest">No workflow runs yet</div>
-          ) : (
-            workflowRuns.map((run) => (
-              <Link
-                key={run.workflowRunId}
-                href={`/admin/drafts/${run.drafts[0]?._id?.toString?.() || ""}`}
-                className="block p-4 rounded-2xl border border-border bg-secondary/10 hover:bg-secondary/20 transition-colors"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="min-w-0">
-                    <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">
-                      {run.workflowKey ? `workflow: ${run.workflowKey}` : "workflow"} • {run.drafts.length} drafts
-                    </div>
-                    <div className="text-sm font-black mt-1 truncate">{run.workflowRunId}</div>
-                    <div className="text-xs text-muted-foreground/70 font-medium mt-1">
-                      {run.drafts
-                        .slice(0, 3)
-                        .map((d: any) => `${d.workflowStepIndex ? `#${d.workflowStepIndex}` : ""}${d.promptKey ? ` ${d.promptKey}` : ""}`.trim())
-                        .filter(Boolean)
-                        .join(" • ")}
-                      {run.drafts.length > 3 ? " • …" : ""}
-                    </div>
-                  </div>
-                  <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/50 shrink-0">
-                    {run.createdAt ? run.createdAt.toLocaleString() : ""}
-                  </div>
-                </div>
-              </Link>
-            ))
-          )}
+    <div className="admin-page-stack space-y-6 pb-8 w-full">
+      <PageHeader
+        title="Drafts"
+        subtitle="Generated drafts and workflow outputs."
+        breadcrumb={[{ label: "Dashboard", href: "/admin/dashboard" }, { label: "Drafts" }]}
+      />
+
+      <Card className="admin-card rounded-xl">
+        <CardContent className="pt-6">
+          <form className="grid grid-cols-1 gap-2 md:grid-cols-[1fr_200px_auto]">
+            <input
+              name="q"
+              defaultValue={q || ""}
+              placeholder="Search title, prompt key, model"
+              className="h-10 rounded-lg border border-slate-200 px-3 text-sm"
+            />
+            <select name="type" defaultValue={type || "all"} className="h-10 rounded-lg border border-slate-200 px-3 text-sm">
+              {TYPE_OPTIONS.map((option) => (
+                <option key={option} value={option}>
+                  {option === "all" ? "All Types" : option}
+                </option>
+              ))}
+            </select>
+            <button className="h-10 rounded-lg bg-slate-900 px-4 text-sm font-medium text-white">Filter</button>
+          </form>
         </CardContent>
       </Card>
 
-      <Card className="admin-card admin-card-unified admin-card-hover rounded-[2rem] border-border bg-white shadow-sm overflow-hidden">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-base font-black uppercase tracking-widest text-muted-foreground/60">Recent Drafts</CardTitle>
+      <Card className="admin-card rounded-xl overflow-hidden">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base font-semibold">Recent Drafts</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
-          {standaloneDrafts.length === 0 ? (
-            <div className="text-xs font-bold text-muted-foreground/60 uppercase tracking-widest">No standalone drafts yet</div>
-          ) : (
-            standaloneDrafts.map((d: any) => (
-              <Link
-                key={d._id.toString()}
-                href={`/admin/drafts/${d._id.toString()}`}
-                className="block p-4 rounded-2xl border border-border bg-secondary/10 hover:bg-secondary/20 transition-colors"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="min-w-0">
-                    <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">
-                      {d.type} • {d.promptKey}
-                    </div>
-                    <div className="text-sm font-black mt-1 truncate">{(d.title as string) || "Untitled"}</div>
-                    <div className="text-xs text-muted-foreground/70 font-medium mt-1">
-                      {(d.modelName as string) ? `Model: ${d.modelName}` : ""}
-                    </div>
-                  </div>
-                  <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/50 shrink-0">
-                    {d.createdAt ? new Date(d.createdAt).toLocaleString() : ""}
-                  </div>
-                </div>
-              </Link>
-            ))
-          )}
+        <CardContent className="p-0">
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse text-left">
+              <thead>
+                <tr className="bg-slate-50">
+                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Type</th>
+                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Prompt Key</th>
+                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Title</th>
+                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Model</th>
+                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Created</th>
+                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-500 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {drafts.map((draft: any) => {
+                  const id = String(draft._id);
+                  const draftType = String(draft.type || "other").toLowerCase();
+                  return (
+                    <tr key={id} className="border-b border-slate-100 hover:bg-slate-50">
+                      <td className="px-4 py-3">
+                        <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${TYPE_BADGES[draftType] || TYPE_BADGES.other}`}>
+                          {draftType}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-sm text-slate-700">{draft.promptKey || "-"}</td>
+                      <td className="px-4 py-3 text-sm font-medium text-slate-900 max-w-[360px] truncate">{draft.title || "Untitled"}</td>
+                      <td className="px-4 py-3 text-sm text-slate-600">{draft.modelName || "-"}</td>
+                      <td className="px-4 py-3 text-sm text-slate-500">{draft.createdAt ? new Date(draft.createdAt).toLocaleString() : ""}</td>
+                      <td className="px-4 py-3">
+                        <div className="flex justify-end gap-2">
+                          <Link
+                            href={`/admin/drafts/${id}`}
+                            className="inline-flex h-8 items-center rounded-lg border border-slate-200 px-3 text-xs font-medium text-slate-700 hover:bg-slate-50"
+                          >
+                            View
+                          </Link>
+                          <DraftDeleteButton draftId={id} />
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          {drafts.length === 0 ? <div className="p-10 text-center text-sm text-slate-500">No drafts available.</div> : null}
         </CardContent>
       </Card>
     </div>
   );
 }
-

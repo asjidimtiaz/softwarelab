@@ -11,7 +11,10 @@ export async function GET() {
   }
 
   try {
-    await connectToDatabase();
+    const db = await connectToDatabase();
+    if (!db) {
+      return NextResponse.json({ success: false, error: "Database unavailable" }, { status: 503 });
+    }
 
     const drafts = await ContentDraft.find({})
       .sort({ createdAt: -1 })

@@ -25,15 +25,14 @@ async function getBrandingConfig(): Promise<BrandingConfig> {
 
 export async function GET() {
   const auth = await requireAdminSession();
-  if (auth.error) {
-    return NextResponse.json({ success: false, error: auth.error }, { status: auth.status });
+  if (!auth.success) {
+    return NextResponse.json({ success: false, error: (auth as any).error }, { status: (auth as any).status });
   }
 
   try {
     await logAudit({
       action: "VIEW_DASHBOARD",
       resource: "branding",
-      userEmail: auth.session?.user?.email || undefined,
     });
 
     const config = await getBrandingConfig();
@@ -44,7 +43,6 @@ export async function GET() {
       action: "VIEW_DASHBOARD",
       error: detail,
       success: false,
-      userEmail: auth.session?.user?.email || undefined,
     });
     return NextResponse.json(
       { success: false, error: "Failed to load branding" },
@@ -55,15 +53,14 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   const auth = await requireAdminSession();
-  if (auth.error) {
-    return NextResponse.json({ success: false, error: auth.error }, { status: auth.status });
+  if (!auth.success) {
+    return NextResponse.json({ success: false, error: (auth as any).error }, { status: (auth as any).status });
   }
 
   try {
     await logAudit({
       action: "UPDATE_BRANDING",
       resource: "branding",
-      userEmail: auth.session?.user?.email || undefined,
     });
 
     const existing = await getBrandingConfig();
@@ -92,7 +89,6 @@ export async function POST(request: NextRequest) {
       action: "UPDATE_BRANDING",
       error: detail,
       success: false,
-      userEmail: auth.session?.user?.email || undefined,
     });
     return NextResponse.json({ success: false, error: "Failed to save branding" }, { status: 500 });
   }

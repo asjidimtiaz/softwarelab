@@ -5,116 +5,157 @@ import { connectToDatabase } from "@/lib/db";
 import { ContentDraft } from "@/lib/models/content-draft";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { PageHeader } from "@/components/admin/page-header";
 
-export default async function WorkflowRunsPage() {
+type SearchParams = Promise<{ q?: string; page?: string }>;
+const PAGE_SIZE = 20;
+
+export default async function WorkflowRunsPage({ searchParams }: { searchParams: SearchParams }) {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/admin/login");
 
-  // Quick development mode check
-  if (!process.env.MONGODB_URI) {
-    return (
-      <div className="admin-page-stack space-y-6 pb-10 w-full">
-        <div className="text-center py-12">
-          <p className="text-muted-foreground">No workflow runs available in development mode</p>
-        </div>
-      </div>
-    );
-  }
+  const { q, page } = await searchParams;
+  const pageNum = Math.max(1, Number(page || "1"));
 
   const db = await connectToDatabase();
-  if (!db) {
-    return (
-      <div className="admin-page-stack space-y-6 pb-10 w-full">
-        <div className="text-center py-12">
-          <p className="text-muted-foreground">Unable to connect to database</p>
-        </div>
-      </div>
-    );
+
+  const match: any = { workflowRunId: { $exists: true, $ne: null } };
+  if (q) {
+    match.$or = [
+      { workflowRunId: { $regex: q, $options: "i" } },
+      { workflowKey: { $regex: q, $options: "i" } },
+      { promptKey: { $regex: q, $options: "i" } },
+    ];
   }
 
-  const drafts = await ContentDraft.find({ workflowRunId: { $exists: true, $ne: null } })
-    .sort({ createdAt: -1 })
-    .limit(300)
-    .select({ workflowRunId: 1, workflowKey: 1, workflowStepIndex: 1, promptKey: 1, createdAt: 1 })
-    .lean();
+  const grouped = db
+    ? await ContentDraft.aggregate([
+        { $match: match },
+        {
+          $group: {
+            _id: "$workflowRunId",
+            workflowKey: { $first: "$workflowKey" },
+            createdAt: { $min: "$createdAt" },
+            updatedAt: { $max: "$updatedAt" },
+            steps: { $sum: 1 },
+            maxStepIndex: { $max: "$workflowStepIndex" },
+          },
+        },
+        { $sort: { updatedAt: -1 } },
+        { $skip: (pageNum - 1) * PAGE_SIZE },
+        { $limit: PAGE_SIZE },
+      ])
+    : [];
 
-  const runsMap = new Map<
-    string,
-    { workflowRunId: string; workflowKey: string; createdAt: Date | null; drafts: any[] }
-  >();
+  const totalRuns = db
+    ? await ContentDraft.aggregate([
+        { $match: match },
+        { $group: { _id: "$workflowRunId" } },
+        { $count: "count" },
+      ])
+    : [];
 
-  for (const d of drafts as any[]) {
-    const runId = String(d.workflowRunId);
-    const existing = runsMap.get(runId);
+  const total = totalRuns[0]?.count || 0;
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
-    const createdAt = d.createdAt ? new Date(d.createdAt) : null;
-    const workflowKey = String(d.workflowKey || "");
-
-    if (!existing) {
-      runsMap.set(runId, { workflowRunId: runId, workflowKey, createdAt, drafts: [d] });
-    } else {
-      existing.drafts.push(d);
-      if (!existing.createdAt || (createdAt && createdAt < existing.createdAt)) {
-        existing.createdAt = createdAt;
-      }
-      if (!existing.workflowKey && workflowKey) {
-        existing.workflowKey = workflowKey;
-      }
-    }
-  }
-
-  const runs = Array.from(runsMap.values())
-    .map((r) => {
-      r.drafts.sort((a, b) => (a.workflowStepIndex || 0) - (b.workflowStepIndex || 0));
-      return r;
-    })
-    .sort((a, b) => {
-      const at = a.createdAt ? a.createdAt.getTime() : 0;
-      const bt = b.createdAt ? b.createdAt.getTime() : 0;
-      return bt - at;
-    });
+  const pageLink = (target: number) => {
+    const params = new URLSearchParams();
+    if (q) params.set("q", q);
+    params.set("page", String(target));
+    return `?${params.toString()}`;
+  };
 
   return (
-    <div className="admin-page-stack space-y-6 pb-10 w-full">
-      <Card className="admin-card admin-card-unified admin-card-hover rounded-[2rem] border-border bg-white shadow-sm overflow-hidden">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-base font-black uppercase tracking-widest text-muted-foreground/60">Recent Runs</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {runs.length === 0 ? (
-            <div className="text-xs font-bold text-muted-foreground/60 uppercase tracking-widest">No workflow runs yet</div>
-          ) : (
-            runs.map((run) => (
-              <Link
-                key={run.workflowRunId}
-                href={`/admin/workflow-runs/${run.workflowRunId}`}
-                className="block p-4 rounded-2xl border border-border bg-secondary/10 hover:bg-secondary/20 transition-colors"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="min-w-0">
-                    <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">
-                      {run.workflowKey ? `workflow: ${run.workflowKey}` : "workflow"} • {run.drafts.length} steps
-                    </div>
-                    <div className="text-sm font-black mt-1 truncate">{run.workflowRunId}</div>
-                    <div className="text-xs text-muted-foreground/70 font-medium mt-1">
-                      {run.drafts
-                        .slice(0, 3)
-                        .map((d: any) => `${d.workflowStepIndex ? `#${d.workflowStepIndex}` : ""}${d.promptKey ? ` ${d.promptKey}` : ""}`.trim())
-                        .filter(Boolean)
-                        .join(" • ")}
-                      {run.drafts.length > 3 ? " • …" : ""}
-                    </div>
-                  </div>
-                  <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/50 shrink-0">
-                    {run.createdAt ? run.createdAt.toLocaleString() : ""}
-                  </div>
-                </div>
-              </Link>
-            ))
-          )}
+    <div className="admin-page-stack space-y-6 pb-8 w-full">
+      <PageHeader
+        title="Workflow Runs"
+        subtitle="Grouped runs generated by the AI workflow engine."
+        breadcrumb={[{ label: "Dashboard", href: "/admin/dashboard" }, { label: "Workflow Runs" }]}
+      />
+
+      <Card className="admin-card rounded-xl">
+        <CardContent className="pt-6">
+          <form className="flex gap-2">
+            <input
+              name="q"
+              defaultValue={q || ""}
+              placeholder="Search by run id, workflow key, prompt key"
+              className="h-10 flex-1 rounded-lg border border-slate-200 px-3 text-sm"
+            />
+            <button className="h-10 rounded-lg bg-slate-900 px-4 text-white text-sm font-medium">Search</button>
+          </form>
         </CardContent>
       </Card>
+
+      <Card className="admin-card rounded-xl overflow-hidden">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base font-semibold">Recent Runs</CardTitle>
+        </CardHeader>
+        <CardContent className="p-0">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-slate-50">
+                  <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Run ID</th>
+                  <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Workflow</th>
+                  <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Steps</th>
+                  <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Status</th>
+                  <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">Updated</th>
+                  <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {grouped.map((run: any) => {
+                  const expectedSteps = Number.isFinite(Number(run.maxStepIndex)) ? Number(run.maxStepIndex) + 1 : Number(run.steps || 0);
+                  const isComplete = Number(run.steps || 0) >= expectedSteps;
+                  return (
+                  <tr key={run._id} className="border-b border-slate-100 hover:bg-slate-50">
+                    <td className="px-4 py-3 text-sm font-medium text-slate-900">{run._id}</td>
+                    <td className="px-4 py-3 text-sm text-slate-700">{run.workflowKey || "-"}</td>
+                    <td className="px-4 py-3 text-sm text-slate-700">{run.steps}</td>
+                    <td className="px-4 py-3">
+                      <span
+                        className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
+                          isComplete
+                            ? "bg-emerald-100 text-emerald-700"
+                            : "bg-amber-100 text-amber-700"
+                        }`}
+                      >
+                        {isComplete ? "Complete" : "Partial"}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-sm text-slate-500">{run.updatedAt ? new Date(run.updatedAt).toLocaleString() : ""}</td>
+                    <td className="px-4 py-3 text-right">
+                      <Link
+                        href={`/admin/workflow-runs/${run._id}`}
+                        className="inline-flex h-8 items-center rounded-lg border border-slate-200 px-3 text-sm text-slate-700 hover:bg-slate-50"
+                      >
+                        View
+                      </Link>
+                    </td>
+                  </tr>
+                )})}
+              </tbody>
+            </table>
+          </div>
+
+          {grouped.length === 0 ? <div className="p-10 text-center text-sm text-slate-500">No runs found.</div> : null}
+        </CardContent>
+      </Card>
+
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-sm text-slate-500">
+          Showing {total === 0 ? 0 : (pageNum - 1) * PAGE_SIZE + 1}-{Math.min(pageNum * PAGE_SIZE, total)} of {total}
+        </p>
+        <div className="flex gap-2">
+          <Link href={pageLink(Math.max(1, pageNum - 1))} className={`inline-flex h-9 items-center rounded-lg border border-slate-200 px-3 text-sm ${pageNum === 1 ? "pointer-events-none opacity-50" : ""}`}>
+            Prev
+          </Link>
+          <Link href={pageLink(Math.min(totalPages, pageNum + 1))} className={`inline-flex h-9 items-center rounded-lg border border-slate-200 px-3 text-sm ${pageNum === totalPages ? "pointer-events-none opacity-50" : ""}`}>
+            Next
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
-

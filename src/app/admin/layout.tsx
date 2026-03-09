@@ -1,7 +1,10 @@
 import "../globals.css";
-import { cn } from "@/lib/utils";
 import { MotionProvider } from "@/components/MotionProvider";
 import { PageTransition } from "@/components/ui/page-transition";
+import { Geist, Geist_Mono } from "next/font/google";
+
+const geist = Geist({ subsets: ["latin"], variable: "--font-geist" });
+const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
 
 export const metadata = {
   title: "Software Lab Admin",
@@ -15,7 +18,9 @@ export default function RootAdminLayout({
 }) {
   return (
     <html lang="en">
-      <body className="font-sans antialiased bg-[#13131E] dark:bg-[#13131E] text-[#F8F8FF] transition-colors duration-300">
+      <body
+        className={`${geist.variable} ${geistMono.variable} font-sans antialiased bg-background text-foreground transition-colors duration-300`}
+      >
         <MotionProvider>
           <PageTransition>
             {children}

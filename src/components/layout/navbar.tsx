@@ -1,119 +1,151 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Moon, Sun } from "lucide-react";
+import { FaLinkedin, FaFacebook, FaInstagram, FaXTwitter, FaGithub } from "react-icons/fa6";
 import { cn } from "@/lib/utils";
+import { useTheme } from "@/providers/theme-provider";
 
 interface NavbarProps {
   dict: any;
   locale: string;
 }
 
-export function Navbar({ dict, locale }: NavbarProps) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+export function Navbar({ locale }: NavbarProps) {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
+  const { isDark, toggleTheme } = useTheme();
   const pathname = usePathname();
 
   const navLinks = [
-    { name: dict.nav.services, href: `/${locale}/services` },
-    { name: dict.nav.process, href: `/${locale}/process` },
-    { name: dict.nav.pricing, href: `/${locale}/pricing` },
-    { name: dict.nav.caseStudies, href: `/${locale}/case-studies` },
-    { name: dict.nav.blog, href: `/${locale}/blog` },
-    { name: dict.nav.about, href: `/${locale}/about` },
+    { label: "Services", href: `/${locale}/services`, dropdown: true },
+    { label: "Process", href: `/${locale}/process` },
+    { label: "Pricing", href: `/${locale}/pricing` },
+    { label: "Case Studies", href: `/${locale}/case-studies` },
+    { label: "Blog", href: `/${locale}/blog` },
+    { label: "About", href: `/${locale}/about` },
+    { label: "Contact", href: `/${locale}/contact` },
+  ];
+
+  const serviceItems = [
+    { label: "Custom Website Development", href: `/${locale}/services/custom-software` },
+    { label: "Conversion Funnels and Landing Pages", href: `/${locale}/services/conversion-funnels` },
+    { label: "AI Chatbots and Automation", href: `/${locale}/services/ai-chatbots-automation` },
+    { label: "SEO and Growth Retainers", href: `/${locale}/services/seo-growth-retainers` },
+    { label: "WordPress Development", href: `/${locale}/services/custom-software` },
+    { label: "Next.js Development", href: `/${locale}/services/custom-web-apps` },
+    { label: "Technical SEO", href: `/${locale}/services/seo-growth-retainers` },
+    { label: "Website Maintenance and Support", href: `/${locale}/services/maintenance-support` },
   ];
 
   return (
-    <header className="fixed top-0 w-full z-50 bg-[#0A0A0F]/80 backdrop-blur-md border-b border-[#1E1E2E] flex items-center justify-between px-6 md:px-12 h-16">
-      {/* Logo Section */}
-      <Link href={`/${locale}`} className="flex items-center gap-2 flex-shrink-0">
-        <div className="w-8 h-8 bg-gradient-to-br from-indigo-400 to-violet-400 rounded-lg flex items-center justify-center">
-          <span className="text-white font-bold text-sm">D</span>
-        </div>
-        <span className="text-white font-display font-bold hidden sm:inline-block">DigiWebCrew</span>
-      </Link>
-
-      {/* Center Navigation Links */}
-      <nav className="hidden md:flex items-center gap-8 absolute left-1/2 transform -translate-x-1/2">
-        {navLinks.map((link) => (
-          <Link
-            key={link.name}
-            href={link.href}
-            className={cn(
-              "text-sm font-body text-[#94A3B8] hover:text-[#F8F8FF] transition-colors duration-200",
-              pathname === link.href && "text-[#F8F8FF]"
-            )}
-          >
-            {link.name}
-          </Link>
-        ))}
-      </nav>
-
-      {/* Right CTA Buttons */}
-      <div className="hidden md:flex items-center gap-4 flex-shrink-0">
-        {/* Ghost CTA Button */}
-        <button className="border border-[#1E1E2E] text-[#F8F8FF] px-4 py-2 rounded-md hover:bg-[#13131E] font-body text-sm font-medium transition-all duration-200">
-          Watch Demo
-        </button>
-        {/* Primary CTA Button */}
-        <Link
-          href={`/${locale}/quote`}
-          className="bg-[#6366F1] text-white px-5 py-2 rounded-md hover:bg-[#6366F1]/90 font-body text-sm font-medium transition-all duration-200"
-        >
-          Get Started
+    <header className="fixed top-0 left-0 right-0 z-50 h-16 bg-[#0A0A0F]/80 backdrop-blur-md border-b border-[#1E1E2E]">
+      <div className="h-full px-6 md:px-12 flex items-center justify-between">
+        <Link href={`/${locale}`} className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-400 to-violet-400 flex items-center justify-center">
+            <span className="text-white font-bold text-sm">D</span>
+          </div>
+          <span className="text-[#F8F8FF] font-display font-bold hidden sm:inline">Digital Web Crew</span>
         </Link>
-      </div>
 
-      {/* Mobile Menu Toggle */}
-      <div className="md:hidden">
-        <button
-          className="p-2 text-[#F8F8FF] hover:bg-[#13131E] rounded-lg transition-colors"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+        <nav className="hidden lg:flex items-center gap-6">
+          {navLinks.map((link) =>
+            link.dropdown ? (
+              <div
+                key={link.label}
+                className="relative"
+                onMouseEnter={() => setServicesOpen(true)}
+                onMouseLeave={() => setServicesOpen(false)}
+              >
+                <button className={cn("text-sm text-[#94A3B8] hover:text-[#F8F8FF] transition-colors", pathname.startsWith(link.href) && "text-[#F8F8FF]")}>
+                  {link.label}
+                </button>
+                {servicesOpen && (
+                  <div className="absolute top-full left-0 mt-2 w-80 rounded-lg border border-[#1E1E2E] bg-[#0F0F18] p-3">
+                    <p className="text-xs text-[#94A3B8] uppercase tracking-widest mb-2">Core Services</p>
+                    <div className="space-y-1 mb-3">
+                      {serviceItems.slice(0, 4).map((item) => (
+                        <Link key={item.label} href={item.href} className="block px-3 py-2 rounded-md text-sm text-[#94A3B8] hover:text-[#F8F8FF] hover:bg-[#13131E]">
+                          {item.label}
+                        </Link>
+                      ))}
+                    </div>
+                    <p className="text-xs text-[#94A3B8] uppercase tracking-widest mb-2">Related Services</p>
+                    <div className="space-y-1 mb-3">
+                      {serviceItems.slice(4).map((item) => (
+                        <Link key={item.label} href={item.href} className="block px-3 py-2 rounded-md text-sm text-[#94A3B8] hover:text-[#F8F8FF] hover:bg-[#13131E]">
+                          {item.label}
+                        </Link>
+                      ))}
+                    </div>
+                    <Link href={`/${locale}/services`} className="block px-3 py-2 rounded-md text-sm text-[#6366F1] hover:bg-[#13131E]">
+                      View All Services
+                    </Link>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link key={link.label} href={link.href} className={cn("text-sm text-[#94A3B8] hover:text-[#F8F8FF] transition-colors", pathname === link.href && "text-[#F8F8FF]")}>
+                {link.label}
+              </Link>
+            )
+          )}
+        </nav>
+
+        <div className="hidden lg:flex items-center gap-3">
+          <button 
+            onClick={toggleTheme}
+            className="p-2 rounded-md border border-[#1E1E2E] text-[#94A3B8] hover:text-[#F8F8FF] hover:bg-[#13131E] transition-colors"
+            aria-label="Toggle theme"
+          >
+            {isDark ? <Sun size={14} /> : <Moon size={14} />}
+          </button>
+          <a href="#" className="text-[#94A3B8] hover:text-[#F8F8FF]"><FaLinkedin size={14} /></a>
+          <a href="#" className="text-[#94A3B8] hover:text-[#F8F8FF]"><FaFacebook size={14} /></a>
+          <a href="#" className="text-[#94A3B8] hover:text-[#F8F8FF]"><FaInstagram size={14} /></a>
+          <a href="#" className="text-[#94A3B8] hover:text-[#F8F8FF]"><FaXTwitter size={14} /></a>
+          <a href="#" className="text-[#94A3B8] hover:text-[#F8F8FF]"><FaGithub size={14} /></a>
+          <Link href={`/${locale}/book-consultation`} className="px-4 py-2 rounded-md bg-[#6366F1] text-white text-sm font-semibold hover:bg-[#6366F1]/90">
+            Book Consultation
+          </Link>
+        </div>
+
+        <button onClick={() => setMobileOpen((v) => !v)} className="lg:hidden text-[#F8F8FF] p-2">
+          {mobileOpen ? <X size={18} /> : <Menu size={18} />}
         </button>
       </div>
 
-      {/* Mobile Menu Overlay */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="absolute top-16 inset-x-6 bg-[#0F0F18] border border-[#1E1E2E] rounded-lg shadow-xl z-50 md:hidden p-4"
-          >
-            <div className="flex flex-col gap-2">
-              {navLinks.map((link, index) => (
-                <motion.div
-                  key={link.name}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                >
-                  <Link
-                    href={link.href}
-                    className="block px-4 py-2 text-sm text-[#94A3B8] hover:text-[#F8F8FF] hover:bg-[#13131E] rounded-md transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {link.name}
-                  </Link>
-                </motion.div>
-              ))}
-              <div className="h-px bg-[#1E1E2E] my-2" />
-              <Link
-                href={`/${locale}/quote`}
-                className="block px-4 py-2 text-sm text-white bg-[#6366F1] rounded-md hover:bg-[#6366F1]/90 text-center font-medium transition-all"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Get Started
-              </Link>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {mobileOpen && (
+        <div className="lg:hidden border-t border-[#1E1E2E] bg-[#0F0F18] px-6 py-4 space-y-2">
+          {navLinks.map((link) => (
+            <Link key={link.label} href={link.href} className="block py-2 text-[#94A3B8] hover:text-[#F8F8FF]" onClick={() => setMobileOpen(false)}>
+              {link.label}
+            </Link>
+          ))}
+          <div className="pt-4 space-y-2 border-t border-[#1E1E2E]">
+            <button 
+              onClick={() => {
+                toggleTheme();
+                setMobileOpen(false);
+              }}
+              className="w-full px-4 py-2 rounded-md border border-[#1E1E2E] text-[#94A3B8] hover:text-[#F8F8FF] hover:bg-[#13131E] text-sm font-semibold flex items-center justify-center gap-2 transition-colors"
+            >
+              {isDark ? <Sun size={14} /> : <Moon size={14} />}
+              {isDark ? "Light Mode" : "Dark Mode"}
+            </button>
+          </div>
+          <div className="pt-2 flex gap-2">
+            <Link href={`/${locale}/book-consultation`} className="flex-1 px-4 py-2 rounded-md bg-[#6366F1] text-white text-sm text-center font-semibold" onClick={() => setMobileOpen(false)}>
+              Book Consultation
+            </Link>
+            <Link href={`/${locale}/quote`} className="flex-1 px-4 py-2 rounded-md border border-[#1E1E2E] text-[#F8F8FF] text-sm text-center font-semibold" onClick={() => setMobileOpen(false)}>
+              Get Custom Project Scope
+            </Link>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

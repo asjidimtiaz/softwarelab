@@ -15,7 +15,7 @@
   .admin-dashboard-shell {
     background: var(--admin-bg);
     color: var(--admin-text);
-    font-family: var(--font-open-sans), sans-serif;
+    font-family: var(--font-geist), sans-serif;
   }
 
   .admin-page-stack {
@@ -58,6 +58,46 @@
     border: 1px solid var(--admin-border);
     border-radius: var(--admin-radius-xl);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  }
+
+  .admin-dashboard-shell .admin-card h1,
+  .admin-dashboard-shell .admin-card h2,
+  .admin-dashboard-shell .admin-card h3,
+  .admin-dashboard-shell .admin-card h4,
+  .admin-dashboard-shell .admin-card h5,
+  .admin-dashboard-shell .admin-card h6 {
+    font-family: var(--font-geist), sans-serif !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.01em !important;
+    text-transform: none !important;
+    color: #0f172a !important;
+  }
+
+  .admin-dashboard-shell .admin-page-stack button,
+  .admin-dashboard-shell .admin-page-stack a[class*="inline-flex"] {
+    font-family: var(--font-geist), sans-serif !important;
+    font-weight: 600 !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+  }
+
+  .admin-dashboard-shell .admin-page-stack button svg,
+  .admin-dashboard-shell .admin-page-stack a[class*="inline-flex"] svg {
+    flex-shrink: 0;
+  }
+
+  .admin-dashboard-shell .admin-page-stack .admin-card .text-xs.font-semibold.uppercase,
+  .admin-dashboard-shell .admin-page-stack .admin-card .text-xs.font-medium {
+    font-family: var(--font-geist), sans-serif !important;
+    letter-spacing: 0 !important;
+  }
+
+  .admin-dashboard-shell .admin-card > .mb-6 {
+    margin-bottom: 0.75rem !important;
+  }
+
+  .admin-dashboard-shell .admin-card > .mb-6 + div {
+    padding-top: 0 !important;
   }
 
   .admin-card-soft {
@@ -184,7 +224,7 @@
 
   .admin-title {
     color: var(--admin-primary);
-    font-family: var(--font-nunito-sans), sans-serif;
+    font-family: var(--font-geist), sans-serif;
     font-weight: 800;
     letter-spacing: -0.01em;
   }

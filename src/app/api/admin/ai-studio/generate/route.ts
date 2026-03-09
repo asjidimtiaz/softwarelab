@@ -32,8 +32,8 @@ function getOpenAIClient() {
 
 export async function POST(req: NextRequest) {
   const auth = await requireAdminSession(req);
-  if (auth.error) {
-    return NextResponse.json({ success: false, error: auth.error }, { status: auth.status });
+  if (!auth.success) {
+    return NextResponse.json({ success: false, error: (auth as any).error }, { status: (auth as any).status });
   }
 
   try {
@@ -48,7 +48,6 @@ export async function POST(req: NextRequest) {
       resource: "ai-studio",
       resourceId: body.promptKey,
       metadata: { variables: body.variables, type: body.type },
-      userEmail: auth.session?.user?.email || undefined,
     });
 
     const promptsPath = path.join(process.cwd(), "digi", "ai-prompts.json");
@@ -85,7 +84,11 @@ export async function POST(req: NextRequest) {
 
     const content = response.choices?.[0]?.message?.content || "";
 
-    await connectToDatabase();
+    const db = await connectToDatabase();
+    if (!db) {
+      return NextResponse.json({ success: false, error: "Database unavailable" }, { status: 503 });
+    }
+
     const draft = await ContentDraft.create({
       type: body.type || "other",
       promptKey: body.promptKey,
@@ -99,7 +102,6 @@ export async function POST(req: NextRequest) {
       resource: "content-draft",
       resourceId: draft._id.toString(),
       metadata: { promptKey: body.promptKey, type: body.type },
-      userEmail: auth.session?.user?.email || undefined,
     });
 
     return NextResponse.json({ success: true, draftId: draft._id.toString(), content });
@@ -109,7 +111,6 @@ export async function POST(req: NextRequest) {
       action: "RUN_AI_PROMPT",
       error: detail,
       success: false,
-      userEmail: auth.session?.user?.email || undefined,
     });
     return NextResponse.json(
       {

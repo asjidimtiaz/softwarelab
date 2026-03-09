@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
 @import "../admin-dashboard-theme.css";
 @import "tailwindcss";
 @plugin "tailwindcss-animate";
@@ -11,8 +11,8 @@
   --font-mono: var(--font-geist-mono);
 
   /* Temporal-style fonts: Syne for display, DM Sans for body */
-  --font-body: 'DM Sans', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  --font-heading: 'Syne', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+  --font-body: 'DM Sans', "Helvetica Neue", Arial, sans-serif;
+  --font-heading: 'Syne', "Helvetica Neue", Arial, sans-serif;
 
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
@@ -80,6 +80,8 @@
 
 @layer base {
   :root {
+    --font-geist: 'DM Sans', "Helvetica Neue", Arial, sans-serif;
+    --font-geist-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
     --font-open-sans: var(--font-body);
     --font-nunito-sans: var(--font-heading);
 
@@ -143,6 +145,38 @@
     
     --border: 217 30% 18%; /* #1E1E2E - Subtle border */
     --input: 217 30% 18%;
+    --ring: 227 100% 62%;
+  }
+
+  :root:not(.dark),
+  .light {
+    /* Temporal-style light mode */
+    --background: 0 0% 100%; /* #FFFFFF - White */
+    --foreground: 217 33% 17%; /* #1E293B - Dark gray */
+    
+    --card: 0 0% 97.3%; /* #F8FAFB - Light gray */
+    --card-foreground: 217 33% 17%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 217 33% 17%;
+    
+    --primary: 227 100% 62%; /* #6366F1 - Indigo accent */
+    --primary-foreground: 210 5% 97%;
+    
+    --secondary: 0 0% 97.3%;
+    --secondary-foreground: 217 33% 17%;
+    
+    --muted: 215 16% 47%; /* Light gray */
+    --muted-foreground: 215 13% 34%; /* Medium gray */
+    
+    --accent: 227 100% 62%; /* #6366F1 - Primary accent */
+    --accent-foreground: 210 5% 97%;
+    
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 220 13% 91%; /* Light border */
+    --input: 220 13% 91%;
     --ring: 227 100% 62%;
   }
 }
@@ -246,6 +280,8 @@
   }
   h1, h2, h3, h4, h5, h6 {
     @apply tracking-tight;
+    font-stretch: normal;
+    letter-spacing: -0.02em;
   }
 }
 
@@ -258,6 +294,8 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
     font-weight: 800;
+    font-stretch: normal;
+    letter-spacing: -0.02em;
   }
 }
 /* Custom Scrollbar for High-Tech Aesthetic */

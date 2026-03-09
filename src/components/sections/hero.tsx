@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Code2, Layers } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Container } from "../layout/layout-primitives";
 
@@ -31,7 +31,7 @@ export function Hero({ dict, locale }: HeroProps) {
           >
             <span className="w-2 h-2 rounded-full bg-[#6366F1]" />
             <span className="text-xs uppercase tracking-widest text-[#6366F1] font-body font-semibold">
-              Enterprise Software Development
+              Built for growth-focused businesses
             </span>
           </motion.div>
 
@@ -42,10 +42,7 @@ export function Hero({ dict, locale }: HeroProps) {
             transition={{ delay: 0.2 }}
             className="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-[#F8F8FF] leading-tight max-w-4xl mb-6"
           >
-            Ship Production<br />
-            <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">
-              Software 2x Faster
-            </span>
+            Custom Websites, Funnels & AI Automation That Turn Traffic Into Qualified Leads
           </motion.h1>
 
           {/* Sub-copy */}
@@ -55,7 +52,7 @@ export function Hero({ dict, locale }: HeroProps) {
             transition={{ delay: 0.3 }}
             className="text-lg text-[#94A3B8] max-w-xl mx-auto mb-12 font-body leading-relaxed"
           >
-            {dict.hero.description || "Enterprise-grade solutions that scale with your business. Trusted by leading companies worldwide."}
+            We design and build custom digital systems that help growth-focused businesses launch faster, convert better, and automate lead capture with websites, funnels, SEO, and AI-powered workflows.
           </motion.p>
 
           {/* CTA Buttons and Stats Row */}
@@ -68,15 +65,18 @@ export function Hero({ dict, locale }: HeroProps) {
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
-                href={`/${locale}/quote`}
+                href={`/${locale}/book-consultation`}
                 className="bg-[#6366F1] text-white px-8 py-3 rounded-lg hover:bg-[#6366F1]/90 font-body font-medium transition-all duration-200 inline-flex items-center justify-center gap-2 whitespace-nowrap"
               >
-                Get Custom Scope
+                Book Consultation
                 <ArrowRight size={18} />
               </Link>
-              <button className="border border-[#1E1E2E] text-[#F8F8FF] px-8 py-3 rounded-lg hover:bg-[#13131E] font-body font-medium transition-all duration-200 whitespace-nowrap">
-                Watch Demo
-              </button>
+              <Link
+                href={`/${locale}/quote`}
+                className="border border-[#1E1E2E] text-[#F8F8FF] px-8 py-3 rounded-lg hover:bg-[#13131E] font-body font-medium transition-all duration-200 whitespace-nowrap"
+              >
+                Get Custom Project Scope
+              </Link>
             </div>
 
             {/* Stats Row */}

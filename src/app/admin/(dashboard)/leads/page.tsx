@@ -1,5 +1,6 @@
 import { getLeads } from "@/lib/actions/lead-actions";
 import { LeadsTable } from "@/components/admin/leads-table";
+import { LeadsHeader } from "@/components/admin/leads-header";
 import { ArrowRight, AlertCircle, ShieldAlert, WifiOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -84,10 +85,11 @@ export default async function LeadsPage({
 
   return (
     <div className="admin-page-stack space-y-6 pb-10 w-full">
+      <LeadsHeader />
       <LeadsTable leads={leads} />
 
-      {pages > 1 && (
-        <div className="mt-10 flex justify-center items-center gap-2">
+      {pages > 0 && (
+        <div className="mt-6 flex flex-wrap justify-center items-center gap-2">
           <Link
             href={{
               query: { q, status, tier, page: Math.max(1, pageNum - 1).toString() }
@@ -128,6 +130,10 @@ export default async function LeadsPage({
           >
             <ArrowRight size={14} />
           </Link>
+
+          <p className="ml-3 text-sm text-slate-500">
+            Page {pageNum} of {Math.max(1, pages)}
+          </p>
         </div>
       )}
     </div>

@@ -1,9 +1,8 @@
 "use server";
 
 import { connectToDatabase } from "@/lib/db";
-import { DatabaseWrapper } from "@/lib/db-wrapper";
 import { Lead } from "@/lib/models/lead";
-import { startOfDay, subDays, startOfMonth, format } from "date-fns";
+import { startOfDay, subDays, format } from "date-fns";
 
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth-options";
@@ -13,52 +12,41 @@ export async function getDashboardStats() {
   const session = await getServerSession(authOptions);
   if (!session) throw new Error("Unauthorized");
 
-  // Quick development mode check
+  const emptyStats = {
+    totalLeads: 0,
+    newLeads: 0,
+    hotLeads: 0,
+    avgHotScore: 0,
+    recentLeadsCount: 0,
+    conversionRate: 0,
+    topIndustries: [],
+    monthlyTrend: [],
+    leadStatusBreakdown: {
+      NEW: 0,
+      CONTACTED: 0,
+      QUALIFIED: 0,
+      PROPOSAL: 0,
+      WON: 0,
+      LOST: 0,
+      SPAM: 0,
+    },
+  };
+
   if (!process.env.MONGODB_URI) {
-    return {
-      totalLeads: 0,
-      newLeads: 0,
-      hotLeads: 0,
-      avgHotScore: 0,
-      recentLeadsCount: 0,
-      conversionRate: 0,
-      topIndustries: [],
-      monthlyTrend: [],
-      leadStatusBreakdown: {
-        NEW: 0,
-        CONTACTED: 0,
-        QUALIFIED: 0,
-        CONVERTED: 0,
-        CLOSED: 0
-      }
-    };
+    return emptyStats;
   }
 
   const db = await connectToDatabase();
   
-  // If no database connection, return mock data for development
   if (!db) {
-    return {
-      totalLeads: 0,
-      newLeads: 0,
-      hotLeads: 0,
-      avgHotScore: 0,
-      recentLeadsCount: 0,
-      conversionRate: 0,
-      topIndustries: [],
-      monthlyTrend: [],
-      leadStatusBreakdown: {
-        NEW: 0,
-        CONTACTED: 0,
-        QUALIFIED: 0,
-        CONVERTED: 0,
-        CLOSED: 0
-      }
-    };
+    return emptyStats;
   }
 
   const totalLeads = await Lead.countDocuments();
   const newLeads = await Lead.countDocuments({ status: "NEW" });
+  const leadStatusRaw = await Lead.aggregate([
+    { $group: { _id: "$status", count: { $sum: 1 } } },
+  ]);
 
   // Calculate average score for "HOT" leads as a proxy for pipeline quality
   const hotLeads = await Lead.find({ leadTier: "HOT" }).select("leadScore");
@@ -72,6 +60,14 @@ export async function getDashboardStats() {
 
   // Get conversion metrics
   const metrics = await analyticsEngine.getConversionMetrics();
+  const conversionRate = Number((metrics as any)?.conversionRate || 0);
+  const leadStatusBreakdown = { ...emptyStats.leadStatusBreakdown };
+  for (const item of leadStatusRaw) {
+    const key = String(item?._id || "").toUpperCase() as keyof typeof leadStatusBreakdown;
+    if (key in leadStatusBreakdown) {
+      leadStatusBreakdown[key] = Number(item.count || 0);
+    }
+  }
 
   return {
     totalLeads,
@@ -80,6 +76,8 @@ export async function getDashboardStats() {
     avgHotScore,
     recentLeadsCount,
     ...metrics,
+    conversionRate,
+    leadStatusBreakdown,
     kpis: [
       { label: "Total Intake", value: totalLeads, trend: "+12%", type: "neutral" },
       { label: "New Leads", value: newLeads, trend: "Active", type: "primary" },
@@ -89,56 +87,49 @@ export async function getDashboardStats() {
   };
 }
 
-export async function getLeadTrends() {
+export async function getLeadTrends(range: 7 | 30 | 90 = 30) {
   const session = await getServerSession(authOptions);
   if (!session) throw new Error("Unauthorized");
 
-  // Quick development mode check
   if (!process.env.MONGODB_URI) {
-    const last7Days = Array.from({ length: 7 }).map((_, i) => {
-      const d = subDays(new Date(), 6 - i);
+    return Array.from({ length: range }).map((_, i) => {
+      const d = subDays(new Date(), range - 1 - i);
       return {
-        name: format(d, "MMM dd"),
-        leads: 0
+        date: format(d, "yyyy-MM-dd"),
+        count: 0,
       };
     });
-    return last7Days;
   }
 
   const db = await connectToDatabase();
-  
-  // If no database connection, return empty trends for development
   if (!db) {
-    const last7Days = Array.from({ length: 7 }).map((_, i) => {
-      const d = subDays(new Date(), 6 - i);
+    return Array.from({ length: range }).map((_, i) => {
+      const d = subDays(new Date(), range - 1 - i);
       return {
-        name: format(d, "MMM dd"),
-        leads: 0
+        date: format(d, "yyyy-MM-dd"),
+        count: 0,
       };
     });
-    return last7Days;
   }
 
-  const last7Days = Array.from({ length: 7 }).map((_, i) => {
-    const d = subDays(new Date(), 6 - i);
-    return {
-      date: format(d, "MMM dd"),
-      rawDate: startOfDay(d),
-      count: 0
-    };
+  const since = startOfDay(subDays(new Date(), range - 1));
+  const result = await Lead.aggregate([
+    { $match: { createdAt: { $gte: since } } },
+    {
+      $group: {
+        _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+        count: { $sum: 1 },
+      },
+    },
+    { $sort: { _id: 1 } },
+  ]);
+
+  const countMap = new Map<string, number>(result.map((row) => [String(row._id), Number(row.count || 0)]));
+  return Array.from({ length: range }).map((_, i) => {
+    const d = subDays(new Date(), range - 1 - i);
+    const key = format(d, "yyyy-MM-dd");
+    return { date: key, count: countMap.get(key) || 0 };
   });
-
-  const leads = await Lead.find({
-    createdAt: { $gte: last7Days[0].rawDate }
-  }).select("createdAt");
-
-  leads.forEach(lead => {
-    const leadDate = format(lead.createdAt, "MMM dd");
-    const day = last7Days.find(d => d.date === leadDate);
-    if (day) day.count++;
-  });
-
-  return last7Days.map(({ date, count }) => ({ name: date, leads: count }));
 }
 
 export async function getCategoryDistribution() {
