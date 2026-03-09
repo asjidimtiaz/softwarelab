@@ -1,9 +1,9 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import { getDashboardStats } from "@/lib/actions/dashboard-actions";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { BarChart3, Bot, Settings, Plus, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { PageHeader } from "@/components/admin/page-header";
+import { DashboardQuickActions } from "@/components/admin/dashboard-quick-actions";
 
 const PIPELINE_KEYS = ["NEW", "CONTACTED", "QUALIFIED", "PROPOSAL", "WON"] as const;
 
@@ -110,12 +110,7 @@ export default async function DashboardPage() {
         <div className="px-5 pt-5 pb-3">
           <h2 className="text-base font-semibold text-slate-900">Quick Actions</h2>
         </div>
-        <CardContent className="grid grid-cols-1 gap-3 px-5 pb-5 pt-0 sm:grid-cols-2 lg:grid-cols-4">
-          <Link href="/admin/leads?openAdd=1"><Button className="w-full justify-start"><Plus size={16} /> Add Lead</Button></Link>
-          <Link href="/admin/analytics"><Button variant="outline" className="w-full justify-start"><BarChart3 size={16} /> View Analytics</Button></Link>
-          <Link href="/admin/ai-assistant"><Button variant="outline" className="w-full justify-start"><Bot size={16} /> Run AI</Button></Link>
-          <Link href="/admin/settings"><Button variant="outline" className="w-full justify-start"><Settings size={16} /> Settings</Button></Link>
-        </CardContent>
+        <DashboardQuickActions />
       </Card>
     </div>
   );

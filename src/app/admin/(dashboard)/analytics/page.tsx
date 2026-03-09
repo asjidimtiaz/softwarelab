@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getDashboardStats, getLeadTrends, getCategoryDistribution } from "@/lib/actions/analytics-actions";
 import { Card, CardContent } from "@/components/ui/card";
 import { AnalyticsChart } from "@/components/admin/analytics-chart";
+import { LeadStatusDonut } from "@/components/admin/lead-status-donut";
 import { PageHeader } from "@/components/admin/page-header";
 
 type SearchParams = Promise<{ range?: string }>;
@@ -26,6 +27,7 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Se
   ];
 
   const statusEntries = Object.entries(statsData.leadStatusBreakdown || {});
+  const statusChartData = statusEntries.map(([name, value]) => ({ name, value: Number(value) || 0 }));
 
   return (
     <div className="admin-page-stack space-y-6 pb-8 w-full">
@@ -92,6 +94,7 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Se
             <h2 className="text-base font-semibold text-slate-900">Lead Status Breakdown</h2>
           </div>
           <CardContent className="space-y-3 px-5 pb-5 pt-0">
+            <LeadStatusDonut data={statusChartData} />
             {statusEntries.length === 0 && <p className="text-sm text-slate-500">No status data available.</p>}
             {statusEntries.map(([status, count]) => (
               <div key={status} className="space-y-1">

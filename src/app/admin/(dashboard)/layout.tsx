@@ -14,46 +14,47 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     redirect("/admin/login");
   }
 
+  const userName = session.user?.name || "Admin User";
+  const userEmail = session.user?.email || "";
+  const initials = (userName || userEmail || "AD")
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
 
   return (
-    <div className="admin-dashboard-shell flex h-screen bg-background text-foreground overflow-hidden font-[--font-geist]">
-      {/* Background Glows */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-50">
-        <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/20 blur-[120px] rounded-full animate-pulse" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-brand-blue/10 blur-[120px] rounded-full animate-pulse" style={{ animationDelay: '2s' }} />
-      </div>
-
-      <aside className="w-56 border-r border-border bg-white/90 backdrop-blur-2xl flex flex-col py-5 px-3 gap-5 z-20 shrink-0 relative">
+    <div className="admin-dashboard-shell flex h-screen overflow-hidden bg-slate-50 text-foreground font-[--font-geist]">
+      <aside className="z-20 flex w-56 shrink-0 flex-col gap-4 border-r border-slate-200 bg-white px-3 py-4">
         <SidebarLogo />
-        <SidebarNav isCompressed={false} />
+        <SidebarNav isCompressed={false} userName={userName} userEmail={userEmail} />
       </aside>
 
-      {/* Main Stream */}
-      <main className="flex-1 flex flex-col min-w-0 w-full bg-transparent overflow-hidden">
-        {/* Integrated Header */}
-        <header className="h-16 shrink-0 flex items-center justify-between px-4 lg:px-6 bg-white/70 backdrop-blur-md border-b border-slate-200/70 sticky top-0 z-40 w-full">
-          <div className="flex items-center gap-8 flex-1 max-w-2xl group">
+      <main className="flex min-w-0 w-full flex-1 flex-col overflow-hidden bg-transparent">
+        <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center justify-between border-b border-slate-200 bg-white/90 px-4 backdrop-blur-sm lg:px-6">
+          <div className="group flex max-w-2xl flex-1 items-center gap-8">
             <div className="relative flex-1">
-              <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" size={20} />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 transition-colors group-focus-within:text-indigo-600" size={18} />
               <input
                 type="text"
-                placeholder="Ask AI or search anything..."
-                className="admin-input w-full h-10 pl-14 pr-6 bg-white border border-border rounded-full outline-none shadow-sm focus:ring-4 focus:ring-primary/10 transition-all text-sm placeholder:text-muted-foreground/60"
+                placeholder="Search leads, chats, drafts..."
+                className="h-9 w-full rounded-lg border border-slate-200 bg-slate-50 pl-10 pr-4 text-sm text-slate-700 outline-none transition-all placeholder:text-slate-400 focus:border-indigo-200 focus:bg-white focus:ring-2 focus:ring-indigo-100"
               />
             </div>
           </div>
 
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-3">
             <NotificationPopover />
+            <div className="grid h-9 w-9 place-items-center rounded-full bg-indigo-100 text-xs font-semibold text-indigo-700">
+              {initials || "AD"}
+            </div>
           </div>
         </header>
 
-        {/* Dynamic Page Container */}
-        <div className="flex-1 overflow-y-auto overflow-x-hidden w-full p-4 lg:p-8 custom-scrollbar">
+        <div className="custom-scrollbar w-full flex-1 overflow-y-auto overflow-x-hidden p-4 lg:p-8">
           <PageTransition>
-            <div className="admin-page-stack w-full">
-              {children}
-            </div>
+            <div className="admin-page-stack w-full">{children}</div>
           </PageTransition>
         </div>
       </main>

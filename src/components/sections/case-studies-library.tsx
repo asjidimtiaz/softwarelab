@@ -16,8 +16,8 @@ const categories = [
     "Funnels",
     "SEO",
     "Automation",
-    "Development Systems",
-    "Technical and Infrastructure Support"
+    "Dev Systems",
+    "Technical"
 ];
 
 function toCategory(industry?: string) {
@@ -25,8 +25,8 @@ function toCategory(industry?: string) {
     if (ind.includes("automation") || ind.includes("ai")) return "Automation";
     if (ind.includes("seo")) return "SEO";
     if (ind.includes("funnel") || ind.includes("landing")) return "Funnels";
-    if (ind.includes("devops") || ind.includes("cloud") || ind.includes("infrastructure")) return "Technical and Infrastructure Support";
-    if (ind.includes("saas") || ind.includes("fintech")) return "Development Systems";
+    if (ind.includes("devops") || ind.includes("cloud") || ind.includes("infrastructure")) return "Technical";
+    if (ind.includes("saas") || ind.includes("fintech")) return "Dev Systems";
     return "Websites";
 }
 

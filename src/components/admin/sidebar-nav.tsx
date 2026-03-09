@@ -27,7 +27,7 @@ type NavItemConfig = {
 
 const sections: Array<{ label: string; items: NavItemConfig[] }> = [
   {
-    label: "Overview",
+    label: "Main",
     items: [
       { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
       { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
@@ -60,8 +60,27 @@ interface NavItemProps {
   isCompressed?: boolean;
 }
 
-export function SidebarNav({ isCompressed = false }: { isCompressed?: boolean }) {
+function getInitials(nameOrEmail?: string | null) {
+  const value = (nameOrEmail || "").trim();
+  if (!value) return "AD";
+  const parts = value.split(/\s+/).filter(Boolean);
+  if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+  return value.slice(0, 2).toUpperCase();
+}
+
+export function SidebarNav({
+  isCompressed = false,
+  userName,
+  userEmail,
+}: {
+  isCompressed?: boolean;
+  userName?: string | null;
+  userEmail?: string | null;
+}) {
   const pathname = usePathname();
+  const displayName = userName || "Admin User";
+  const displayEmail = userEmail || "admin@digiwebcrew.com";
+  const initials = getInitials(userName || userEmail);
 
   return (
     <nav className={cn("flex-1 flex flex-col h-full", isCompressed && "items-center")}>
@@ -85,18 +104,35 @@ export function SidebarNav({ isCompressed = false }: { isCompressed?: boolean })
         ))}
       </div>
 
-      <button
-        onClick={() => signOut({ callbackUrl: "/admin/login" })}
-        className={cn(
-          "mt-2 flex items-center transition-all duration-300 group relative hover:bg-rose-50",
-          isCompressed ? "justify-center w-10 h-10" : "w-full gap-3 px-3 py-2.5 rounded-lg"
-        )}
-      >
-        <div className={cn("flex items-center justify-center w-8 h-8 rounded-lg text-slate-500 group-hover:bg-rose-100 group-hover:text-rose-600")}>
-          <LogOut size={18} />
+      {!isCompressed ? (
+        <div className="mt-3 rounded-lg border-t border-slate-200 pt-3">
+          <div className="mb-2 flex items-center gap-2 px-3">
+            <div className="grid h-8 w-8 place-items-center rounded-full bg-indigo-100 text-xs font-semibold text-indigo-700">
+              {initials}
+            </div>
+            <div className="min-w-0">
+              <p className="truncate text-xs font-semibold text-slate-800">{displayName}</p>
+              <p className="truncate text-[11px] text-slate-500">{displayEmail}</p>
+            </div>
+          </div>
+          <button
+            onClick={() => signOut({ callbackUrl: "/admin/login" })}
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 transition-colors hover:bg-rose-50 hover:text-rose-700"
+          >
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500">
+              <LogOut size={18} />
+            </div>
+            Sign Out
+          </button>
         </div>
-        {!isCompressed ? <span className="text-sm font-medium text-slate-600 group-hover:text-rose-700">Sign Out</span> : null}
-      </button>
+      ) : (
+        <button
+          onClick={() => signOut({ callbackUrl: "/admin/login" })}
+          className="mt-2 flex h-10 w-10 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-rose-50 hover:text-rose-700"
+        >
+          <LogOut size={18} />
+        </button>
+      )}
     </nav>
   );
 }

@@ -20,24 +20,20 @@ export function Navbar({ locale }: NavbarProps) {
   const pathname = usePathname();
 
   const navLinks = [
+    { label: "Home", href: `/${locale}` },
     { label: "Services", href: `/${locale}/services`, dropdown: true },
-    { label: "Process", href: `/${locale}/process` },
     { label: "Pricing", href: `/${locale}/pricing` },
-    { label: "Case Studies", href: `/${locale}/case-studies` },
-    { label: "Blog", href: `/${locale}/blog` },
+    { label: "Process", href: `/${locale}/process` },
+    { label: "Work", href: `/${locale}/case-studies` },
     { label: "About", href: `/${locale}/about` },
     { label: "Contact", href: `/${locale}/contact` },
   ];
 
   const serviceItems = [
-    { label: "Custom Website Development", href: `/${locale}/services/custom-software` },
-    { label: "Conversion Funnels and Landing Pages", href: `/${locale}/services/conversion-funnels` },
-    { label: "AI Chatbots and Automation", href: `/${locale}/services/ai-chatbots-automation` },
-    { label: "SEO and Growth Retainers", href: `/${locale}/services/seo-growth-retainers` },
-    { label: "WordPress Development", href: `/${locale}/services/custom-software` },
-    { label: "Next.js Development", href: `/${locale}/services/custom-web-apps` },
-    { label: "Technical SEO", href: `/${locale}/services/seo-growth-retainers` },
-    { label: "Website Maintenance and Support", href: `/${locale}/services/maintenance-support` },
+    { label: "Custom Website Dev", href: `/${locale}/services/custom-software` },
+    { label: "Conversion Funnels", href: `/${locale}/services/conversion-funnels` },
+    { label: "AI Chatbots", href: `/${locale}/services/ai-chatbots-automation` },
+    { label: "SEO & Growth", href: `/${locale}/services/seo-growth-retainers` },
   ];
 
   return (
@@ -64,17 +60,9 @@ export function Navbar({ locale }: NavbarProps) {
                 </button>
                 {servicesOpen && (
                   <div className="absolute top-full left-0 mt-2 w-80 rounded-lg border border-[#1E1E2E] bg-[#0F0F18] p-3">
-                    <p className="text-xs text-[#94A3B8] uppercase tracking-widest mb-2">Core Services</p>
+                    <p className="text-xs text-[#94A3B8] uppercase tracking-widest mb-2">Services</p>
                     <div className="space-y-1 mb-3">
-                      {serviceItems.slice(0, 4).map((item) => (
-                        <Link key={item.label} href={item.href} className="block px-3 py-2 rounded-md text-sm text-[#94A3B8] hover:text-[#F8F8FF] hover:bg-[#13131E]">
-                          {item.label}
-                        </Link>
-                      ))}
-                    </div>
-                    <p className="text-xs text-[#94A3B8] uppercase tracking-widest mb-2">Related Services</p>
-                    <div className="space-y-1 mb-3">
-                      {serviceItems.slice(4).map((item) => (
+                      {serviceItems.map((item) => (
                         <Link key={item.label} href={item.href} className="block px-3 py-2 rounded-md text-sm text-[#94A3B8] hover:text-[#F8F8FF] hover:bg-[#13131E]">
                           {item.label}
                         </Link>
@@ -118,14 +106,26 @@ export function Navbar({ locale }: NavbarProps) {
       </div>
 
       {mobileOpen && (
-        <div className="lg:hidden border-t border-[#1E1E2E] bg-[#0F0F18] px-6 py-4 space-y-2">
-          {navLinks.map((link) => (
-            <Link key={link.label} href={link.href} className="block py-2 text-[#94A3B8] hover:text-[#F8F8FF]" onClick={() => setMobileOpen(false)}>
-              {link.label}
-            </Link>
-          ))}
-          <div className="pt-4 space-y-2 border-t border-[#1E1E2E]">
-            <button 
+        <div className="lg:hidden fixed inset-x-0 top-16 bottom-0 border-t border-[#1E1E2E] bg-[#0F0F18] px-6 py-6 overflow-y-auto">
+          <div className="space-y-2">
+            {navLinks.map((link) => (
+              <Link key={link.label} href={link.href} className="block py-3 text-base text-[#94A3B8] hover:text-[#F8F8FF]" onClick={() => setMobileOpen(false)}>
+                {link.label}
+              </Link>
+            ))}
+          </div>
+          <div className="pt-6 mt-6 border-t border-[#1E1E2E]">
+            <p className="text-xs text-[#94A3B8] uppercase tracking-widest mb-2">Services</p>
+            <div className="space-y-1">
+              {serviceItems.map((item) => (
+                <Link key={item.label} href={item.href} className="block py-2 text-sm text-[#94A3B8] hover:text-[#F8F8FF]" onClick={() => setMobileOpen(false)}>
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+          <div className="pt-6 space-y-2 border-t border-[#1E1E2E] mt-6">
+            <button
               onClick={() => {
                 toggleTheme();
                 setMobileOpen(false);
@@ -135,13 +135,8 @@ export function Navbar({ locale }: NavbarProps) {
               {isDark ? <Sun size={14} /> : <Moon size={14} />}
               {isDark ? "Light Mode" : "Dark Mode"}
             </button>
-          </div>
-          <div className="pt-2 flex gap-2">
-            <Link href={`/${locale}/book-consultation`} className="flex-1 px-4 py-2 rounded-md bg-[#6366F1] text-white text-sm text-center font-semibold" onClick={() => setMobileOpen(false)}>
+            <Link href={`/${locale}/book-consultation`} className="block w-full px-4 py-2 rounded-md bg-[#6366F1] text-white text-sm text-center font-semibold" onClick={() => setMobileOpen(false)}>
               Book Consultation
-            </Link>
-            <Link href={`/${locale}/quote`} className="flex-1 px-4 py-2 rounded-md border border-[#1E1E2E] text-[#F8F8FF] text-sm text-center font-semibold" onClick={() => setMobileOpen(false)}>
-              Get Custom Project Scope
             </Link>
           </div>
         </div>
