@@ -115,16 +115,17 @@ export default async function ContactPage({
       <Container>
         <div className="max-w-5xl mx-auto space-y-8">
           <AnimatedSection className="text-center">
-            <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-4 text-[#F8F8FF]">
+            <span className="mb-3 inline-block rounded-full bg-[rgba(var(--site-primary-rgb),0.1)] px-3 py-1 text-xs font-bold uppercase tracking-widest text-[var(--site-primary)] dark:text-[var(--site-primary-soft)]">Contact</span>
+            <h1 className="text-4xl md:text-6xl font-display font-black tracking-tight mb-4 text-slate-950 dark:text-[#F8F8FF]">
               Let&apos;s Talk About What You Need to Build
             </h1>
-            <p className="text-lg text-[#94A3B8] mb-6">
+            <p className="text-lg text-slate-600 dark:text-[#94A3B8] mb-6 max-w-3xl mx-auto">
               Whether you need a custom website, stronger landing pages, SEO support, automation, or a broader digital system, we can help you choose the right next step.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href={localePath(locale, "/book-consultation")}
-                className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#6366F1] text-white font-bold rounded-full hover:bg-[#6366F1]/90 shadow-[0_26px_60px_-36px_rgba(99,102,241,0.4)] transition-all duration-300"
+                className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-[var(--site-primary)] text-white font-bold rounded-full hover:bg-[var(--site-primary-hover)] shadow-[0_26px_60px_-36px_rgba(var(--site-primary-rgb),0.5)] transition-all"
               >
                 <span>Book Consultation</span>
                 <span className="grid h-8 w-8 place-items-center rounded-full bg-white/16 ring-1 ring-white/15">
@@ -133,73 +134,68 @@ export default async function ContactPage({
               </Link>
               <Link
                 href={localePath(locale, "/quote")}
-                className="inline-flex items-center justify-center gap-3 px-8 py-4 border border-[#1E1E2E] bg-[#13131E] text-[#F8F8FF] font-bold rounded-full hover:bg-[#1a1a2eb] transition-all duration-300 shadow-[0_26px_60px_-36px_rgba(0,0,0,0.5)]"
+                className="inline-flex items-center justify-center gap-3 px-8 py-4 border border-slate-300 bg-white/90 text-slate-950 dark:border-white/15 dark:bg-white/5 dark:text-[#F8F8FF] font-bold rounded-full hover:bg-white dark:hover:bg-white/10 transition-all"
               >
                 <span>Get Quote</span>
-                <span className="grid h-8 w-8 place-items-center rounded-full bg-white/5 ring-1 ring-white/10">
+                <span className="grid h-8 w-8 place-items-center rounded-full bg-black/5 ring-1 ring-black/10 dark:bg-white/5 dark:ring-white/10">
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </span>
               </Link>
             </div>
           </AnimatedSection>
 
-          <AnimatedSection className="bg-[#13131E] border border-[#1E1E2E] rounded-xl p-8">
-            <h2 className="text-2xl font-bold text-[#F8F8FF] mb-4">Choose the Best Way to Start</h2>
-            <p className="text-[#94A3B8] mb-3">
+          <AnimatedSection className="site-card site-card-interactive overflow-hidden relative p-8">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[var(--site-primary)] via-[#34D399] to-[#60A5FA]" />
+            <h2 className="text-2xl font-display font-black text-slate-950 dark:text-[#F8F8FF] mb-4">Choose the Best Way to Start</h2>
+            <p className="text-slate-600 dark:text-[#94A3B8] mb-3">
               Some businesses are ready to talk right away. Others need help defining the project before a call makes sense.
             </p>
-            <p className="text-[#94A3B8] mb-3">
-              That is why Digital Web Crew gives you more than one way to get started. You can book a consultation if you already know you want to discuss the project directly, or you can submit your project details through the custom project scope flow if you want a more structured starting point.
+            <p className="text-slate-600 dark:text-[#94A3B8] mb-5">
+              Book a consultation if you already know you want to discuss the project directly, or submit your project details through the custom project scope flow for a more structured starting point.
             </p>
-            <p className="text-[#94A3B8]">
-              If your business needs a stronger website, a focused landing page system, better search support, or more efficient lead handling, this is where the conversation begins.
-            </p>
-          </AnimatedSection>
-
-          <AnimatedSection className="bg-[#13131E] border border-[#1E1E2E] rounded-xl p-8">
-            <h2 className="text-2xl font-bold text-[#F8F8FF] mb-4">How You Can Reach Us</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-[#0F0F18] border border-[#1E1E2E] rounded-xl p-6">
-                <h3 className="text-lg font-bold text-[#F8F8FF] mb-2">Book Consultation</h3>
-                <p className="text-sm text-[#94A3B8] mb-4">
+              <div className="rounded-xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 p-5">
+                <h3 className="text-base font-semibold text-slate-800 dark:text-[#F8F8FF] mb-2">Book Consultation</h3>
+                <p className="text-sm text-slate-500 dark:text-[#94A3B8] mb-3">
                   Best for businesses that already have a clear project need and want to discuss goals, scope, and next steps directly.
                 </p>
-                <Link href={localePath(locale, "/book-consultation")} className="text-[#6366F1] font-semibold">
+                <Link href={localePath(locale, "/book-consultation")} className="text-sm font-semibold text-[var(--site-primary)] dark:text-[var(--site-primary-soft)] hover:underline">
                   Book Consultation
                 </Link>
               </div>
-              <div className="bg-[#0F0F18] border border-[#1E1E2E] rounded-xl p-6">
-                <h3 className="text-lg font-bold text-[#F8F8FF] mb-2">Get Quote</h3>
-                <p className="text-sm text-[#94A3B8] mb-4">
+              <div className="rounded-xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 p-5">
+                <h3 className="text-base font-semibold text-slate-800 dark:text-[#F8F8FF] mb-2">Get Quote</h3>
+                <p className="text-sm text-slate-500 dark:text-[#94A3B8] mb-3">
                   Best for businesses that want help defining the right service mix, project priorities, timeline, and budget before booking a call.
                 </p>
-                <Link href={localePath(locale, "/quote")} className="text-[#6366F1] font-semibold">
+                <Link href={localePath(locale, "/quote")} className="text-sm font-semibold text-[var(--site-primary)] dark:text-[var(--site-primary-soft)] hover:underline">
                   Get Quote
                 </Link>
               </div>
-              <div className="bg-[#0F0F18] border border-[#1E1E2E] rounded-xl p-6">
-                <h3 className="text-lg font-bold text-[#F8F8FF] mb-2">Contact Form</h3>
-                <p className="text-sm text-[#94A3B8]">
+              <div className="rounded-xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 p-5">
+                <h3 className="text-base font-semibold text-slate-800 dark:text-[#F8F8FF] mb-2">Contact Form</h3>
+                <p className="text-sm text-slate-500 dark:text-[#94A3B8]">
                   Best for general inquiries, project questions, or businesses that want to send details first and continue from there.
                 </p>
               </div>
             </div>
           </AnimatedSection>
 
-          <AnimatedSection className="bg-[#13131E] border border-[#1E1E2E] rounded-xl p-8">
-            <h2 className="text-2xl font-bold text-[#F8F8FF] mb-3">Tell Us a Bit About Your Project</h2>
-            <p className="text-[#94A3B8] mb-6">
+          <AnimatedSection className="site-card site-card-interactive overflow-hidden relative p-8">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#34D399] to-[var(--site-primary)]" />
+            <h2 className="text-2xl font-display font-black text-slate-950 dark:text-[#F8F8FF] mb-3">Tell Us a Bit About Your Project</h2>
+            <p className="text-slate-600 dark:text-[#94A3B8] mb-6">
               Share a few details about your business, what you need help with, and how you would like us to get back to you.
             </p>
             <form action={sendInquiry} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input name="name" className="px-4 py-3 rounded-lg bg-[#0F0F18] border border-[#1E1E2E] text-[#F8F8FF]" placeholder="Name" required />
-              <input name="company" className="px-4 py-3 rounded-lg bg-[#0F0F18] border border-[#1E1E2E] text-[#F8F8FF]" placeholder="Company" />
-              <input name="email" type="email" className="px-4 py-3 rounded-lg bg-[#0F0F18] border border-[#1E1E2E] text-[#F8F8FF]" placeholder="Email" required />
-              <input name="phone" className="px-4 py-3 rounded-lg bg-[#0F0F18] border border-[#1E1E2E] text-[#F8F8FF]" placeholder="Phone" />
-              <input name="website" className="md:col-span-2 px-4 py-3 rounded-lg bg-[#0F0F18] border border-[#1E1E2E] text-[#F8F8FF]" placeholder="Website" />
-              <input name="serviceInterest" className="md:col-span-2 px-4 py-3 rounded-lg bg-[#0F0F18] border border-[#1E1E2E] text-[#F8F8FF]" placeholder="Service Interest" />
-              <textarea name="message" className="md:col-span-2 px-4 py-3 rounded-lg bg-[#0F0F18] border border-[#1E1E2E] text-[#F8F8FF] min-h-28" placeholder="Message" required />
-              <button type="submit" className="flex items-center justify-center gap-3 md:col-span-2 px-6 py-4 bg-[#6366F1] text-white font-bold rounded-full hover:bg-[#6366F1]/90 shadow-[0_26px_60px_-36px_rgba(99,102,241,0.4)] transition-all duration-300">
+              <input name="name" className="px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-[#F8F8FF] placeholder:text-slate-400 dark:placeholder:text-[#6B7E8E] text-sm" placeholder="Name" required />
+              <input name="company" className="px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-[#F8F8FF] placeholder:text-slate-400 dark:placeholder:text-[#6B7E8E] text-sm" placeholder="Company" />
+              <input name="email" type="email" className="px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-[#F8F8FF] placeholder:text-slate-400 dark:placeholder:text-[#6B7E8E] text-sm" placeholder="Email" required />
+              <input name="phone" className="px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-[#F8F8FF] placeholder:text-slate-400 dark:placeholder:text-[#6B7E8E] text-sm" placeholder="Phone" />
+              <input name="website" className="md:col-span-2 px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-[#F8F8FF] placeholder:text-slate-400 dark:placeholder:text-[#6B7E8E] text-sm" placeholder="Website" />
+              <input name="serviceInterest" className="md:col-span-2 px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-[#F8F8FF] placeholder:text-slate-400 dark:placeholder:text-[#6B7E8E] text-sm" placeholder="Service Interest" />
+              <textarea name="message" className="md:col-span-2 px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-[#F8F8FF] placeholder:text-slate-400 dark:placeholder:text-[#6B7E8E] min-h-28 text-sm" placeholder="Message" required />
+              <button type="submit" className="flex items-center justify-center gap-3 md:col-span-2 px-6 py-4 bg-[var(--site-primary)] text-white font-bold rounded-full hover:bg-[var(--site-primary-hover)] shadow-[0_26px_60px_-36px_rgba(var(--site-primary-rgb),0.5)] transition-all">
                 <span>Send Inquiry</span>
                 <span className="grid h-8 w-8 place-items-center rounded-full bg-white/16 ring-1 ring-white/15">
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -208,73 +204,65 @@ export default async function ContactPage({
             </form>
           </AnimatedSection>
 
-          <AnimatedSection className="bg-[#13131E] border border-[#1E1E2E] rounded-xl p-8">
-            <h2 className="text-2xl font-bold text-[#F8F8FF] mb-4">What Helps Us Understand the Project Faster</h2>
-            <p className="text-[#94A3B8] mb-4">
+          <AnimatedSection className="site-card site-card-interactive overflow-hidden relative p-8">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#60A5FA] to-[var(--site-primary)]" />
+            <h2 className="text-2xl font-display font-black text-slate-950 dark:text-[#F8F8FF] mb-4">What Helps Us Understand the Project Faster</h2>
+            <p className="text-slate-600 dark:text-[#94A3B8] mb-4">
               The more clearly you can explain the business need, the easier it is to recommend the right direction.
             </p>
-            <ul className="list-disc list-inside space-y-2 text-[#94A3B8] mb-4">
+            <ul className="space-y-2.5 mb-4">
               {whatToInclude.map((item) => (
-                <li key={item}>{item}</li>
+                <li key={item} className="flex items-start gap-2.5 text-sm text-slate-600 dark:text-[#94A3B8]">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--site-primary)]" />{item}
+                </li>
               ))}
             </ul>
-            <p className="text-[#94A3B8]">You do not need to have everything figured out. A clear starting point is enough.</p>
+            <p className="text-slate-600 dark:text-[#94A3B8]">You do not need to have everything figured out. A clear starting point is enough.</p>
           </AnimatedSection>
 
-          <AnimatedSection className="bg-[#13131E] border border-[#1E1E2E] rounded-xl p-8">
-            <h2 className="text-2xl font-bold text-[#F8F8FF] mb-4">Who We Work Best With</h2>
-            <p className="text-[#94A3B8] mb-3">
-              Digital Web Crew is best suited for businesses that want stronger digital presentation, better conversion systems, ongoing growth support, or more efficient lead handling.
-            </p>
-            <p className="text-[#94A3B8] mb-3">We are especially well aligned with:</p>
-            <ul className="list-disc list-inside space-y-2 text-[#94A3B8] mb-4">
-              {bestFit.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-            <p className="text-[#94A3B8]">
-              If your business depends on trust, leads, bookings, or consultations, there is a strong chance we are a good fit.
-            </p>
-          </AnimatedSection>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <AnimatedSection className="site-card site-card-interactive overflow-hidden relative p-8">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#A78BFA] to-[#60A5FA]" />
+              <h2 className="text-xl font-display font-black text-slate-950 dark:text-[#F8F8FF] mb-4">Who We Work Best With</h2>
+              <p className="text-slate-600 dark:text-[#94A3B8] mb-3">We are especially well aligned with:</p>
+              <ul className="space-y-2.5 mb-3">
+                {bestFit.map((item) => (
+                  <li key={item} className="flex items-start gap-2.5 text-sm text-slate-600 dark:text-[#94A3B8]">
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--site-primary)]" />{item}
+                  </li>
+                ))}
+              </ul>
+            </AnimatedSection>
 
-          <AnimatedSection className="bg-[#13131E] border border-[#1E1E2E] rounded-xl p-8">
-            <h2 className="text-2xl font-bold text-[#F8F8FF] mb-4">What Happens After You Reach Out</h2>
-            <p className="text-[#94A3B8] mb-4">
-              Once we receive your inquiry, consultation request, or project scope submission, the next step is to review the details and identify the best path forward.
-            </p>
-            <p className="text-[#94A3B8] mb-3">Depending on how you contacted us, that may lead to:</p>
-            <ul className="list-disc list-inside space-y-2 text-[#94A3B8] mb-4">
-              {responsePaths.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-            <p className="text-[#94A3B8]">The goal is to make the process clear and useful from the first interaction.</p>
-          </AnimatedSection>
-
-          <AnimatedSection className="bg-[#13131E] border border-[#1E1E2E] rounded-xl p-8">
-            <h2 className="text-2xl font-bold text-[#F8F8FF] mb-4">Future Support Direction</h2>
-            <p className="text-[#94A3B8] mb-4">
-              Over time, call handling will be expanded with smarter intake and routing support to improve response speed and make it easier to direct inquiries to the right next step.
-            </p>
-            <p className="text-[#94A3B8]">
-              The focus will stay on making contact and lead handling more efficient without making the experience feel cold or confusing.
-            </p>
-          </AnimatedSection>
+            <AnimatedSection className="site-card site-card-interactive overflow-hidden relative p-8">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#34D399] to-[#A78BFA]" />
+              <h2 className="text-xl font-display font-black text-slate-950 dark:text-[#F8F8FF] mb-4">What Happens After You Reach Out</h2>
+              <p className="text-slate-600 dark:text-[#94A3B8] mb-3">Once we receive your inquiry, the next step is to review the details and identify the best path forward.</p>
+              <ul className="space-y-2.5">
+                {responsePaths.map((item) => (
+                  <li key={item} className="flex items-start gap-2.5 text-sm text-slate-600 dark:text-[#94A3B8]">
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400" />{item}
+                  </li>
+                ))}
+              </ul>
+            </AnimatedSection>
+          </div>
 
           <AnimatedSection>
-            <h2 className="text-2xl font-bold text-[#F8F8FF] mb-4">Questions About Getting Started</h2>
+            <h2 className="text-2xl font-bold text-slate-950 dark:text-[#F8F8FF] mb-4">Questions About Getting Started</h2>
             <Accordion items={faqItems} />
           </AnimatedSection>
 
-          <AnimatedSection className="bg-[#13131E] border border-[#1E1E2E] rounded-xl p-8 text-center">
-            <h2 className="text-2xl font-bold text-[#F8F8FF] mb-3">Ready to Start the Conversation?</h2>
-            <p className="text-[#94A3B8] mb-6">
-              Whether you need one focused service or a broader digital system, the next step is simple. Book a consultation, submit your project scope, or send an inquiry to get started.
+          <AnimatedSection className="site-card overflow-hidden relative text-center p-10 bg-[linear-gradient(135deg,rgba(var(--site-primary-rgb),0.08),rgba(52,211,153,0.06))] dark:bg-[linear-gradient(135deg,rgba(var(--site-primary-rgb),0.14),rgba(52,211,153,0.04))]">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#60A5FA] via-[var(--site-primary)] to-[#34D399]" />
+            <h2 className="text-2xl font-display font-black text-slate-950 dark:text-[#F8F8FF] mb-3">Ready to Start the Conversation?</h2>
+            <p className="text-slate-600 dark:text-[#94A3B8] mb-6 max-w-xl mx-auto">
+              Whether you need one focused service or a broader digital system, the next step is simple.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href={localePath(locale, "/book-consultation")}
-                className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#6366F1] text-white font-bold rounded-full hover:bg-[#6366F1]/90 shadow-[0_26px_60px_-36px_rgba(99,102,241,0.4)] transition-all duration-300"
+                className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-[var(--site-primary)] text-white font-bold rounded-full hover:bg-[var(--site-primary-hover)] shadow-[0_26px_60px_-36px_rgba(var(--site-primary-rgb),0.5)] transition-all"
               >
                 <span>Book Consultation</span>
                 <span className="grid h-8 w-8 place-items-center rounded-full bg-white/16 ring-1 ring-white/15">
@@ -283,10 +271,10 @@ export default async function ContactPage({
               </Link>
               <Link
                 href={localePath(locale, "/quote")}
-                className="inline-flex items-center justify-center gap-3 px-8 py-4 border border-[#1E1E2E] bg-[#0F0F18] text-[#F8F8FF] font-bold rounded-full hover:bg-[#13131e] transition-all duration-300 shadow-[0_26px_60px_-36px_rgba(0,0,0,0.5)]"
+                className="inline-flex items-center justify-center gap-3 px-8 py-4 border border-slate-300 bg-white/90 text-slate-950 dark:border-white/15 dark:bg-white/5 dark:text-[#F8F8FF] font-bold rounded-full hover:bg-white dark:hover:bg-white/10 transition-all"
               >
                 <span>Get Quote</span>
-                <span className="grid h-8 w-8 place-items-center rounded-full bg-white/5 ring-1 ring-white/10">
+                <span className="grid h-8 w-8 place-items-center rounded-full bg-black/5 ring-1 ring-black/10 dark:bg-white/5 dark:ring-white/10">
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </span>
               </Link>
