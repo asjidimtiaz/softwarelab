@@ -11,7 +11,8 @@ import {
   Wrench, 
   TrendingUp, 
   Bot, 
-  Search 
+  Search,
+  ArrowRight
 } from "lucide-react";
 
 const legacyFeatures = [
