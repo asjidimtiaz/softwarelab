@@ -292,13 +292,13 @@ export function NetworkBackground() {
 
       // Cursor orb
       if (mouse.x > 0 && mouse.x < W && mouse.y > 0 && mouse.y < H) {
-        const cg = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 50);
+        const cg = c.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 50);
         cg.addColorStop(0, "rgba(0,212,255,0.18)");
         cg.addColorStop(1, "rgba(0,212,255,0)");
-        ctx.beginPath();
-        ctx.fillStyle = cg;
-        ctx.arc(mouse.x, mouse.y, 50, 0, Math.PI * 2);
-        ctx.fill();
+        c.beginPath();
+        c.fillStyle = cg;
+        c.arc(mouse.x, mouse.y, 50, 0, Math.PI * 2);
+        c.fill();
       }
 
       animationId = requestAnimationFrame(draw);
