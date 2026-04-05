@@ -14,18 +14,18 @@ const PIPELINE_COLORS: Record<string, string> = {
 
 const STATS = [
   { key: "leadCount",  label: "Total Leads",  icon: Users,         cls: "adm-primary", meta: "↑ 12% vs last month",   trendDir: "up",   sparkH: [60,72,65,80,88,92,100,110,115,120,130,142] },
+  { key: "hotLeads",   label: "Hot Leads",    icon: Zap,           cls: "adm-success", meta: "↑ 8% conversion rate",  trendDir: "up",   sparkH: [3,4,3,5,4,6,5,7,6,8,7,9] },
   { key: "chatCount",  label: "Active Chats", icon: MessageSquare, cls: "adm-accent",  meta: "↑ 5 today",             trendDir: "up",   sparkH: [8,11,9,13,10,14,12,16,15,17,16,18] },
   { key: "draftCount", label: "Drafts",       icon: FileText,      cls: "adm-warning", meta: "3 pending review",      trendDir: "down", sparkH: [2,3,2,4,3,5,4,4,5,5,6,6] },
-  { key: "siteName",   label: "Site Name",    icon: Zap,           cls: "adm-purple",  meta: "Configured",            trendDir: "up",   sparkH: [] },
 ];
 
 export default async function DashboardPage() {
   const data = await getDashboardStats();
   const statValues: Record<string, any> = {
     leadCount:  data.leadCount,
+    hotLeads:   data.hotLeads ?? 0,
     chatCount:  data.chatCount,
     draftCount: data.draftCount,
-    siteName:   data.brandingConfig?.siteName || "Digi Web Crew",
   };
 
   return (
@@ -38,8 +38,7 @@ export default async function DashboardPage() {
       />
 
       {/* ── Stat cards ── */}
-      <section style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 18 }}
-        className="grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
+      <section className="adm-stats-4">
         {STATS.map(({ key, label, icon: Icon, cls, meta, trendDir, sparkH }) => {
           const val = statValues[key];
           const max = sparkH.length ? Math.max(...sparkH, 1) : 1;
@@ -75,7 +74,7 @@ export default async function DashboardPage() {
           <span className="adm-badge adm-badge-primary">Live</span>
         </ACardHeader>
         <ACardBody>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(5,1fr)", gap: 12 }}>
+          <div className="adm-pipeline-grid">
             {PIPELINE_KEYS.map((key) => (
               <div key={key} className="adm-pipeline-col">
                 <p style={{ fontSize: 9.5, fontWeight: 800, textTransform: "uppercase", letterSpacing: 1, color: "var(--adm-text-muted)", fontFamily: "var(--adm-mono)", marginBottom: 6 }}>{key}</p>
@@ -87,7 +86,7 @@ export default async function DashboardPage() {
       </ACard>
 
       {/* ── Recent Leads + Activity ── */}
-      <div style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr", gap: 22 }} className="grid-cols-1 xl:grid-cols-12">
+      <div className="adm-col-2">
         <ACard>
           <ACardHeader>
             <ACardTitle>Recent Leads</ACardTitle>
@@ -106,7 +105,7 @@ export default async function DashboardPage() {
                     <tr key={lead.id || lead.name}>
                       <td>
                         <Link href={`/admin/leads/${lead.id}`} style={{ fontWeight: 600, color: "var(--adm-primary)" }}>{lead.name}</Link>
-                        <div style={{ fontSize: 11.5, color: "var(--adm-text-muted)", marginTop: 1 }}>{lead.email || lead.industry}</div>
+                        <div style={{ fontSize: 11.5, color: "var(--adm-text-muted)", marginTop: 1 }}>{lead.industry}</div>
                       </td>
                       <td style={{ color: "var(--adm-text-dim)" }}>{lead.industry || "General"}</td>
                       <td style={{ fontFamily: "var(--adm-mono)", fontSize: 12 }}>{lead.budget || "TBD"}</td>
@@ -134,7 +133,7 @@ export default async function DashboardPage() {
             ) : (
               (data.recentEvents || []).map((event: any, i: number) => (
                 <div key={`${event.title}-${i}`} className="adm-activity-item">
-                  <div className="adm-activity-dot" />
+                  <div className={`adm-activity-dot${event.type === "warning" ? " warning" : event.type === "danger" ? " danger" : ""}`} />
                   <div>
                     <p style={{ fontSize: 13.5, fontWeight: 600, color: "var(--adm-text)" }}>{event.title}</p>
                     <p style={{ fontSize: 11.5, color: "var(--adm-text-muted)", marginTop: 2, fontFamily: "var(--adm-mono)" }}>{event.time}</p>

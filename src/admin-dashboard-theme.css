@@ -81,8 +81,10 @@
 .admin-sidebar {
   background: var(--adm-sidebar) !important;
   border-right: 1.5px solid var(--adm-sidebar-border) !important;
-  width: var(--adm-sidebar-w);
-  min-width: var(--adm-sidebar-w);
+  width: var(--adm-sidebar-w) !important;
+  min-width: var(--adm-sidebar-w) !important;
+  max-width: var(--adm-sidebar-w) !important;
+  overflow: hidden;
 }
 
 /* Sidebar sections */
@@ -98,11 +100,12 @@
 
 /* Nav items */
 .admin-nav-item {
-  display: flex; align-items: center; gap: 10px;
+  display: flex; align-items: center; gap: 8px;
   padding: 8px 10px; border-radius: var(--adm-radius-md);
   cursor: pointer; font-size: 13px; font-weight: 600;
   color: var(--adm-text-dim); transition: var(--adm-transition);
   text-decoration: none; position: relative; margin-bottom: 2px;
+  min-width: 0; overflow: hidden;
 }
 .admin-nav-item:hover { background: var(--adm-bg); color: var(--adm-text); }
 .admin-nav-item.active-nav,
@@ -129,13 +132,18 @@
   transition: var(--adm-transition);
 }
 .admin-nav-item:hover .admin-nav-icon { background: var(--adm-border); color: var(--adm-text); }
+.admin-nav-label {
+  flex: 1; min-width: 0;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
 .admin-nav-badge {
   margin-left: auto; background: var(--adm-primary); color: white;
   font-size: 9px; font-weight: 800; font-family: var(--adm-mono);
-  padding: 2px 6px; border-radius: 20px; min-width: 18px; text-align: center;
+  padding: 2px 5px; border-radius: 20px; min-width: 18px; text-align: center;
+  flex-shrink: 0; white-space: nowrap; line-height: 1.4;
 }
 .admin-nav-badge.warning { background: var(--adm-warning); color: #451a03; }
-.admin-nav-badge.success { background: var(--adm-success); }
+.admin-nav-badge.success { background: var(--adm-success-dim); color: var(--adm-success); }
 
 /* Sidebar user card */
 .admin-user-card {
@@ -184,6 +192,7 @@
   border-radius: var(--adm-radius-md); font-family: var(--adm-font);
   font-size: 13px; color: var(--adm-text); transition: var(--adm-transition);
 }
+.admin-topbar-search::placeholder { color: var(--adm-text-muted); }
 .admin-topbar-search:focus {
   border-color: var(--adm-primary); background: white;
   box-shadow: 0 0 0 4px var(--adm-primary-glow); outline: none;
@@ -333,7 +342,9 @@
   font-size: 14px; color: var(--adm-text); font-family: var(--adm-font);
   outline: none; transition: var(--adm-transition); width: 100%;
 }
+.adm-input::placeholder { color: var(--adm-text-muted); }
 .adm-input:focus { border-color: var(--adm-primary); box-shadow: 0 0 0 4px var(--adm-primary-glow); }
+select.adm-input { cursor: pointer; }
 
 /* ── TOGGLE ROW ── */
 .adm-toggle-row {
@@ -665,4 +676,58 @@
   }
   .adm-range-pill.active { background: white; color: var(--adm-primary); box-shadow: var(--adm-shadow-xs); }
   .adm-range-pill:hover  { color: var(--adm-text); }
+}
+
+/* ═══════════════════════════════════════════════
+   ADMIN SHELL ISOLATION — Override site globals
+   ═══════════════════════════════════════════════ */
+
+/* Kill the site's 10px dark scrollbar inside admin, use thin light one */
+.admin-dashboard-shell ::-webkit-scrollbar { width: 5px; height: 5px; }
+.admin-dashboard-shell ::-webkit-scrollbar-track { background: transparent; }
+.admin-dashboard-shell ::-webkit-scrollbar-thumb {
+  background: var(--adm-border);
+  border-radius: 99px;
+  border: none;
+}
+.admin-dashboard-shell ::-webkit-scrollbar-thumb:hover { background: var(--adm-border-hover); }
+
+/* Suppress any horizontal scrollbar on the admin body area */
+.admin-dashboard-shell { overflow: hidden; }
+
+/* Override site <p> color inside admin */
+.admin-dashboard-shell p { color: inherit; }
+
+/* Kill any announcement bars or site-level banners that bleed in */
+.admin-dashboard-shell .site-announcement,
+.admin-dashboard-shell .announcement-bar { display: none !important; }
+
+/* Stat card styles defined above — see line 240 */
+
+/* Ensure topbar stays white even when site bg changes */
+.admin-topbar {
+  background: rgba(255,255,255,0.95) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-bottom: 1.5px solid var(--adm-border) !important;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+/* Sidebar overrides */
+.admin-sidebar {
+  background: #ffffff !important;
+  border-right: 1.5px solid var(--adm-sidebar-border, #e4e9f2) !important;
+}
+
+/* Fix adm-col-3 responsive */
+.adm-col-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+@media (max-width: 900px) { .adm-col-3 { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) { .adm-col-3 { grid-template-columns: 1fr; } }
+
+/* Nav label truncation helper */
+.admin-nav-label {
+  flex: 1; min-width: 0;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }

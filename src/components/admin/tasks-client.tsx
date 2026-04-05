@@ -6,6 +6,7 @@ import { addTask, completeTask } from "@/lib/actions/lead-actions";
 import { toast } from "sonner";
 import { Plus, CheckSquare } from "lucide-react";
 import { ACard, ACardBody } from "@/components/admin/acard";
+import { PageHeader } from "@/components/admin/page-header";
 
 interface TaskItem { _id:string; leadId:string; leadName:string; title:string; dueAt?:string; priority?:"low"|"medium"|"high"; done?:boolean; }
 interface LeadOption { id:string; name:string; }
@@ -97,17 +98,16 @@ export function TasksClient({ initialTasks, leadOptions }: { initialTasks:TaskIt
 
   return (
     <div className="admin-page-stack w-full pb-8">
-      <div className="adm-page-header">
-        <div className="adm-page-header-row">
-          <div>
-            <h1 className="adm-page-title">Tasks</h1>
-            <p className="adm-page-subtitle">Track and complete lead follow-up tasks.</p>
-          </div>
+      <PageHeader
+        title="Tasks"
+        subtitle="Track and complete lead follow-up tasks."
+        breadcrumb={[{ label: "Dashboard", href: "/admin/dashboard" }, { label: "Tasks" }]}
+        actions={
           <button onClick={onAdd} disabled={isPending||!leadId||!title.trim()||!dueAt} className="adm-btn adm-btn-primary inline-flex items-center gap-2">
             <Plus size={15}/> New Task
           </button>
-        </div>
-      </div>
+        }
+      />
 
       <div className="adm-col-2">
         {/* Left: pending tasks */}

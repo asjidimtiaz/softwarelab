@@ -60,13 +60,13 @@ export function SidebarNav({
 
   return (
     <nav className="flex flex-1 flex-col h-full">
-      <div className="flex-1 overflow-y-auto custom-scrollbar pr-1">
+      <div className="flex-1 overflow-y-auto custom-scrollbar" style={{ paddingRight: 2 }}>
         {sections.map((section) => (
           <div key={section.label} className="mb-3">
             {!isCompressed && (
               <p className="admin-nav-section">{section.label}</p>
             )}
-            <div className="flex flex-col gap-0.5">
+            <div className="flex flex-col" style={{ gap: 2 }}>
               {section.items.map((item) => {
                 const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
                 const Icon = item.icon;
@@ -82,7 +82,7 @@ export function SidebarNav({
                     </span>
                     {!isCompressed && (
                       <>
-                        <span style={{ flex: 1 }}>{item.name}</span>
+                        <span className="admin-nav-label">{item.name}</span>
                         {item.badge && (
                           <span className={cn("admin-nav-badge", item.badgeVariant)}>
                             {item.badge}

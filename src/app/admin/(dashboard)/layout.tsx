@@ -27,24 +27,26 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   return (
     <div
-      className={`${geist.variable} admin-dashboard-shell flex h-screen overflow-hidden`}
-      style={brandingVars as CSSProperties}
+      className={`${geist.variable} admin-dashboard-shell`}
+      style={{ display: "flex", height: "100vh", overflow: "hidden", ...(brandingVars as CSSProperties) }}
     >
-      {/* ── LIGHT SIDEBAR ── */}
+      {/* ── FIXED SIDEBAR ── */}
       <aside
         className="admin-sidebar z-20 flex shrink-0 flex-col"
         style={{
-          width: "var(--adm-sidebar-w, 256px)",
-          minWidth: "var(--adm-sidebar-w, 256px)",
           position: "fixed",
           top: 0, left: 0, bottom: 0,
+          width: "var(--adm-sidebar-w, 256px)",
+          minWidth: "var(--adm-sidebar-w, 256px)",
+          maxWidth: "var(--adm-sidebar-w, 256px)",
           overflowY: "auto",
+          overflowX: "hidden",
         }}
       >
         {/* Logo */}
         <div
           className="px-5 py-5"
-          style={{ borderBottom: "1.5px solid var(--adm-sidebar-border)" }}
+          style={{ borderBottom: "1.5px solid var(--adm-sidebar-border)", flexShrink: 0 }}
         >
           <SidebarLogo branding={branding} />
         </div>
@@ -52,7 +54,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         {/* Search */}
         <div
           className="px-4 py-3"
-          style={{ borderBottom: "1px solid var(--adm-border)" }}
+          style={{ borderBottom: "1px solid var(--adm-border)", flexShrink: 0 }}
         >
           <div className="relative">
             <Search
@@ -70,15 +72,20 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         </div>
 
         {/* Nav */}
-        <div className="flex-1 overflow-y-auto px-3 py-2 custom-scrollbar">
+        <div className="flex-1 overflow-y-auto overflow-x-hidden px-3 py-2 custom-scrollbar">
           <SidebarNav isCompressed={false} userName={userName} userEmail={userEmail} />
         </div>
       </aside>
 
-      {/* ── MAIN ── */}
+      {/* ── MAIN (offset by sidebar width) ── */}
       <main
-        className="flex min-w-0 w-full flex-1 flex-col overflow-hidden bg-transparent"
-        style={{ marginLeft: "var(--adm-sidebar-w, 256px)" }}
+        className="flex flex-col overflow-hidden"
+        style={{
+          marginLeft: "var(--adm-sidebar-w, 256px)",
+          width: "calc(100% - var(--adm-sidebar-w, 256px))",
+          minWidth: 0,
+          flex: 1,
+        }}
       >
         {/* Topbar */}
         <header className="admin-topbar sticky top-0 z-40 flex h-16 shrink-0 items-center justify-between px-6">
@@ -99,10 +106,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
           <div className="flex items-center gap-2.5">
             <NotificationPopover />
-            <button
-              className="admin-icon-btn"
-              title="Help"
-            >
+            <button className="admin-icon-btn" title="Help">
               <HelpCircle size={16} />
             </button>
             <div
@@ -116,7 +120,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
         {/* Page content */}
         <div
-          className="custom-scrollbar w-full flex-1 overflow-y-auto overflow-x-hidden"
+          className="custom-scrollbar flex-1 overflow-y-auto overflow-x-hidden"
           style={{ padding: "28px 32px", background: "var(--adm-bg)" }}
         >
           <PageTransition>

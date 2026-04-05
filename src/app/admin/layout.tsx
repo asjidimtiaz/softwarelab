@@ -1,6 +1,4 @@
 import "../globals.css";
-import { MotionProvider } from "@/components/MotionProvider";
-import { PageTransition } from "@/components/ui/page-transition";
 import { Geist, Geist_Mono } from "next/font/google";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist" });
@@ -17,17 +15,19 @@ export default function RootAdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className="light">
       <body
-        className={`${geist.variable} ${geistMono.variable} font-sans antialiased bg-background text-foreground transition-colors duration-300`}
+        className={`${geist.variable} ${geistMono.variable} antialiased`}
+        style={{
+          background: "var(--adm-bg, #f4f6fb)",
+          color: "var(--adm-text, #0f172a)",
+          margin: 0,
+          padding: 0,
+          overflow: "hidden",
+        }}
       >
-        <MotionProvider>
-          <PageTransition>
-            {children}
-          </PageTransition>
-        </MotionProvider>
+        {children}
       </body>
     </html>
   );
 }
-

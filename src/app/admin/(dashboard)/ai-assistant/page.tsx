@@ -98,7 +98,7 @@ export default function AIAssistantPage() {
     try {
       const res = await fetch("/api/admin/ai-studio/generate", {
         method:"POST", headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({ promptKey: selectedPromptKey||"general", variables:{ input:msg }, type:"other" }),
+        body:JSON.stringify({ promptKey: selectedPromptKey||"general", variables:{ input:msg, tone, language }, type:"other" }),
       });
       const json = await res.json();
       const reply = json?.content || MOCK_RESPONSES[mockIdx.current % MOCK_RESPONSES.length];

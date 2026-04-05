@@ -20,6 +20,7 @@ export async function getDashboardStats() {
     if (!process.env.MONGODB_URI) {
       return {
         leadCount: 0,
+        hotLeads: 0,
         chatCount: 0,
         draftCount: 0,
         statusPipeline: { ...EMPTY_PIPELINE },
@@ -37,6 +38,7 @@ export async function getDashboardStats() {
     if (!db) {
       return {
         leadCount: 0,
+        hotLeads: 0,
         chatCount: 0,
         draftCount: 0,
         statusPipeline: { ...EMPTY_PIPELINE },
@@ -55,6 +57,8 @@ export async function getDashboardStats() {
       Setting.findOne({ key: "admin.branding" }).lean(),
       Lead.aggregate([{ $group: { _id: "$status", count: { $sum: 1 } } }]),
     ]);
+
+    const hotLeads = await Lead.countDocuments({ leadTier: "HOT" });
 
     const recentLeads = await Lead.find()
       .sort({ createdAt: -1 })
@@ -104,21 +108,24 @@ export async function getDashboardStats() {
 
     return {
       leadCount,
+      hotLeads,
       chatCount,
       draftCount,
       statusPipeline,
       brandingConfig,
       recentLeads: recentLeads.map((l: any) => ({
-        name: l.fullName || "Unknown",
+        id:       String(l._id),
+        name:     l.fullName || "Unknown",
         industry: l.industry || "Other",
-        budget: l.budgetRange || "TBD",
-        intent: l.leadTier || "COLD",
+        budget:   l.budgetRange || "TBD",
+        intent:   l.leadTier || "COLD",
       })),
       recentEvents,
     };
   } catch {
     return {
       leadCount: 0,
+      hotLeads: 0,
       chatCount: 0,
       draftCount: 0,
       statusPipeline: { ...EMPTY_PIPELINE },

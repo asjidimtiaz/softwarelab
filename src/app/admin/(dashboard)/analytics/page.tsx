@@ -60,7 +60,7 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Se
       />
 
       {/* ── Stat cards ── */}
-      <section style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 18 }}>
+      <section className="adm-stats-4">
         {STATS.map(({ label, value, icon: Icon, cls, meta, trendDir }) => (
           <div key={label} className={`admin-stat-card ${cls}`}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
@@ -77,7 +77,7 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Se
       </section>
 
       {/* ── Lead Trends chart + Service Distribution ── */}
-      <div style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr", gap: 22 }}>
+      <div className="adm-col-2">
         <AnalyticsChart trends={trends} />
 
         <ACard>
@@ -108,7 +108,7 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Se
           <ACardTitle>Status Breakdown</ACardTitle>
         </ACardHeader>
         <ACardBody>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(5,1fr)", gap: 12 }}>
+          <div className="adm-pipeline-grid">
             {PIPELINE_KEYS.map((key) => (
               <div key={key} className="adm-pipeline-col">
                 <p style={{ fontSize: 9.5, fontWeight: 800, textTransform: "uppercase", letterSpacing: 1, color: "var(--adm-text-muted)", fontFamily: "var(--adm-mono)", marginBottom: 6 }}>{key}</p>
@@ -122,7 +122,7 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Se
       </ACard>
 
       {/* ── Lead Status Donut + Avg Score ── */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 22 }}>
+      <div className="adm-col-2-equal">
         <ACard>
           <ACardHeader><ACardTitle>Lead Status Breakdown</ACardTitle></ACardHeader>
           <ACardBody>
