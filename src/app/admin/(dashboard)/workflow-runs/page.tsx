@@ -47,7 +47,7 @@ export default async function WorkflowRunsPage({ searchParams }: { searchParams:
   const total = totalResult.length;
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
-  const grouped = groupedRaw.map(g => ({
+  const grouped = groupedRaw.map((g: any) => ({
     _id: g.workflowRunId,
     workflowKey: g.workflowKey,
     createdAt: g._min?.createdAt,
