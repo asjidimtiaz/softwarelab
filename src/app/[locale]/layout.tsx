@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import type { CSSProperties } from "react";
 import { Suspense } from "react";
 import { Inter, IBM_Plex_Mono, DM_Sans } from "next/font/google";
 import "../globals.css";
