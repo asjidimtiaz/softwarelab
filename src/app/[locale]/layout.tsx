@@ -1,6 +1,5 @@
-import type { Metadata } from "next";
-import type { CSSProperties } from "react";
 import { Suspense } from "react";
+import { Inter, IBM_Plex_Mono, DM_Sans } from "next/font/google";
 import "../globals.css";
 import { getDictionary } from "@/lib/get-dictionary";
 import { MotionProvider } from "@/components/MotionProvider";
@@ -12,7 +11,9 @@ import { ConsentBanner } from "@/components/ui/consent-banner";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { deriveBrandingVars, getPublicBrandingConfig } from "@/lib/branding";
 import { localePath } from "@/lib/locale-path";
-import { GlobalDecorativeBackground } from "@/components/GlobalDecorativeBackground";
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const plex = IBM_Plex_Mono({ weight: ["400", "600", "700"], subsets: ["latin"], variable: "--font-plex" });
+const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-body" });
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -89,7 +90,7 @@ export default async function RootLayout({
     <html
       lang={locale}
       dir={isRtl ? 'rtl' : 'ltr'}
-      className="dark scroll-smooth"
+      className={`${inter.variable} ${plex.variable} ${dmSans.variable} dark scroll-smooth`}
       suppressHydrationWarning
       style={{ ...brandingVars, colorScheme: 'dark' } as CSSProperties}
     >

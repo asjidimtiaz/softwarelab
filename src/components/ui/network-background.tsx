@@ -104,7 +104,7 @@ export function NetworkBackground() {
       });
 
       // Minimal background nodes for a clean, focused look
-      for (let i = 0; i < 20; i++) {
+      for (let i = 0; i < 12; i++) {
         const bx = padX * 0.5 + Math.random() * (W - padX);
         const by = 30 + Math.random() * (H - 60);
         nodes.push({
@@ -122,7 +122,7 @@ export function NetworkBackground() {
         });
       }
 
-          for (let k = 0; k < 180; k++) spawnParticle();
+          for (let k = 0; k < 100; k++) spawnParticle();
     }
 
     function roundRect(canv: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
@@ -174,7 +174,7 @@ export function NetworkBackground() {
       });
 
       // Connections
-      const CD = W * 0.4; // Refined Connection distance (Reduced from 0.65 for clarity)
+      const CD = W * 0.3; // Refined Connection distance for performance
       for (let a = 0; a < nodes.length; a++) {
         for (let b = a + 1; b < nodes.length; b++) {
           const na = nodes[a], nb = nodes[b];

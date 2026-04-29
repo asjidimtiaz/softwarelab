@@ -33,13 +33,24 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
     "text-indigo-500",
     "text-amber-500"
   ];
-  const featuredPosts = (await getBlogPosts()).slice(0, 3);
-  const testimonialsData = await getTestimonialsData(locale);
-  const clientLogosData = await getClientLogosData(locale);
-  const teamData = await getTeamData(locale);
-  const trustedPlatformsData = await getTrustedPlatformsData(locale);
-  const homePricingData = await getHomePricingData(locale);
-  const homepageData = await getHomepageData(locale);
+  const [
+    featuredPostsRaw,
+    testimonialsData,
+    clientLogosData,
+    teamData,
+    trustedPlatformsData,
+    homePricingData,
+    homepageData
+  ] = await Promise.all([
+    getBlogPosts(),
+    getTestimonialsData(locale),
+    getClientLogosData(locale),
+    getTeamData(locale),
+    getTrustedPlatformsData(locale),
+    getHomePricingData(locale),
+    getHomepageData(locale)
+  ]);
+  const featuredPosts = featuredPostsRaw.slice(0, 3);
 
   return (
     <main className="flex-1">
