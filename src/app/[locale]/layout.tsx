@@ -13,6 +13,7 @@ import { ConsentBanner } from "@/components/ui/consent-banner";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { deriveBrandingVars, getPublicBrandingConfig } from "@/lib/branding";
 import { localePath } from "@/lib/locale-path";
+import { GlobalDecorativeBackground } from "@/components/GlobalDecorativeBackground";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const plex = IBM_Plex_Mono({ weight: ["400", "600", "700"], subsets: ["latin"], variable: "--font-plex" });
 const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-body" });
