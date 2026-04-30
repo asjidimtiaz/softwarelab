@@ -1,6 +1,6 @@
 import { headers } from "next/headers";
 import { prisma, connectToDatabase } from "@/lib/db";
-import { AuditAction } from "../generated/prisma";
+import { AuditAction } from "@prisma/client";
 
 export type { AuditAction };
 
