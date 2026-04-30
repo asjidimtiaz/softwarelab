@@ -167,10 +167,10 @@
     --secondary-foreground: 210 5% 97%;
 
     --muted: 220 16% 14%;
-    --muted-foreground: 211 31% 72%;
+    --muted-foreground: 211 40% 82%; /* Boosted from 72% for better readability */
 
     --accent: 212 62% 66%;
-    --accent-foreground: 209 43% 6%;
+    --accent-foreground: 210 5% 97%; /* Lighter foreground for accent */
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 5% 97%;
@@ -215,10 +215,21 @@
 
   p {
     color: hsl(var(--muted-foreground));
+    line-height: 1.7;
   }
 
   .dark p {
-    color: inherit; /* Let dark mode handles it */
+    color: #cbd5e1; /* Clear slate for paragraphs in dark mode */
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading tracking-tight;
+    color: hsl(var(--foreground));
+  }
+
+  .dark h1, .dark h2, .dark h3, .dark h4 {
+    color: #ffffff;
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
   }
 }
 
@@ -542,7 +553,7 @@
   }
 
   .dark [class*="text-[#94A3B8]"] {
-    color: #cbd5e1 !important; /* Lighter slate (slate-300) for better contrast on dark cards */
+    color: #e2e8f0 !important; /* Lighter (slate-200) for much better contrast */
   }
 
   .dark [class*="text-[#D5DEEB]"],

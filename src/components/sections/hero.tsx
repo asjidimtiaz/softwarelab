@@ -187,7 +187,7 @@ export function Hero({ locale }: HeroProps) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="mt-8 text-sm md:text-base leading-relaxed text-white/55 font-normal max-w-xl"
+                className="mt-8 text-sm md:text-base leading-relaxed text-white/75 font-normal max-w-xl"
               >
                 From high-performance custom websites to AI-powered sales automation — we engineer digital systems that convert visitors into revenue. 100+ systems built. 99.9% uptime.
               </motion.p>
@@ -256,7 +256,7 @@ export function Hero({ locale }: HeroProps) {
                     style={{ color: service.color }}
                     strokeWidth={1.5}
                   />
-                  <span className="text-[9px] tracking-[0.15em] font-plex font-bold text-white/40 group-hover:text-white transition-colors">
+                  <span className="text-[9px] tracking-[0.15em] font-plex font-bold text-white/70 group-hover:text-white transition-colors">
                     {service.title}
                   </span>
                 </div>

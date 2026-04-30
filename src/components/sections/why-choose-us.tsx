@@ -297,7 +297,7 @@ export function WhyChooseUs() {
                     initial={{ opacity: 0, x: -15 }}
                     animate={inView ? { opacity: 1, x: 0 } : {}}
                     transition={{ delay: 0.45 + i * 0.07 }}
-                    className="flex items-start gap-3 text-sm text-slate-500 dark:text-slate-300 group/item"
+                    className="flex items-start gap-3 text-sm text-slate-500 dark:text-slate-200 group/item"
                   >
                     <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white dark:bg-red-500/15 border border-slate-200 dark:border-red-500/20 shadow-sm dark:shadow-none transition-colors group-hover/item:border-red-200 dark:group-hover/item:border-red-500/40">
                       <X size={10} className="text-red-500 dark:text-red-400" />
@@ -329,7 +329,7 @@ export function WhyChooseUs() {
                     initial={{ opacity: 0, x: 15 }}
                     animate={inView ? { opacity: 1, x: 0 } : {}}
                     transition={{ delay: 0.45 + i * 0.07 }}
-                    className="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-300 group/item"
+                    className="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-200 group/item"
                   >
                     <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-50 dark:bg-[#34D399]/15 border border-emerald-200 dark:border-[#34D399]/25 transition-colors group-hover/item:bg-emerald-100 dark:group-hover/item:bg-[#34D399]/25">
                       <Check size={10} className="text-emerald-600 dark:text-[#34D399]" />
@@ -411,7 +411,7 @@ export function WhyChooseUs() {
                       <Icon size={20} style={{ color: svc.color }} />
                     </div>
                     <h4 className="font-bold text-midnight-950 dark:text-white text-base mb-2 leading-snug">{svc.title}</h4>
-                    <p className="text-sm text-midnight-500 dark:text-slate-300 leading-relaxed group-hover:text-midnight-800 dark:group-hover:text-midnight-500 transition-colors">
+                    <p className="text-sm text-midnight-500 dark:text-slate-200 leading-relaxed group-hover:text-midnight-800 dark:group-hover:text-white transition-colors">
                       {svc.desc}
                     </p>
                     <div
@@ -504,7 +504,7 @@ export function WhyChooseUs() {
                       }}
                     >
                       <h4 className="font-bold text-slate-900 dark:text-white text-base mb-2">{step.title}</h4>
-                      <p className="text-[13px] text-slate-600 dark:text-slate-300 leading-relaxed group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
+                      <p className="text-[13px] text-slate-600 dark:text-slate-200 leading-relaxed group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
                         {step.desc}
                       </p>
                     </div>

@@ -180,14 +180,14 @@ export function NetworkBackground() {
           const na = nodes[a], nb = nodes[b];
           const d = Math.hypot(na.x - nb.x, na.y - nb.y);
           if (d > CD) continue;
-          const alpha = (1 - d / CD) * 0.22;
+          const alpha = (1 - d / CD) * 0.35; // Boosted connection opacity
           const grad = c.createLinearGradient(na.x, na.y, nb.x, nb.y);
           const a1 = Math.round(alpha * 255).toString(16).padStart(2, "0");
           grad.addColorStop(0, na.color + a1);
           grad.addColorStop(1, nb.color + a1);
           c.beginPath();
           c.strokeStyle = grad;
-          c.lineWidth = 0.8;
+          c.lineWidth = 1.2; // Thicker lines
           c.moveTo(na.x, na.y);
           c.lineTo(nb.x, nb.y);
           c.stroke();
@@ -270,14 +270,13 @@ export function NetworkBackground() {
           const la = 0.65 + Math.sin(n.pulse) * 0.1;
           c.save();
           c.globalAlpha = la;
-          c.font = 'bold 14px "IBM Plex Mono",monospace'; // Increased font for readability
+          c.font = 'bold 16px "IBM Plex Mono",monospace'; // Increased font for readability
           const tw = c.measureText(n.label).width;
           const pw = tw + 38, ph = 34, lx = n.x + pr + 15, ly = n.y - ph / 2;
           c.fillStyle = "rgba(0,0,0,0.85)";
           roundRect(c, lx, ly, pw, ph, 6);
           c.fill();
-          c.strokeStyle = n.color + "66";
-          c.lineWidth = 1.5;
+          c.strokeStyle = n.color + "99"; // Brighter pill border
           roundRect(c, lx, ly, pw, ph, 6);
           c.stroke();
           c.fillStyle = n.color;
