@@ -8,11 +8,10 @@
   "scripts": {
     "dev": "next dev --webpack",
     "dev:turbo": "next dev --turbopack",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
-    "content:locales:check": "node scripts/check-locale-content.mjs",
-    "postinstall": "prisma generate"
+    "content:locales:check": "node scripts/check-locale-content.mjs"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.6.0",
