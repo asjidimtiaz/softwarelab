@@ -1,8 +1,21 @@
 import { headers } from "next/headers";
 import { prisma, connectToDatabase } from "@/lib/db";
-import { AuditAction } from "@prisma/client";
-
-export type { AuditAction };
+export type AuditAction = 
+  | "LOGIN_SUCCESS"
+  | "LOGIN_FAILED"
+  | "LOGOUT"
+  | "VIEW_DASHBOARD"
+  | "VIEW_LEADS"
+  | "VIEW_LEAD_DETAIL"
+  | "VIEW_CHATS"
+  | "VIEW_DRAFTS"
+  | "VIEW_WORKFLOW_RUNS"
+  | "RUN_AI_PROMPT"
+  | "RUN_AI_WORKFLOW"
+  | "CREATE_DRAFT"
+  | "UPDATE_BRANDING"
+  | "UPDATE_SETTINGS"
+  | "EXPORT_DATA";
 
 export async function logAudit(params: {
   action: AuditAction;
