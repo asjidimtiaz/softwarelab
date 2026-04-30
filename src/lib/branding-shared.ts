@@ -37,7 +37,7 @@ function mix(hex: string, target: string, weight: number) {
     g: Math.round(from.g + (to.g - from.g) * clamp),
     b: Math.round(from.b + (to.b - from.b) * clamp),
   };
-  return `#${[value.r, value.g, value.b].map((part) => part.toString(16).padStart(2, "0")).join("")}`.toUpperCase();
+  return `#${[value.r, value.g, value.b].map((part: number) => part.toString(16).padStart(2, "0")).join("")}`.toUpperCase();
 }
 
 export function deriveBrandingVars(primaryColor: string) {

@@ -12,9 +12,9 @@ export async function getLeadAnalytics() {
     ]);
     return {
       totalLeads,
-      byTier: Object.fromEntries(byTier.map((r) => [r.leadTier, r._count.id])),
-      byStatus: Object.fromEntries(byStatus.map((r) => [r.status, r._count.id])),
-      byCategory: Object.fromEntries(byCategory.map((r) => [r.serviceCategory, r._count.id])),
+      byTier: Object.fromEntries(byTier.map((r: any) => [r.leadTier, r._count.id])),
+      byStatus: Object.fromEntries(byStatus.map((r: any) => [r.status, r._count.id])),
+      byCategory: Object.fromEntries(byCategory.map((r: any) => [r.serviceCategory, r._count.id])),
     };
   } catch {
     return { totalLeads: 0, byTier: {}, byStatus: {}, byCategory: {} };
@@ -55,7 +55,7 @@ export async function getScoreDistribution() {
       { label: "81-100", min: 81, max: 100 },
     ];
     return Promise.all(
-      buckets.map(async (b) => ({
+      buckets.map(async (b: any) => ({
         label: b.label,
         count: await prisma.lead.count({ where: { leadScore: { gte: b.min, lte: b.max } } }),
       }))
@@ -81,7 +81,7 @@ export async function getActivityTimeline(days = 30) {
       GROUP BY DATE_TRUNC('day', "createdAt")
       ORDER BY DATE_TRUNC('day', "createdAt")
     `;
-    return result.map((r) => ({ date: r.date, count: Number(r.count) }));
+    return result.map((r: any) => ({ date: r.date, count: Number(r.count) }));
   } catch {
     return [];
   }
@@ -96,7 +96,7 @@ export async function getTopPerformingCategories(limit = 5) {
       orderBy: { _count: { id: "desc" } },
       take: limit,
     });
-    return groups.map((g) => ({ name: g.serviceCategory, count: g._count.id }));
+    return groups.map((g: any) => ({ name: g.serviceCategory, count: g._count.id }));
   } catch {
     return [];
   }
@@ -113,8 +113,8 @@ export async function generateLeadReport() {
     return {
       generatedAt: new Date().toISOString(),
       totalLeads: total,
-      byTier: Object.fromEntries(byTier.map((r) => [r.leadTier, r._count.id])),
-      byStatus: Object.fromEntries(byStatus.map((r) => [r.status, r._count.id])),
+      byTier: Object.fromEntries(byTier.map((r: any) => [r.leadTier, r._count.id])),
+      byStatus: Object.fromEntries(byStatus.map((r: any) => [r.status, r._count.id])),
     };
   } catch {
     return {};
